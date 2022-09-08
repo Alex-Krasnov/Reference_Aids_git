@@ -1,0 +1,35 @@
+﻿.table > :not(caption) > * > * {
+    padding: 0.2rem 0.2rem;
+}
+.table-blot {
+    table-layout: fixed;
+    width: 200px;
+}
+th {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 3px;
+}
+.tbl-input {
+    font-size: 0.95rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.1rem;
+}
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #98e2d4;
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(152, 226, 212, 0.45);
+}
+.tbl-input:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #98e2d4;
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(152, 226, 212, 0.45);
+}

@@ -1,0 +1,63 @@
+﻿@model IEnumerable<Reference_Aids.Models.ListCategory>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutList";
+}
+
+<div class="container">
+    <form class="needs-validation" novalidate method="post" >
+
+        <div class="row g-0">
+
+            <div class="col-sm-1">
+                <label for="firstName" class="form-label"><font style="vertical-align: inherit;">Id</font></label>
+            </div>
+
+            <div class="col-sm-3">
+                <label for="lastName" class="form-label"><font style="vertical-align: inherit;">Name</font></label>
+            </div>
+
+        </div>
+
+    </form>
+
+    @foreach (var item in Model) {
+        <form class="needs-validation" novalidate asp-controller="ListCategories" asp-action="Update" method="post"  asp-route-id="@item.CategoryId">
+            <div class="row g-0" >
+
+                <div class="col-sm-1">
+                    <input type="text" class="form-control" id="CategoryId" name='CategoryId' value="@item.CategoryId">
+                </div>
+
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" id="CategoryName" name='CategoryName' value="@item.CategoryName">
+                </div>
+
+                <div class="col-sm-1"></div>
+
+                <div class="col-sm-2 d-grid gap-2 d-md-block">
+                    <a class="btn btn-outline-danger btn-sm" asp-controller="ListCategories" asp-action="Delete" asp-route-id="@item.CategoryId">Удалить</a>
+                    <input type="submit" class="btn btn-outline-success btn-sm" value="Редактировать" />
+                </div>
+
+            </div>
+        </form>
+    }
+    
+    <form class="needs-validation" novalidate asp-controller="ListCategories" asp-action="Create" method="post">
+        <div class="row g-0">
+            <div class="col-sm-1">
+                <input type="text" class="form-control" id="CategoryIdNew" name="CategoryId" value="">
+            </div>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" id="CategoryNameNew" name="CategoryName" value="">
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2 d-grid gap-2 d-md-block">
+              <button type="submit" class="btn btn-outline-success btn-sm">добавить</button>
+            </div>
+        </div>
+
+    </form>
+</div>

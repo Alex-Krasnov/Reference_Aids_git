@@ -1,0 +1,267 @@
+﻿@model Reference_Aids.ViewModels.ListForInputAnalyzesViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <datalist id="result_list">
+        @foreach (var item in Model.ListResults)
+        {
+            <option value="@item.ResultName"></option>
+        }
+    </datalist>
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option value="@item.TestSystemName"></option>
+        }
+    </datalist>
+    <datalist id="type_antige_list">
+        @foreach (var item in Model.ListTypeAntigens)
+        {
+            <option value="@item.TypeAntigenName"></option>
+        }
+    </datalist>
+
+    <br>
+    <div class="row g-0">
+        <div class="col-sm-1">
+            <label>Номер ифа</label>
+            <input type="text" class="form-control tbl-input" disabled value="@Model.TblIncomingBloods[0].NumIfa">
+        </div>
+        <div class="col-sm-2">
+            <label>Дата внесения</label>
+            <input type="date" class="form-control tbl-input" disabled value="@Model.TblIncomingBloods[0].DateBloodImport.ToString("yyyy-MM-dd")">
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row g-0">
+        <div class="col-sm-7">
+            <label>Antigen</label>
+            <div class="row g-0" style="margin-bottom: 2px">
+                <div class="col-sm-2 border border-1"><label>Тип Ag</label></div>
+                <div class="col-sm-2 border border-1"><label>Дата</label></div>
+                <div class="col-sm-3 border border-1"><label>Тест система</label></div>
+                <div class="col border border-1"><label>Cut off</label></div>
+                <div class="col border border-1"><label>ОП</label></div>
+                <div class="col border border-1"><label>ОП подт.</label></div>
+            </div>
+            <div style="overflow-x: auto; height: 75px;">
+                @foreach (var item in Model.TblResultAntigens)
+                {
+                    <div class="row g-0">
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" value="@item.ResultAntigenTypeName()" disabled></div>
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" value="@item.ResultAntigenDate.ToString("yyyy-MM-dd")" disabled></div>
+                        <div class="col-sm-3"><input type="text" class="form-control tbl-input" value="@item.ResultAntigenTestSysName()" disabled></div>
+                        <div class="col"><input type="text" class="form-control tbl-input"value="@item.ResultAntigenCutOff" disabled></div>
+                        <div class="col"><input type="text" class="form-control tbl-input"value="@item.ResultAntigenOp" disabled></div>
+                        <div class="col"><input type="text" class="form-control tbl-input"value="@item.ResultAntigenConfirmOp" disabled></div>
+                    </div>
+                }
+                <form class="needs-validation" style="margin: 0px" asp-controller="RegAnalyzes" asp-action="CreateAnalyzesAntigen" method="post">
+                    <div class="row g-0">
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" list="type_antige_list" name="ResultAntigenTypeName"></div>
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" name="ResultAntigenDate"></div>
+                        <div class="col-sm-3"><input type="text" class="form-control tbl-input" list="test_system_list" name="ResultAntigenTestSysName"></div>
+                        <div class="col"><input type="text" class="form-control tbl-input" name="ResultAntigenCutOff"></div>
+                        <div class="col"><input type="text" class="form-control tbl-input" name="ResultAntigenOp"></div>
+                        <div class="col"><input type="text" class="form-control tbl-input" name="ResultAntigenConfirmOp"></div>
+                        <div style="display: none;"><input type="text" class="form-control tbl-input" name="BloodId" value="@Model.TblIncomingBloods[0].BloodId"></div>
+                        <div style="display: none;"><input class="btn btn-outline-success btn-sm" type="submit" value="Поиск"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col" style="margin-left:30px">
+            <label>Pcr</label>
+            <div class="row g-0" style="margin-bottom: 2px">
+                <div class="col-sm-4 border border-1"><label>Дата</label></div>
+                <div class="col-sm-4 border border-1"><label>Тест система</label></div>
+                <div class="col-sm-2 border border-1"><label>Рез.</label></div>
+            </div>
+            <div style="overflow-x: auto; height: 75px;">
+                 @foreach (var item in Model.TblResultPcrs)
+                {
+                    <div class="row g-0">
+                        <div class="col-sm-4"><input type="date" class="form-control tbl-input" value="@item.ResultPcrDate.ToString("yyyy-MM-dd")" disabled></div>
+                        <div class="col-sm-4"><input type="text" class="form-control tbl-input" value="@item.ResultPcrTestSysName()" disabled></div>
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" value="@item.ResultPcrResultName()" disabled></div>
+                    </div>
+                }
+                <form class="needs-validation" style="margin: 0px" novalidate asp-controller="RegAnalyzes" asp-action="CreateAnalyzesPcr" method="post">
+                    <div class="row g-0">
+                        <div class="col-sm-4"><input type="date" class="form-control tbl-input" name="ResultPcrDate"></div>
+                        <div class="col-sm-4"><input type="text" class="form-control tbl-input" list="test_system_list" name="ResultPcrTestSysName"></div>
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" list="result_list" name="ResultPcrResultName"></div>
+                        <div style="display: none;"><input type="text" class="form-control tbl-input" name="BloodId" value="@Model.TblIncomingBloods[0].BloodId"></div>
+                        <div style="display: none;"><input class="btn btn-outline-success btn-sm" type="submit" value="Поиск"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-8">
+            <label>Ifa</label>
+            <div class="row g-0" style="margin-bottom: 2px">
+                <div class="col-sm-2 border border-1"><label>Дата</label></div>
+                <div class="col-sm-3 border border-1"><label>Тест система</label></div>
+                <div class="col-sm-1 border border-1"><label>Cut off</label></div>
+                <div class="col-sm-1 border border-1"><label>ОП</label></div>
+            </div>
+            <div style="overflow-x: auto; height: 75px;">
+                 @foreach (var item in Model.TblResultIfas)
+                {
+                    <div class="row g-0">
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" value="@item.ResultIfaDate.ToString("yyyy-MM-dd")" disabled></div>
+                        <div class="col-sm-3"><input type="text" class="form-control tbl-input" value="@item.ResultIfaTestSysName()" disabled></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" value="@item.ResultIfaCutOff" disabled></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" value="@item.ResultIfaOp" disabled></div>
+                    </div>
+                }
+                <form class="needs-validation" style="margin: 0px" novalidate asp-controller="RegAnalyzes" asp-action="CreateAnalyzesIfa" method="post">
+                    <div class="row g-0">
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" name="ResultIfaDate"></div>
+                        <div class="col-sm-3"><input type="text" class="form-control tbl-input" list="test_system_list" name="ResultIfaTestSysName"></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="ResultIfaCutOff"></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="ResultIfaOp"></div>
+                        <div style="display: none;"><input type="text" class="form-control tbl-input" name="BloodId" value="@Model.TblIncomingBloods[0].BloodId"></div>
+                        <div style="display: none;"><input class="btn btn-outline-success btn-sm" type="submit" value="Поиск"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col">
+            <label>Blot</label>
+            <div class="row g-0" style="margin-bottom: 2px">
+                <div class="col-sm-1 border border-1"><label>Тест система</label></div>
+                <div class="col-sm-1 border border-1" style="width: 115px"><label>Дата</label></div>
+                <div class="col-sm-1 border border-1" style="width: 115px"><label>Срок годности</label></div>
+                <div class="col border border-1"><label>ENV</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>160</label></div>
+                        <div class="col border border-1"><label>120</label></div>
+                        <div class="col border border-1"><label>41</label></div>
+                    </div>
+                </div>
+                <div class="col border border-1"><label>GAG</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>55</label></div>
+                        <div class="col border border-1"><label>40</label></div>
+                        <div class="col border border-1"><label>24/25</label></div>
+                        <div class="col border border-1"><label>18</label></div>
+                    </div>
+                </div>
+                <div class="col border border-1"><label>POL</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>68/66</label></div>
+                        <div class="col border border-1"><label>52/51</label></div>
+                        <div class="col border border-1"><label>34/31</label></div>
+                    </div>
+                </div>
+                <div class="col border border-1"><label>ВИЧ 2</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>105</label></div>
+                        <div class="col border border-1"><label>36</label></div>
+                    </div>
+                </div>
+                <div class="col-sm-1 border border-1"><label>ВИЧ 0</label></div>
+                <div class="col-sm-1 border border-1"><label>Рез.</label></div>
+                <div class="col-sm-1 border border-1"><label>Выд. рез.</label></div>
+            </div>
+            @foreach (var item in Model.TblResultBlots)
+            {
+                <div class="row g-0">
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" disabled value="@item.TestSystemName()"></div>
+                    <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" disabled value="@item.ResultBlotDate.ToString("yyyy-MM-dd")"></div>
+                    <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" disabled value="@item.ExpirationResultBlotDate.ToString("yyyy-MM-dd")"></div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotEnv160Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotEnv120Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotEnv41Name()"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotGag55Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotGag40Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotGag2425Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotGag18Name()"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotPol6866Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotPol5251Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotPol3431Name()"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotHiv2105Name()"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotHiv236Name()"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotHiv0Name()"></div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotResultName()"></div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" disabled value="@item.ResultBlotReturnResult"></div>
+                </div>
+            }
+            <form class="needs-validation" novalidate asp-controller="RegAnalyzes" asp-action="CreateAnalyzesBlot" method="post">
+                <div class="row g-0">
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="test_system_list" name="ResultBlotTestSysName"></div>
+                    <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" name="ResultBlotDate"></div>
+                    <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" name="ExpirationResultBlotDate"></div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotEnv160"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotEnv120"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotEnv41"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotGag55"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotGag40"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotGag2425"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotGag18"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotPol6866"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotPol5251"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotPol3431"></div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row g-0">
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotHiv2105"></div>
+                            <div class="col"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotHiv236"></div>
+                        </div>
+                    </div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotHiv0"></div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="result_list" name="ResultBlotResult"></div>
+                    <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="ResultBlotReturnResult"></div>
+                    <div style="display: none;"><input type="text" class="form-control tbl-input" name="BloodId" value="@Model.TblIncomingBloods[0].BloodId"></div>
+                    <div style="display: none;"><input class="btn btn-outline-success btn-sm" type="submit" value="Поиск"></div>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,91 @@
+﻿@model Reference_Aids.ViewModels.ListForSearchPatientViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="sex_list">
+        @foreach (var item in Model.ListSexes)
+        {
+            <option>@item.SexNameShort</option>
+        }
+    </datalist>
+    <datalist id="region_list">
+        @foreach (var item in Model.ListRegions)
+        {
+            <option>@item.RegionName</option>
+        }
+    </datalist> 
+
+    <br>
+    <div class="row g-0" >
+        <form class="needs-validation" novalidate asp-controller="SearchPatients" asp-action="Search" method="post">
+            <div class="row g-0">
+                <div class="col-sm-2" style="margin: 7px">
+                    <input autocomplete="fals" placeholder="Ид пациента" type="text" class="form-control" name="PatientId" value=@Model.ID>
+                </div>
+                <div class="col-sm-2" style="margin: 7px">
+                    <input autocomplete="fals" placeholder="Фамилия" type="text" class="form-control" name='FamilyName' value=@Model.FamilyName>
+                </div>
+                <div class="col-sm-2" style="margin: 7px">
+                    <input autocomplete="fals" placeholder="Имя" type="text" class="form-control" name='FirstName' value=@Model.FirstName>
+                </div>
+                <div class="col-sm-2" style="margin: 7px">
+                    <input autocomplete="fals" placeholder="Отчество" type="text" class="form-control" name='ThirdName' value=@Model.ThirdName>
+                </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-sm-2" style="margin: 7px">
+                    <input placeholder="Дата рождения" type="date" class="form-control" id="date" name='BirthDate' value=@Model.BirthDate>
+                </div>
+                <div class="col-sm-1" style="margin: 7px">
+                    <input placeholder="Пол" type="text" class="form-control" name='SexName' list="sex_list" value=@Model.SexName>
+                </div>
+                <div class="col-sm-2" style="margin: 7px">
+                    <input placeholder="Регион" type="text" class="form-control" name='RegionName' list="region_list" value=@Model.RegoinName>
+                </div>
+            </div> 
+            <div class="row g-0">
+                <div class="col-10"></div>
+                <div class="col-2" style="text-align:right;">
+                    <input class="btn btn-outline-warning btn-sm" type="reset" value="Сбросить">
+                    <input class="btn btn-outline-success btn-sm" type="submit" value="Поиск">
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="row g-0">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">ИД пациента</th>
+                    <th scope="col">Фамилия</th>
+                    <th scope="col">Имя</th>
+                    <th scope="col">Отчество</th>
+                    <th scope="col">Дата рождения</th>
+                    <th scope="col">Пол</th>
+                    <th scope="col">Регион</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.TblPatientCards)
+                {
+                    <tr>
+                        <td><input type="text" class="form-control" value=@item.PatientId disabled></td>
+                        <td><input type="text" class="form-control" value=@item.FamilyName disabled></td>
+                        <td><input type="text" class="form-control" value=@item.FirstName disabled></td>
+                        <td><input type="text" class="form-control" value=@item.ThirdName disabled></td>
+                        <td><input type="text" class="form-control" value=@item.BirthDate disabled></td>
+                        <td><input type="text" class="form-control" value=@item.SexName() disabled></td>
+                        <td><input type="text" class="form-control" value=@item.RegionName() disabled></td>
+                        <td><a class="btn btn-outline-info btn-sm" style="margin-top: 5px" asp-controller="RegIncBloods" asp-action="Index" asp-route-id="@item.PatientId">Открыть</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="row g-0">
+        <a class="btn btn-outline-primary btn-sm" style="margin-top: 5px" asp-controller="RegPatientCards" asp-action="Index">Новый пациент</a>
+    </div>
+</div>

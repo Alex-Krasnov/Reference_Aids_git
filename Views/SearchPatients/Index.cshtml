@@ -1,0 +1,54 @@
+﻿@model Reference_Aids.ViewModels.ListForSearchPatientViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="sex_list">
+        @foreach (var item in Model.ListSexes)
+        {
+            <option>@item.SexNameShort</option>
+        }
+    </datalist>
+    <datalist id="region_list">
+        @foreach (var item in Model.ListRegions)
+        {
+            <option>@item.RegionName</option>
+        }
+    </datalist>
+    <br>
+    <form class="needs-validation" novalidate asp-controller="SearchPatients" asp-action="Search" method="post"  asp-route-id="">
+        <div class="row g-0">
+            <div class="col-sm-2" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Ид пациента" type="text" class="form-control" name="PatientId">
+            </div>
+            <div class="col-sm-2" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Фамилия" type="text" class="form-control" name='FamilyName'>
+            </div>
+            <div class="col-sm-2" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Имя" type="text" class="form-control" name='FirstName'>
+            </div>
+            <div class="col-sm-2" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Отчество" type="text" class="form-control" name='ThirdName'>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-sm-2" style="margin: 7px">
+                <input placeholder="Дата рождения" type="date" class="form-control" id="date" name='BirthDate'>
+            </div>
+            <div class="col-sm-1" style="margin: 7px">
+                <input placeholder="Пол" type="text" class="form-control" name='SexName' list="sex_list">
+            </div>
+            <div class="col-sm-2" style="margin: 7px">
+                <input placeholder="Регион" type="text" class="form-control" name='RegionName' list="region_list">                    
+            </div>
+        </div> 
+        <div class="row g-0">
+            <div class="col-11"></div>
+            <div class="col-1">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Поиск">
+            </div>
+        </div>
+    </form>
+</div>

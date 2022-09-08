@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/css/bootstrap.css">
+    <link rel="stylesheet" href="~/css/custom.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg bg-light rounded" aria-label="Eleventh navbar example">
+          <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Reference_AIDS</a>
+            <div class="collapse navbar-collapse" id="navbars">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" asp-controller="ListCategories" asp-action="Index">Категории</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="ListQualitySerums" asp-action="Index">Качество сыворотки</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="ListSendDepartments" asp-action="Index">S_Department</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="ListSendDistricts" asp-action="Index">S_Районы</a></li>
+                <li class="nav-item"><a class="nav-link" asp-controller="ListSendLabs" asp-action="Index">S_Лаборатории</a></li>
+                @*<li class="nav-item"><a class="nav-link" asp-controller="ListCategories" asp-action="Index">List6</a></li>*@
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+      @RenderBody()
+
+</body>
+<div class="container">
+     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+           <div class="col-md-4 d-flex align-items-center">
+                 <a href="/" class="mb-3 me-2 mb-md-0 text-muted text-decoration-none lh-1">
+                       <svg class="bi" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
+                 </a>
+                 <span class="mb-3 mb-md-0 text-muted">2022 Reference_AIDS</span>
+           </div>
+      </footer>
+</div>
+</html>
