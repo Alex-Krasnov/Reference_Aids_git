@@ -46,7 +46,7 @@ namespace Reference_Aids.Controllers
                 if (list.TypeAntigen(_context) == 0)
                     kp = (list.ResultAntigenOp / list.ResultAntigenCutOff);
                 else
-                    percentGash = (int)((list.ResultAntigenOp - list.ResultAntigenConfirmOp) / list.ResultAntigenOp) * 100;
+                    percentGash = (int)((list.ResultAntigenOp - list.ResultAntigenConfirmOp) / list.ResultAntigenOp) * 100;   
 
                 TblResultAntigen tblResultAntigen = new()
                 {
@@ -59,7 +59,7 @@ namespace Reference_Aids.Controllers
                     ResultAntigenPercentGash = percentGash,
                     ResultAntigenKp = kp,
                     ResultAntigenTypeId = list.TypeAntigen(_context),
-                    ResultAntigenResultId = 0
+                    ResultAntigenResultId = 0 
                 };
 
                 _context.TblResultAntigens.Add(tblResultAntigen);
