@@ -1,62 +1,76 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Reference_Aids.ModelsForInput;
+using Reference_Aids.Data;
 
 namespace Reference_Aids.Controllers
 {
     public class FilesController : Controller
     {
-        public IActionResult Create()
+        private readonly Reference_AIDSContext _context;
+        public FilesController(Reference_AIDSContext context)
         {
-            string path_to = @"C:\work\Reference_Aids\Files\Output\form4.xlsx";
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            string path_to = @$"C:\work\Reference_Aids\Files\Output\form4_{DateTime.Now:dd_MM_yyyy}.xlsx";
             string path_from = @"C:\work\Reference_Aids\Files\Sample\form4.xlsx";
             string file_type = "text/plain";
-            string file_name = "form4.xlsx";
+            var file_name = "form4.xlsx";
+
+            FileInfo fileInf1 = new(path_to);
+            if (fileInf1.Exists)
+                fileInf1.Delete();
 
             FileInfo fileInf = new(path_from);
             fileInf.CopyTo(path_to);
 
-            // заполнение файла
-            string fileName = @"C:\Users\Public\Documents\myCellEx.xlsx";
+            var a = ListforForm4();
 
-            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(path_to, true);
-
-            WorkbookPart workbookpart = spreadsheetDocument.AddWorkbookPart();
-
-            WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
-
-            worksheetPart.Worksheet = new Worksheet();
-            Worksheet worksheet = new Worksheet();
-            SheetData sheetData = new SheetData();
-            Row row = new Row();
-            Cell cell = new Cell()
+            for (int i = 13; i < 35; i++ )
             {
-                CellReference = "A1",
-                DataType = CellValues.String,
-                CellValue = new CellValue("Microsoft")
-            };
-            row.Append(cell);
-            sheetData.Append(row);
-            worksheet.Append(sheetData);
-            worksheetPart.Worksheet = worksheet;
+                if (i == 16 || i == 25 || i == 30)
+                    continue;
 
-            // Close the document.  
-            spreadsheetDocument.Close();
-
+                foreach(char c in "DEFGHIJKLMNOP")
+                    ChangeTextInCell(path_to, i, i, c);
+            }
             return PhysicalFile(path_to, file_type, file_name);
         }
 
-        public IActionResult Delete()
+        public static void ChangeTextInCell(string filepath, int value, int num_row, char num_col)
         {
+            using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, true))
+            {
+                IEnumerable<Sheet> sheets = spreadsheetDocument.WorkbookPart.Workbook.GetFirstChild<Sheets>().Elements<Sheet>().Where(s => s.Name == "Sheet1");
+                WorksheetPart worksheetPart = (WorksheetPart)spreadsheetDocument.WorkbookPart.GetPartById(sheets.First().Id.Value);
+                Worksheet worksheet = worksheetPart.Worksheet;
+                SheetData sheetData = worksheet.GetFirstChild<SheetData>();
 
-            string path = @"C:\work\Reference_Aids\Files\Output\form4.xlsx";
+                Row row = sheetData.Elements<Row>().Where(r => r.RowIndex == num_row).First();
+                Cell cell = row.Elements<Cell>().Where(c => c.CellReference.Value == $"{num_col}{num_row}").First();
+                cell.CellValue = new CellValue(value);
+                cell.DataType = CellValues.Number;
 
-            FileInfo fileInfel = new(path);
-            fileInfel.Delete();
+                worksheetPart.Worksheet.Save();
+            }
+        }
 
-            return View();
-            //return PhysicalFile(file_path, file_type, file_name);
+        public Form4 ListforForm4()
+        {
+            var cat = _context.ListCategories.Select(e => e.CategoryId).ToList();
+            IEnumerable<Form4> form4;
+
+            foreach (int item in cat)
+            {
+                form4.Category = item;
+                form4.Total_4 = 100;
+            }
+
+            return form4;
         }
     }
 }
