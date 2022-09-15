@@ -59,15 +59,14 @@ namespace Reference_Aids.Controllers
             }
         }
 
-        public Form4 ListforForm4()
+        public List<Form4> ListforForm4()
         {
             var cat = _context.ListCategories.Select(e => e.CategoryId).ToList();
-            IEnumerable<Form4> form4;
+            List<Form4> form4;
 
             foreach (int item in cat)
             {
-                form4.Category = item;
-                form4.Total_4 = 100;
+                new form4 (item, 100);
             }
 
             return form4;
