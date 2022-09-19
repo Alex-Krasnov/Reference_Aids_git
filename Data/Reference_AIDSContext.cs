@@ -53,6 +53,10 @@ namespace Reference_Aids.Data
                     .ValueGeneratedNever()
                     .HasColumnName("category_id");
 
+                entity.Property(e => e.RowNum)
+                    .HasColumnType("integer")
+                    .HasColumnName("row_num");
+
                 entity.Property(e => e.CategoryName)
                     .HasColumnType("character varying")
                     .HasColumnName("category_name");

@@ -28,15 +28,14 @@ namespace Reference_Aids.Controllers
             FileInfo fileInf = new(path_from);
             fileInf.CopyTo(path_to);
 
-            var a = ListforForm4();
+            var listCat = ListforForm4();
 
-            for (int i = 13; i < 35; i++ )
+            foreach(var item in listCat)
             {
-                if (i == 16 || i == 25 || i == 30)
-                    continue;
+                _ = item.GetType();
 
                 foreach(char c in "DEFGHIJKLMNOP")
-                    ChangeTextInCell(path_to, i, i, c);
+                    ChangeTextInCell(path_to, 1, item.Row, c);
             }
             return PhysicalFile(path_to, file_type, file_name);
         }
@@ -62,11 +61,15 @@ namespace Reference_Aids.Controllers
         public List<Form4> ListforForm4()
         {
             var cat = _context.ListCategories.Select(e => e.CategoryId).ToList();
-            List<Form4> form4;
-
+            List<Form4> form4 = new();
             foreach (int item in cat)
             {
-                new form4 (item, 100);
+                Form4 a = new()
+                {
+                    Category = item
+                };
+                _ = _context.ListCategories.Where(e => e.CategoryId == item).Select(e => e.RowNum).ToList();
+                form4.Add(a);
             }
 
             return form4;

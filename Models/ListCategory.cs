@@ -12,6 +12,7 @@ namespace Reference_Aids.Models
 
         public int CategoryId { get; set; }
         public string? CategoryName { get; set; }
+        public int RowNum { get; set; }
 
         public virtual ICollection<TblIncomingBlood> TblIncomingBloods { get; set; }
     }
