@@ -30,12 +30,19 @@ namespace Reference_Aids.Controllers
             FileInfo fileInf = new(path_from);
             fileInf.CopyTo(path_to);
 
-            List<Form4> listCat = ListforForm4(dat1, dat2);
+            int[][] listCat = ListforForm4(dat1, dat2);
 
-            foreach(var item in listCat)
+            int i = 0, j = 2;
+
+            foreach(var cat in listCat)
             {
                 foreach(char c in "DEFGHIJKLMNOP")
-                    ChangeTextInCell(path_to, 1, item.Row, c);
+                {
+                    ChangeTextInCell(path_to, cat[j], cat[1], c);
+                    j++;
+                }
+                j = 2;
+                i++;
             }
             return PhysicalFile(path_to, file_type, file_name);
         }
@@ -58,14 +65,17 @@ namespace Reference_Aids.Controllers
             }
         }
 
-        public List<Form4> ListforForm4(string date1, string date2)
+        public int[][] ListforForm4(string date1, string date2)
         {
             var cat = _context.ListCategories.Select(e => e.CategoryId).ToList();
-            List<Form4> form4 = new();
+            //List<Form4> form4 = new();
             DateOnly old_18 = DateOnly.FromDateTime(DateTime.Today.AddYears(-18)),
                     old_14 = DateOnly.FromDateTime(DateTime.Today.AddYears(-14)),
                     date_start = DateOnly.Parse(date1),
                     date_end = DateOnly.Parse(date2);
+
+            int i = 0;
+            int[][] form = new int[19][];
 
             foreach (int item in cat)
             {
@@ -312,29 +322,49 @@ namespace Reference_Aids.Controllers
 
                 int pcrIb = man_13 + woman_14 + child_15 + teenager_16;
                 int totalAnalyzes = totalIfa + totalPcr + totalIb + totalAntigen;
-                
-                Form4 itemCategory = new()
-                {
-                    Category = item,
-                    Row = _context.ListCategories.Where(e => e.CategoryId == item).Select(e => e.RowNum).ToList().First(),
-                    Total_4 = total_4,
-                    Man_5 = man_5,
-                    Woman_6 = woman_6,
-                    Child_7 = child_7,
-                    Teenager_8 = teenager_8,
-                    Anon_9 = anon_9,
-                    TotalAnalyzes_10 = totalAnalyzes,
-                    Ifa_11 = ifa,
-                    PcrIb_12 = pcrIb,
-                    Man_13 = man_13,
-                    Woman_14 = woman_14,
-                    Child_15 = child_15,
-                    Teenager_16 = teenager_16
+                int rowNum = _context.ListCategories.Where(e => e.CategoryId == item).Select(e => e.RowNum).ToList().First();
 
+                //Form4 itemCategory = new()
+                //{
+                //    Category = item,
+                //    Row = rowNum,
+                //    Total_4 = total_4,
+                //    Man_5 = man_5,
+                //    Woman_6 = woman_6,
+                //    Child_7 = child_7,
+                //    Teenager_8 = teenager_8,
+                //    Anon_9 = anon_9,
+                //    TotalAnalyzes_10 = totalAnalyzes,
+                //    Ifa_11 = ifa,
+                //    PcrIb_12 = pcrIb,
+                //    Man_13 = man_13,
+                //    Woman_14 = woman_14,
+                //    Child_15 = child_15,
+                //    Teenager_16 = teenager_16
+
+                //};
+                //form4.Add(itemCategory);
+
+                form[i] = new int[15] {
+                    item,
+                    rowNum,
+                    total_4,
+                    man_5,
+                    woman_6,
+                    child_7,
+                    teenager_8,
+                    anon_9,
+                    totalAnalyzes,
+                    ifa,
+                    pcrIb,
+                    man_13,
+                    woman_14,
+                    child_15,
+                    teenager_16
                 };
-                form4.Add(itemCategory);
+                i++;
             }
-            return form4;
+            return form;
         }
     }
 }
