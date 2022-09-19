@@ -9,7 +9,7 @@
         public int Child_7 { get; set; } = 0;
         public int Teenager_8 { get; set; } = 0;
         public int Anon_9 { get; set; } = 0;
-        public int Total_analyzes_10 { get; set; } = 0;
+        public int TotalAnalyzes_10 { get; set; } = 0;
         public int Ifa_11 { get; set; } = 0;
         public int PcrIb_12 { get; set; } = 0;
         public int Man_13 { get; set; } = 0;
