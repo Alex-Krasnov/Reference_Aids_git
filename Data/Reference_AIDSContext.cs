@@ -31,6 +31,7 @@ namespace Reference_Aids.Data
         public virtual DbSet<ListRegion> ListRegions { get; set; } = null!;
         public virtual DbSet<ListTestSystem> ListTestSystems { get; set; } = null!;
         public virtual DbSet<ListTypeAntigen> ListTypeAntigens { get; set; } = null!;
+        public virtual DbSet<TblAnalyzesControl> TblAnalyzesControls { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -677,6 +678,22 @@ namespace Reference_Aids.Data
                 entity.Property(e => e.TypeAntigenName)
                     .HasColumnType("character varying")
                     .HasColumnName("type_antigen_name");
+            });
+
+            modelBuilder.Entity<TblAnalyzesControl>(entity =>
+            {
+                entity.HasKey(e => e.IdControl)
+                    .HasName("tbl_analyzes_control_pkey");
+
+                entity.ToTable("tbl_analyzes_control");
+
+                entity.Property(e => e.IdControl).HasColumnName("id_control");
+
+                entity.Property(e => e.ControlDate)
+                    .HasColumnType("date")
+                    .HasColumnName("d_control");
+
+                entity.Property(e => e.ControlAmount).HasColumnName("amount_control");
             });
 
             OnModelCreatingPartial(modelBuilder);
