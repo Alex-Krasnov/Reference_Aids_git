@@ -32,8 +32,8 @@ namespace Reference_Aids.Controllers
 
             int[][] listCat = ListforForm4(dat1, dat2);
 
-            ChangeDateInCell(path_to, dat1, 1, 'A');
-            ChangeDateInCell(path_to, dat2, 1, 'B');
+            ChangeStrInCell(path_to, dat1, 1, 'A');
+            ChangeStrInCell(path_to, dat2, 1, 'B');
             int i = 0, j = 2;
 
             foreach(var cat in listCat) 
@@ -67,7 +67,7 @@ namespace Reference_Aids.Controllers
             }
         }
 
-        public static void ChangeDateInCell(string filepath, string value, int num_row, char num_col) // костыль
+        public static void ChangeStrInCell(string filepath, string value, int num_row, char num_col) // костыль
         {
             using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, true))
             {
