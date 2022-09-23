@@ -17,10 +17,10 @@ namespace Reference_Aids.Controllers
 
         public IActionResult Index()
         {
-            string path_from = @$"C:\Users\alexk\source\repos\Alex-Krasnov\Reference_Aids_git\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
-            //string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
-            file_type = "text/plain";
-            var file_name = "ReportAnalyzes.docx";
+            //string path_from = @$"C:\Users\alexk\source\repos\Alex-Krasnov\Reference_Aids_git\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
+            file_type = "text/plain",
+            file_name = "ReportAnalyzes.docx";
 
             FileInfo fileInf1 = new(path_from);
             if (fileInf1.Exists)
@@ -145,7 +145,7 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("Дата забора крови: ")));
+                                          new Text("Дата забора крови:")));
                 para7.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
@@ -154,7 +154,7 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("Дата поступления: ")));
+                                          new Text("Дата поступления:")));
                 para7.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
@@ -166,92 +166,220 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("Биоматериал: ")));
+                                          new Text("Биоматериал:")));
                 para8.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                           new Text("Сыворотка/плазма"))));
 
                 //Таблица Анализов
-                // Create an empty table.
                 Table table = new(new TableProperties(
                     new TableBorders(
-                        new TopBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        },
-                        new BottomBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        },
-                        new LeftBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        },
-                        new RightBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        },
-                        new InsideHorizontalBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        },
-                        new InsideVerticalBorder(){
-                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
-                            Size = 0
-                        }
-                    )));
+                        new TopBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0},
+                        new BottomBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0},
+                        new LeftBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0},
+                        new RightBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0},
+                        new InsideHorizontalBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0},
+                        new InsideVerticalBorder(){Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),Size = 0})));
 
-                // Create a row.
                 TableRow tr = new();
 
-                TableCell tc1 = new(new TableCellProperties(
-                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
-                                    new Paragraph(
-                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                        new Run(
-                                            new RunProperties(
-                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                new FontSize { Val = new StringValue("20") },
-                                                new Bold()),
-                                            new Text("Наименование теста"))));
+                TableCell tc1 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1500" }),
+                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                  new Run(new RunProperties(
+                                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                              new FontSize { Val = new StringValue("20") },
+                                                              new Bold()),
+                                                          new Text("Наименование теста"))));
                 tr.Append(tc1);
-
-                TableCell tc2 = new(new TableCellProperties(
-                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
-                                    new Paragraph(
-                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                        new Run(
-                                            new RunProperties(
-                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                new FontSize { Val = new StringValue("20") },
-                                                new Bold()),
-                                            new Text("Дата"))));
+                TableCell tc2 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1000" }),
+                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                  new Run(new RunProperties(
+                                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                              new FontSize { Val = new StringValue("20") },
+                                                              new Bold()),
+                                                          new Text("Дата"))));
                 tr.Append(tc2);
-                TableCell tc3 = new(new TableCellProperties(
-                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1500" }),
-                                    new Paragraph(
-                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                        new Run(
-                                            new RunProperties(
-                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                new FontSize { Val = new StringValue("20") },
-                                                new Bold()),
-                                            new Text("Серия, Тест система"))));
+                TableCell tc3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "6000" }),
+                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                  new Run(new RunProperties(
+                                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                              new FontSize { Val = new StringValue("20") },
+                                                              new Bold()),
+                                                          new Text("Серия, Тест система"))));
                 tr.Append(tc3);
-                TableCell tc4 = new(new TableCellProperties(
-                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
-                                    new Paragraph(
-                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                        new Run(
-                                            new RunProperties(
-                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                new FontSize { Val = new StringValue("20") },
-                                                new Bold()),
-                                            new Text("Результат"))));
+                TableCell tc4 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "950" }),
+                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                  new Run(new RunProperties(
+                                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                              new FontSize { Val = new StringValue("20") },
+                                                              new Bold()),
+                                                          new Text("Результат"))));
                 tr.Append(tc4);
                 table.Append(tr);
+                //ИФА
+                if (1 == 1) 
+                {
+                    TableRow trOp = new();
+                    TableCell tcOp1 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1500" }),
+                                                 new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("ИФА"))));
+                    trOp.Append(tcOp1);
+                    TableCell tcOp2 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("01-01-1900"))));
+                    trOp.Append(tcOp2);
+                    TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("14") }),
+                                                                     new Text("Серия, Тест система"))));
+                    trOp.Append(tcOp3);
+                    TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("20") }),
+                                                                     new Text("Сомн."))));
+                    trOp.Append(tcOp4);
+                    table.Append(trOp);
+                }
+                //ИБ
+                if (1 == 1) 
+                {
+                    TableRow trOp = new();
+                    TableCell tcOp1 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("ИБ"))));
+                    trOp.Append(tcOp1);
+                    TableCell tcOp2 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("01-01-1900"))));
+                    trOp.Append(tcOp2);
+                    TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("14") }),
+                                                                     new Text("Серия, Тест система"))));
+                    trOp.Append(tcOp3);
+                    TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("20") }),
+                                                                     new Text("Отр."))));
+                    trOp.Append(tcOp4);
+                    table.Append(trOp);
+                }
+                //Антиген P24
+                if (1 == 1)
+                {
+                    TableRow trOp = new();
+                    TableCell tcOp1 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("Антиген P24"))));
+                    trOp.Append(tcOp1);
+                    TableCell tcOp2 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("01-01-1900"))));
+                    trOp.Append(tcOp2);
+                    TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("14") }),
+                                                                     new Text("Серия, Тест система"))));
+                    trOp.Append(tcOp3);
+                    TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("20") }),
+                                                                     new Text("Отр."))));
+                    trOp.Append(tcOp4);
+                    table.Append(trOp);
+                }
+                //ПЦР
+                if (1 == 1)
+                {
+                    TableRow trOp = new();
+                    TableCell tcOp1 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("ПЦР"))));
+                    trOp.Append(tcOp1);
+                    TableCell tcOp2 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("01-01-1900"))));
+                    trOp.Append(tcOp2);
+                    TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("14") }),
+                                                                     new Text("Серия, Тест система"))));
+                    trOp.Append(tcOp3);
+                    TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("20") }),
+                                                                     new Text("Отр."))));
+                    trOp.Append(tcOp4);
+                    table.Append(trOp);
+                }
+                //Старый ИБ
+                if (1 == 1) 
+                {
+                    TableRow trOp = new();
+                    TableCell tcOp1 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("ИБ ранее "))));
+                    trOp.Append(tcOp1);
+                    TableCell tcOp2 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                               new Run(new RunProperties(
+                                                                           new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                           new FontSize { Val = new StringValue("20") }),
+                                                                       new Text("01-01-1900"))));
+                    trOp.Append(tcOp2);
+                    TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("14") }),
+                                                                     new Text("Серия, Тест система"))));
+                    trOp.Append(tcOp3);
+                    TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                                             new Run(new RunProperties(
+                                                                         new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                                         new FontSize { Val = new StringValue("20") }),
+                                                                     new Text("Пол."))));
+                    trOp.Append(tcOp4);
+                    table.Append(trOp);
+                }
                 body.Append(table);
+
+                //Заголовок таблица ИБ
+                Paragraph para9 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center})));
+                para9.AppendChild(new Run(new RunProperties(
+                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                              new FontSize { Val = new StringValue("20") },
+                                              new Bold()),
+                                          new Text("ИБ")));
+
+                //Таблица ИБ
+                
             }
         }
     }
