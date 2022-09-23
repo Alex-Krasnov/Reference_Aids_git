@@ -17,7 +17,8 @@ namespace Reference_Aids.Controllers
 
         public IActionResult Index()
         {
-            string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = @$"C:\Users\alexk\source\repos\Alex-Krasnov\Reference_Aids_git\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
+            //string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain";
             var file_name = "ReportAnalyzes.docx";
 
@@ -172,6 +173,85 @@ namespace Reference_Aids.Controllers
                                           new Text("Сыворотка/плазма"))));
 
                 //Таблица Анализов
+                // Create an empty table.
+                Table table = new(new TableProperties(
+                    new TableBorders(
+                        new TopBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        },
+                        new BottomBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        },
+                        new LeftBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        },
+                        new RightBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        },
+                        new InsideHorizontalBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        },
+                        new InsideVerticalBorder(){
+                            Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines),
+                            Size = 0
+                        }
+                    )));
+
+                // Create a row.
+                TableRow tr = new();
+
+                TableCell tc1 = new(new TableCellProperties(
+                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
+                                    new Paragraph(
+                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                        new Run(
+                                            new RunProperties(
+                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                new FontSize { Val = new StringValue("20") },
+                                                new Bold()),
+                                            new Text("Наименование теста"))));
+                tr.Append(tc1);
+
+                TableCell tc2 = new(new TableCellProperties(
+                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
+                                    new Paragraph(
+                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                        new Run(
+                                            new RunProperties(
+                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                new FontSize { Val = new StringValue("20") },
+                                                new Bold()),
+                                            new Text("Дата"))));
+                tr.Append(tc2);
+                TableCell tc3 = new(new TableCellProperties(
+                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1500" }),
+                                    new Paragraph(
+                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                        new Run(
+                                            new RunProperties(
+                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                new FontSize { Val = new StringValue("20") },
+                                                new Bold()),
+                                            new Text("Серия, Тест система"))));
+                tr.Append(tc3);
+                TableCell tc4 = new(new TableCellProperties(
+                                                    new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2400" }),
+                                    new Paragraph(
+                                        new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                                        new Run(
+                                            new RunProperties(
+                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                                new FontSize { Val = new StringValue("20") },
+                                                new Bold()),
+                                            new Text("Результат"))));
+                tr.Append(tc4);
+                table.Append(tr);
+                body.Append(table);
             }
         }
     }
