@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace Reference_Aids.Models
+﻿namespace Reference_Aids.Models
 {
     public partial class TblPatientCard
     {
