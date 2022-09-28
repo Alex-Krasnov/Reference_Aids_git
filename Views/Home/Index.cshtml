@@ -1,9 +1,13 @@
-﻿@{
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <p><a href="ListCategories/Index">Настройка списков </a>.</p>
     <p><a href="SearchPatients/Index">Поиск пациентов </a>.</p>
-    <p><a href="RegAnalyzes/Index?patient_id=0&blood_id=0">Ввод анализов </a>.</p>
 </div>
