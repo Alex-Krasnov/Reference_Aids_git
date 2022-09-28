@@ -68,12 +68,12 @@ namespace Reference_Aids.Controllers
                 TblIncomingBlood tblIncomingBlood = new()
                 {
                     PatientId = list.PatientId,
-                    SendDistrictId = list.SendDistrictId,
-                    SendLabId = list.SendLabId,
-                    CategoryPatientId = list.CategoryPatientId,
+                    SendDistrictId = list.SendDistrictId(_context),
+                    SendLabId = list.SendLabId(_context),
+                    CategoryPatientId = list.CategoryPatientId(_context),
                     AnonymousPatient = list.AnonymousPatient,
                     DateBloodSampling = DateOnly.Parse(list.DateBloodSampling),
-                    QualitySerumId = list.QualitySerumId,
+                    QualitySerumId = list.QualitySerumId(_context),
                     DateBloodImport = DateOnly.Parse(list.DateBloodImport),
                     NumIfa = list.NumIfa,
                     NumInList = list.NumInList

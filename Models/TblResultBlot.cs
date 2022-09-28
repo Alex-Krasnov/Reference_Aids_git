@@ -28,7 +28,7 @@ namespace Reference_Aids.Models
 
         public virtual ListTestSystem TestSystem { get; set; } = null!;
         public virtual TblIncomingBlood Blood { get; set; } = null!;
-        public virtual ListResult? ResultBlotResult { get; set; }
+        public virtual ListResult? ResultBlotResult { get; set; } = null!;
         public virtual ListResult? ResultBlotResultEnv160 { get; set; }
         public virtual ListResult? ResultBlotResultEnv120 { get; set; }
         public virtual ListResult? ResultBlotResultEnv41 { get; set; }
