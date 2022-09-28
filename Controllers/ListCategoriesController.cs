@@ -8,7 +8,6 @@ namespace Reference_Aids.Controllers
     public class ListCategoriesController : Controller
     {
         private readonly Reference_AIDSContext _context;
-
         public ListCategoriesController(Reference_AIDSContext context)
         {
             _context = context;

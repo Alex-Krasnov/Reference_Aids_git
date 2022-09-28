@@ -12,16 +12,13 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-
-        public IActionResult Index(string dat1, string dat2)
+        [HttpPost]
+        public IActionResult Create(string dat1, string dat2)
         {
             string path_to = @$"C:\work\Reference_Aids\Files\Output\form4_{DateTime.Now:dd_MM_yyyy}.xlsx",
             path_from = @"C:\work\Reference_Aids\Files\Sample\form4.xlsx",
             file_type = "text/plain";
             var file_name = "form4.xlsx";
-
-            dat1 = "1900-01-01";
-            dat2 = "2022-09-19";
 
             FileInfo fileInf1 = new(path_to);
             if (fileInf1.Exists)

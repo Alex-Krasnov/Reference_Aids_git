@@ -7,5 +7,6 @@ namespace Reference_Aids.Models
     {
         public int ResultId { get; set; }
         public string? ResultName { get; set; }
+        public string? ResultNameForRpt { get; set; }
     }
 }

@@ -14,12 +14,9 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-
-        public IActionResult Index(int ifaStart, int ifaEnd)
+        [HttpPost]
+        public IActionResult Create(int ifaStart, int ifaEnd, string rec)
         {
-            ifaStart = 0;
-            ifaEnd = 10000;
-
             //string path_from = @$"C:\Users\alexk\source\repos\Alex-Krasnov\Reference_Aids_git\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
             string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
@@ -46,7 +43,7 @@ namespace Reference_Aids.Controllers
                 if (i % 2 == 0)
                     InputIndent(path_from);
 
-                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, item.NumInList, _context, item.BloodId, item.PatientId);
+                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, item.NumInList, _context, item.BloodId, item.PatientId, rec);
                 i++;
             }
 
@@ -55,7 +52,7 @@ namespace Reference_Aids.Controllers
         public static void EditFile(string filepath, string? FamilyName, string? FirstName, string? ThirdName, DateOnly BirthDate, 
                                     ListSex? Sex, ListSendDistrict? SendDistrictNav, ListSendLab? SendLabNav, int? CategoryPatientId,
                                     DateOnly DateBloodSampling, DateOnly DateBloodImport, int NumIfa, int NumInList, 
-                                    Reference_AIDSContext _context, int bloodId, int patientId)//Добавление содержимого
+                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations)//Добавление содержимого
         {
             string sendLab, sexName, sendDistrict, birthDate, dateBloodSampling, dateBloodImport;
 
@@ -297,7 +294,7 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultIfaResult.ResultName))));
+                                                                     new Text(item.ResultIfaResult.ResultNameForRpt))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -327,7 +324,7 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultBlotResult.ResultName))));
+                                                                     new Text(item.ResultBlotResult.ResultNameForRpt))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -357,7 +354,7 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultAntigenResult.ResultName))));
+                                                                     new Text(item.ResultAntigenResult.ResultNameForRpt))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -387,7 +384,7 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultPcrResult.ResultName))));
+                                                                     new Text(item.ResultPcrResult.ResultNameForRpt))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -417,7 +414,7 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultBlotResult.ResultName))));
+                                                                     new Text(item.ResultBlotResult.ResultNameForRpt))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
 
@@ -725,7 +722,7 @@ namespace Reference_Aids.Controllers
                 para10.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
-                                          new Text())));
+                                          new Text(recommendations))));
                 //Дата выдачи Врач
                 Paragraph para11 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
                 para11.AppendChild(new Run(new RunProperties(

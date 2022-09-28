@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Reference_Aids.Data;
 
 namespace Reference_Aids.Controllers
 {
     public class ReportController : Controller
     {
-        [HttpGet]
-        public IActionResult Form4routing()
+        private readonly Reference_AIDSContext _context;
+
+        public ReportController(Reference_AIDSContext context)
         {
-            return View();
+            _context = context;
         }
+
         [HttpGet]
-        public IActionResult ReportAnalyzes()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        [HttpGet]
-        public IActionResult Report2()
-        {
-            return View();
+            ViewBag.Title = "Report";
+            return View("Index", await _context.ListRecForRpts.ToListAsync());
         }
     }
 }

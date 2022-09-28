@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Reference_Aids.Models.ListSendDepartment>
+﻿@model IEnumerable<Reference_Aids.Models.ListRecForRpt>
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
@@ -7,57 +7,46 @@
 
 <div class="container">
     <form class="needs-validation" novalidate method="post" >
-
         <div class="row g-0">
-
             <div class="col-sm-1">
                 <label for="firstName" class="form-label"><font style="vertical-align: inherit;">Id</font></label>
             </div>
-
             <div class="col-sm-3">
                 <label for="lastName" class="form-label"><font style="vertical-align: inherit;">Name</font></label>
             </div>
-
         </div>
-
     </form>
 
     @foreach (var item in Model) {
-        <form class="needs-validation" novalidate asp-controller="ListSendDepartments" asp-action="Update" method="post"  asp-route-id="@item.SendDepartmentId">
-            <div class="row g-0" >
-
+        <form class="needs-validation" novalidate asp-controller="ListRecForRpts" asp-action="Update" method="post"  asp-route-id="@item.RecId">
+            <div class="row g-0">
                 <div class="col-sm-1">
-                    <input type="text" class="form-control" id="SendDepartmentId" name='SendDepartmentId' value="@item.SendDepartmentId">
+                    <input type="text" class="form-control" name='RecId' value="@item.RecId">
                 </div>
-
                 <div class="col-sm-3">
-                    <input type="text" class="form-control" id="SendDepartmentName" name='SendDepartmentName' value="@item.SendDepartmentName">
+                    <input type="text" class="form-control" name='RecName' value="@item.RecName">
                 </div>
-
                 <div class="col-sm-1"></div>
-
                 <div class="col-sm-2 d-grid gap-2 d-md-block">
-                    <a class="btn btn-outline-danger btn-sm" asp-controller="ListSendDepartments" asp-action="Delete" asp-route-id="@item.SendDepartmentId">Удалить</a>
+                    <a class="btn btn-outline-danger btn-sm" asp-controller="ListRecForRpts" asp-action="Delete" asp-route-id="@item.RecId">Удалить</a>
                     <input type="submit" class="btn btn-outline-success btn-sm" value="Редактировать" />
                 </div>
-
             </div>
         </form>
     }
     
-    <form class="needs-validation" novalidate asp-controller="ListSendDepartments" asp-action="Create" method="post">
+    <form class="needs-validation" novalidate asp-controller="ListRecForRpts" asp-action="Create" method="post">
         <div class="row g-0">
             <div class="col-sm-1">
-                <input type="text" class="form-control" id="SendDepartmentIdNew" name="SendDepartmentId" value="">
+                <input type="text" class="form-control" name="RecId" value="">
             </div>
             <div class="col-sm-3">
-                <input type="text" class="form-control" id="SendDepartmentNameNew" name="SendDepartmentName" value="">
+                <input type="text" class="form-control" name="RecName" value="">
             </div>
             <div class="col-sm-1"></div>
             <div class="col-sm-2 d-grid gap-2 d-md-block">
               <button type="submit" class="btn btn-outline-success btn-sm">добавить</button>
             </div>
         </div>
-
     </form>
 </div>

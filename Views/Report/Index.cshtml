@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Reference_Aids.Models.ListRecForRpt>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <datalist id="rec_list">
+        @foreach (var item in Model)
+        {
+            <option>@item.RecName</option>
+        }
+    </datalist>
+    <br>
+    <form class="needs-validation" novalidate asp-controller="Form4" asp-action="Create" method="post">
+        <div class="row g-0">
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата1" type="date" class="form-control" name='dat1'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата2" type="date" class="form-control" name='dat2'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Создать отчет Форма4">
+            </div>
+        </div>
+    </form>
+    <br>
+    <form class="needs-validation" novalidate asp-controller="RptAnalyzes" asp-action="Create" method="post">
+        <div class="row g-0">
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Ифа1" type="text" class="form-control" name='ifaStart'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Ифа2" type="text" class="form-control" name='ifaEnd'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input placeholder="Рекомендации" type="text" class="form-control" name='rec' list="rec_list">
+            </div>
+            <div class="col" style="margin: 7px">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Создать отчет по анализам">
+            </div>
+        </div>
+    </form>
+    <br>
+    <form class="needs-validation" novalidate asp-controller="Rptnotice" asp-action="Create" method="post">
+        <div class="row g-0">
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата1" type="text" class="form-control" name='dat1'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата2" type="text" class="form-control" name='dat2'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Создать извещение">
+            </div>
+        </div>
+    </form>
+</div>

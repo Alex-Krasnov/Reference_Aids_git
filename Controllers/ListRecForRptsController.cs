@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
 
 namespace Reference_Aids.Controllers
 {
-    public class ListSendDepartmentsController : Controller
+    public class ListRecForRptsController : Controller
     {
         private readonly Reference_AIDSContext _context;
 
-        public ListSendDepartmentsController(Reference_AIDSContext context)
+        public ListRecForRptsController(Reference_AIDSContext context)
         {
             _context = context;
         }
@@ -22,14 +17,14 @@ namespace Reference_Aids.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Title = "ListSendDepartments";
-            return View("Index", await _context.ListSendDepartments.ToListAsync());
+            ViewBag.Title = "ListRecForRpts";
+            return View("Index", await _context.ListRecForRpts.ToListAsync());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("SendDepartmentId,SendDepartmentName")]  ListSendDepartment list)
+        public async Task<IActionResult> Create([Bind("RecId,RecName")]  ListRecForRpt list)
         {
-            if (ModelState.IsValid && await _context.ListSendDepartments.FindAsync(list.SendDepartmentId) == null)
+            if (await _context.ListRecForRpts.FindAsync(list.RecId) == null || list.RecId == null) //ModelState.IsValid && 
             {
                 _context.Add(list);
                 await _context.SaveChangesAsync();
@@ -41,11 +36,11 @@ namespace Reference_Aids.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var List = await _context.ListSendDepartments.FindAsync(id);
+            var List = await _context.ListRecForRpts.FindAsync(id);
 
             if (List != null)
             {
-                _context.ListSendDepartments.Remove(List);
+                _context.ListRecForRpts.Remove(List);
             }
 
             await _context.SaveChangesAsync();
@@ -54,11 +49,11 @@ namespace Reference_Aids.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update([Bind("SendDepartmentId,SendDepartmentName")] ListSendDepartment list)
+        public async Task<IActionResult> Update([Bind("RecId,RecName")] ListRecForRpt list)
         {
             if (ModelState.IsValid) 
             {
-                _context.ListSendDepartments.Update(list);
+                _context.ListRecForRpts.Update(list);
                 await _context.SaveChangesAsync();
             }
 

@@ -16,7 +16,6 @@ namespace Reference_Aids.Data
         public virtual DbSet<ListCategory> ListCategories { get; set; } = null!;
         public virtual DbSet<ListQualitySerum> ListQualitySerums { get; set; } = null!;
         public virtual DbSet<ListResult> ListResults { get; set; } = null!;
-        public virtual DbSet<ListSendDepartment> ListSendDepartments { get; set; } = null!;
         public virtual DbSet<ListSendDistrict> ListSendDistricts { get; set; } = null!;
         public virtual DbSet<ListSendLab> ListSendLabs { get; set; } = null!;
         public virtual DbSet<TblIncomingBlood> TblIncomingBloods { get; set; } = null!;
@@ -32,6 +31,7 @@ namespace Reference_Aids.Data
         public virtual DbSet<ListTestSystem> ListTestSystems { get; set; } = null!;
         public virtual DbSet<ListTypeAntigen> ListTypeAntigens { get; set; } = null!;
         public virtual DbSet<TblAnalyzesControl> TblAnalyzesControls { get; set; } = null!;
+        public virtual DbSet<ListRecForRpt> ListRecForRpts { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -93,20 +93,10 @@ namespace Reference_Aids.Data
                 entity.Property(e => e.ResultName)
                     .HasColumnType("character varying")
                     .HasColumnName("result_name");
-            });
 
-            modelBuilder.Entity<ListSendDepartment>(entity =>
-            {
-                entity.HasKey(e => e.SendDepartmentId)
-                    .HasName("list_send_department_pkey");
-
-                entity.ToTable("list_send_department");
-
-                entity.Property(e => e.SendDepartmentId).HasColumnName("send_department_id");
-
-                entity.Property(e => e.SendDepartmentName)
+                entity.Property(e => e.ResultNameForRpt)
                     .HasColumnType("character varying")
-                    .HasColumnName("send_department_name");
+                    .HasColumnName("result_name_for_rpt");
             });
 
             modelBuilder.Entity<ListSendDistrict>(entity =>
@@ -662,7 +652,9 @@ namespace Reference_Aids.Data
                     .HasColumnType("character varying")
                     .HasColumnName("test_system_series");
 
-                entity.Property(e => e.DTestSystemShelfLife).HasColumnName("d_test_system_shelf_life");
+                entity.Property(e => e.DTestSystemShelfLife)
+                    .HasColumnType("date")
+                    .HasColumnName("d_test_system_shelf_life");
 
             });
 
@@ -694,6 +686,20 @@ namespace Reference_Aids.Data
                     .HasColumnName("d_control");
 
                 entity.Property(e => e.ControlAmount).HasColumnName("amount_control");
+            });
+
+            modelBuilder.Entity<ListRecForRpt>(entity =>
+            {
+                entity.HasKey(e => e.RecId)
+                    .HasName("list_rec_for_rpt_pkey");
+
+                entity.ToTable("list_rec_for_rpt");
+
+                entity.Property(e => e.RecId).HasColumnName("rec_id");
+
+                entity.Property(e => e.RecName)
+                    .HasColumnType("character varying")
+                    .HasColumnName("rec_name");
             });
 
             OnModelCreatingPartial(modelBuilder);
