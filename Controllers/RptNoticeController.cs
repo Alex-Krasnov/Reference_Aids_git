@@ -103,11 +103,11 @@ namespace Reference_Aids.Controllers
                 try { lpuLab += ", " + item.SendLabNavigation.SendLabName; }
                 catch { }
 
-                try { strAnalyzes += $"{item.ResultIfaDate:dd-MM-yyyy}, ИФА {item.ResultIfaResult.ResultName}; "; }
+                try { strAnalyzes += $"{item.ResultIfaDate:dd-MM-yyyy}, ИФА {item.ResultIfaResult.ResultNameForRpt}; "; }
                 catch { }
-                try { strAnalyzes += $"{item.ResultBlotDate:dd-MM-yyyy}, ИБ {item.ResultBlotResult.ResultName}; "; }
+                try { strAnalyzes += $"{item.ResultBlotDate:dd-MM-yyyy}, ИБ {item.ResultBlotResult.ResultNameForRpt}; "; }
                 catch { }
-                try { strAnalyzes += $"{item.ResultPcrDate:dd-MM-yyyy}, ПЦР {item.ResultPcrResult.ResultName}; "; }
+                try { strAnalyzes += $"{item.ResultPcrDate:dd-MM-yyyy}, ПЦР {item.ResultPcrResult.ResultNameForRpt}; "; }
                 catch { }
 
                 EditFile(path_from, i, fio, dateSex, residence, categery, lpuLab, item.NumIfa, strAnalyzes);
@@ -226,7 +226,7 @@ namespace Reference_Aids.Controllers
                                                               new Bold()),
                                                           new Text("Рег. номер"))));
                 tr.Append(tc7);
-                TableCell tc8 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2300" }),
+                TableCell tc8 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2500" }),
                                     new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                   new Run(new RunProperties(
                                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
