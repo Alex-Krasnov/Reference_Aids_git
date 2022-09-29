@@ -34,7 +34,20 @@ namespace Reference_Aids.Controllers
             }
 
             var lisForInput = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.FamilyName, p.FirstName, p.ThirdName, p.Sex, p.BirthDate, i.CategoryPatientId, i.SendDistrictNavigation, i.SendLabNavigation, i.NumInList, i.DateBloodSampling, i.DateBloodImport, i.NumIfa, i.BloodId, p.PatientId })
+                                                            (p, i) => new { p.FamilyName, 
+                                                                            p.FirstName, 
+                                                                            p.ThirdName, 
+                                                                            p.Sex, 
+                                                                            p.BirthDate, 
+                                                                            i.CategoryPatientId, 
+                                                                            i.SendDistrictNavigation, 
+                                                                            i.SendLabNavigation, 
+                                                                            i.NumInList, 
+                                                                            i.DateBloodSampling, 
+                                                                            i.DateBloodImport, 
+                                                                            i.NumIfa, 
+                                                                            i.BloodId, 
+                                                                            p.PatientId })
                                                       .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
                                                                && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
             int i = 1;

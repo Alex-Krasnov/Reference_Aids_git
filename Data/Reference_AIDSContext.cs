@@ -32,6 +32,7 @@ namespace Reference_Aids.Data
         public virtual DbSet<ListTypeAntigen> ListTypeAntigens { get; set; } = null!;
         public virtual DbSet<TblAnalyzesControl> TblAnalyzesControls { get; set; } = null!;
         public virtual DbSet<ListRecForRpt> ListRecForRpts { get; set; } = null!;
+        public virtual DbSet<ListNumForRptNotice> ListNumForRptNotices { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -700,6 +701,16 @@ namespace Reference_Aids.Data
                 entity.Property(e => e.RecName)
                     .HasColumnType("character varying")
                     .HasColumnName("rec_name");
+            });
+
+            modelBuilder.Entity<ListNumForRptNotice>(entity =>
+            {
+                entity.HasKey(e => e.Num)
+                    .HasName("list_num_for_rpt_notice_pkey");
+
+                entity.ToTable("list_num_for_rpt_notice");
+
+                entity.Property(e => e.Num).HasColumnName("num");
             });
 
             OnModelCreatingPartial(modelBuilder);

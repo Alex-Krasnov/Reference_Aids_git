@@ -35,7 +35,7 @@
             {
                 return Sex.SexNameShort;
             }
-            return null; 
+            return null;
         }
         public string? RegionName()
         {
