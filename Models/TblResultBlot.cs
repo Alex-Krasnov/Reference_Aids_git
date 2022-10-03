@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Reference_Aids.Models
+﻿namespace Reference_Aids.Models
 {
     public partial class TblResultBlot
     {
-        public int BloodId { get; set; }
-        public int ResultBlotId { get; set; }
-        public DateOnly ResultBlotDate { get; set; }
+        public int? BloodId { get; set; }
+        public int? ResultBlotId { get; set; }
+        public DateOnly ResultBlotDate { get; set; } = new DateOnly();
         public DateOnly ExpirationResultBlotDate { get; set; }
         public int? ResultBlotTestSysId { get; set; }
         public int? ResultBlotEnv160 { get; set; }

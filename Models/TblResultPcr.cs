@@ -5,9 +5,9 @@ namespace Reference_Aids.Models
 {
     public partial class TblResultPcr
     {
-        public int BloodId { get; set; }
-        public int ResultPcrId { get; set; }
-        public DateOnly ResultPcrDate { get; set; }
+        public int? BloodId { get; set; }
+        public int? ResultPcrId { get; set; }
+        public DateOnly ResultPcrDate { get; set; } = new DateOnly();
         public int? ResultPcrTestSysId { get; set; }
         public int? ResultPcrResultId { get; set; }
 

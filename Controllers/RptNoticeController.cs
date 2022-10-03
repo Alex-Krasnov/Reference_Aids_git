@@ -3,7 +3,8 @@ using Reference_Aids.Data;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Reference_Aids.ModelsForInput;
+using Reference_Aids.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Reference_Aids.Controllers
 {
@@ -20,8 +21,47 @@ namespace Reference_Aids.Controllers
             string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportNotice_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "ReportNotice.docx";
+
             DateOnly date_start = DateOnly.Parse(dat1);
             DateOnly date_end = DateOnly.Parse(dat2);
+
+
+            var a = (from patient in _context.TblPatientCards
+                     join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
+                     from resIfa in _context.TblResultIfas.Where(resIfa => resIfa.BloodId == incBlood.BloodId).DefaultIfEmpty()
+                     from resPcr in _context.TblResultPcrs.Where(resPcr => resPcr.BloodId == incBlood.BloodId).DefaultIfEmpty() 
+                     from resIb in _context.TblResultBlots.Where(resIb => resIb.BloodId == incBlood.BloodId).DefaultIfEmpty()
+                     select new
+                     {
+                         patient.PatientId,
+                         patient.FamilyName,
+                         patient.FirstName,
+                         patient.ThirdName,
+                         patient.BirthDate,
+                         patient.Sex,
+                         patient.Region,
+                         patient.CityName,
+                         patient.AreaName,
+                         patient.AddrStreat,
+                         patient.AddrHome,
+                         patient.AddrCorps,
+                         patient.AddrFlat,
+                         incBlood.CategoryPatientId,
+                         incBlood.SendLabNavigation,
+                         incBlood.SendDistrictNavigation,
+                         incBlood.NumIfa,
+                         resIb.ResultBlotDate,
+                         resIb.ResultBlotResult,
+                         resIb.ResultBlotResultId,
+                         resIfa.ResultIfaDate,
+                         resIfa.ResultIfaResult,
+                         resIfa.ResultIfaResultId,
+                         resPcr.ResultPcrDate,
+                         resPcr.ResultPcrResult,
+                         resPcr.ResultPcrResultId
+                     }).Where(e => (e.ResultBlotDate.CompareTo(date_start) >= 0 && e.ResultBlotDate.CompareTo(date_end) <= 0 && e.ResultBlotResultId == 0) ||
+                                   (e.ResultIfaDate.CompareTo(date_start) >= 0 && e.ResultIfaDate.CompareTo(date_end) <= 0 && e.ResultIfaResultId == 0) ||
+                                   (e.ResultPcrDate.CompareTo(date_start) >= 0 && e.ResultPcrDate.CompareTo(date_end) <= 0 && e.ResultPcrResultId == 0)).ToList();
 
             FileInfo fileInf1 = new(path_from);
             if (fileInf1.Exists)

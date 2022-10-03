@@ -1,12 +1,10 @@
-﻿using Reference_Aids.Data;
-
-namespace Reference_Aids.Models
+﻿namespace Reference_Aids.Models
 {
     public partial class TblResultIfa
     {
-        public int BloodId { get; set; }
-        public int ResultIfaId { get; set; }
-        public DateOnly ResultIfaDate { get; set; }
+        public int? BloodId { get; set; }
+        public int? ResultIfaId { get; set; } 
+        public DateOnly ResultIfaDate { get; set; } = new DateOnly();
         public int? ResultIfaTestSysId { get; set; }
         public double? ResultIfaCutOff { get; set; }
         public double? ResultIfaOp { get; set; }
