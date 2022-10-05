@@ -8,15 +8,17 @@ namespace Reference_Aids.Controllers
     public class Form4Controller : Controller
     {
         private readonly Reference_AIDSContext _context;
-        public Form4Controller(Reference_AIDSContext context)
+        private readonly IWebHostEnvironment _appEnvironment;
+        public Form4Controller(Reference_AIDSContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
         [HttpPost]
         public IActionResult Create(string dat1, string dat2)
         {
-            string path_to = @$"C:\work\Reference_Aids\Files\Output\form4_{DateTime.Now:dd_MM_yyyy}.xlsx",
-            path_from = @"C:\work\Reference_Aids\Files\Sample\form4.xlsx",
+            string path_to = _appEnvironment.WebRootPath + @$"\Files\Output\form4_{DateTime.Now:dd_MM_yyyy}.xlsx",
+            path_from = _appEnvironment.WebRootPath + @"\Files\Sample\form4.xlsx",
             file_type = "text/plain";
             var file_name = "form4.xlsx";
 
@@ -37,7 +39,8 @@ namespace Reference_Aids.Controllers
             {
                 foreach(char c in "DEFGHIJKLMNOP")
                 {
-                    ChangeTextInCell(path_to, cat[j], cat[1], c);
+                    try { ChangeTextInCell(path_to, cat[j], cat[1], c); }
+                    catch { }
                     j++;
                 }
                 j = 2;

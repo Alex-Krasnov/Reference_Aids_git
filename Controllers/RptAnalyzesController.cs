@@ -10,15 +10,16 @@ namespace Reference_Aids.Controllers
     public class RptAnalyzesController : Controller
     {
         private readonly Reference_AIDSContext _context;
-        public RptAnalyzesController(Reference_AIDSContext context)
+        private readonly IWebHostEnvironment _appEnvironment;
+        public RptAnalyzesController(Reference_AIDSContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
         [HttpPost]
         public IActionResult Create(int ifaStart, int ifaEnd, string rec)
         {
-            //string path_from = @$"C:\Users\alexk\source\repos\Alex-Krasnov\Reference_Aids_git\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
-            string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = _appEnvironment.WebRootPath + @$"\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "ReportAnalyzes.docx";
 

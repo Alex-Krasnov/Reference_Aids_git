@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Files\Sample\form4.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
@@ -28,8 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="Interfaces\" />
-    <Folder Include="Files\Output\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Files\Output\ReportAnalyzes_28_09_2022.docx" />
+    <None Include="wwwroot\Files\Output\ReportNotice_29_09_2022.docx" />
+    <None Include="wwwroot\Files\Sample\form4.xlsx" />
+    <None Include="wwwroot\Files\Sample\ReportAnalyzes.docx" />
   </ItemGroup>
 
 </Project>

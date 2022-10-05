@@ -3,22 +3,22 @@ using Reference_Aids.Data;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using Reference_Aids.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace Reference_Aids.Controllers
 {
     public class RptNoticeController : Controller
     {
         private readonly Reference_AIDSContext _context;
-        public RptNoticeController(Reference_AIDSContext context)
+        private readonly IWebHostEnvironment _appEnvironment;
+        public RptNoticeController(Reference_AIDSContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
         [HttpPost]
         public IActionResult Create(string dat1, string dat2)
         {
-            string path_from = @$"C:\work\Reference_Aids\Files\Output\ReportNotice_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\ReportNotice_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "ReportNotice.docx";
 
