@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Reference_Aids.ModelsForInput.InputPatients>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_LayoutList";
+}
+<div>
+    @foreach (var item in Model)
+    {
+        <div>
+            <form asp-controller="InputPatients" asp-action="InputPatient" method="post">
+                <input type="file" name="uploadedFile" /><br>
+            </form>
+        </div>
+    }
+</div>
