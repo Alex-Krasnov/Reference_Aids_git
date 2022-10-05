@@ -25,44 +25,6 @@ namespace Reference_Aids.Controllers
             DateOnly date_start = DateOnly.Parse(dat1);
             DateOnly date_end = DateOnly.Parse(dat2);
 
-
-            var a = (from patient in _context.TblPatientCards
-                     join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
-                     from resIfa in _context.TblResultIfas.Where(resIfa => resIfa.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                     from resPcr in _context.TblResultPcrs.Where(resPcr => resPcr.BloodId == incBlood.BloodId).DefaultIfEmpty() 
-                     from resIb in _context.TblResultBlots.Where(resIb => resIb.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                     select new
-                     {
-                         patient.PatientId,
-                         patient.FamilyName,
-                         patient.FirstName,
-                         patient.ThirdName,
-                         patient.BirthDate,
-                         patient.Sex,
-                         patient.Region,
-                         patient.CityName,
-                         patient.AreaName,
-                         patient.AddrStreat,
-                         patient.AddrHome,
-                         patient.AddrCorps,
-                         patient.AddrFlat,
-                         incBlood.CategoryPatientId,
-                         incBlood.SendLabNavigation,
-                         incBlood.SendDistrictNavigation,
-                         incBlood.NumIfa,
-                         resIb.ResultBlotDate,
-                         resIb.ResultBlotResult,
-                         resIb.ResultBlotResultId,
-                         resIfa.ResultIfaDate,
-                         resIfa.ResultIfaResult,
-                         resIfa.ResultIfaResultId,
-                         resPcr.ResultPcrDate,
-                         resPcr.ResultPcrResult,
-                         resPcr.ResultPcrResultId
-                     }).Where(e => (e.ResultBlotDate.CompareTo(date_start) >= 0 && e.ResultBlotDate.CompareTo(date_end) <= 0 && e.ResultBlotResultId == 0) ||
-                                   (e.ResultIfaDate.CompareTo(date_start) >= 0 && e.ResultIfaDate.CompareTo(date_end) <= 0 && e.ResultIfaResultId == 0) ||
-                                   (e.ResultPcrDate.CompareTo(date_start) >= 0 && e.ResultPcrDate.CompareTo(date_end) <= 0 && e.ResultPcrResultId == 0)).ToList();
-
             FileInfo fileInf1 = new(path_from);
             if (fileInf1.Exists)
                 fileInf1.Delete();
@@ -71,9 +33,9 @@ namespace Reference_Aids.Controllers
             
             var lisForInput = (from patient in _context.TblPatientCards
                                join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
-                               join resIfa in _context.TblResultIfas on incBlood.BloodId equals resIfa.BloodId //переделать на left join 
-                               join resPcr in _context.TblResultPcrs on incBlood.BloodId equals resPcr.BloodId //
-                               join resIb in _context.TblResultBlots on incBlood.BloodId equals resIb.BloodId  //
+                               from resIfa in _context.TblResultIfas.Where(resIfa => resIfa.BloodId == incBlood.BloodId).DefaultIfEmpty()
+                               from resPcr in _context.TblResultPcrs.Where(resPcr => resPcr.BloodId == incBlood.BloodId).DefaultIfEmpty()
+                               from resIb in _context.TblResultBlots.Where(resIb => resIb.BloodId == incBlood.BloodId).DefaultIfEmpty()
                                select new
                                {
                                    patient.PatientId,
@@ -93,18 +55,19 @@ namespace Reference_Aids.Controllers
                                    incBlood.SendLabNavigation,
                                    incBlood.SendDistrictNavigation,
                                    incBlood.NumIfa,
-                                   resIb.ResultBlotDate,
-                                   resIb.ResultBlotResult,
-                                   resIb.ResultBlotResultId,
-                                   resIfa.ResultIfaDate,
-                                   resIfa.ResultIfaResult,
-                                   resIfa.ResultIfaResultId,
-                                   resPcr.ResultPcrDate,
-                                   resPcr.ResultPcrResult,
-                                   resPcr.ResultPcrResultId
+                                   ResultBlotDate = resIb != null ? resIb.ResultBlotDate : new DateOnly(),
+                                   ResultBlotResult = resIb != null ? resIb.ResultBlotResult : null,
+                                   ResultBlotResultId = resIb != null ? resIb.ResultBlotResultId : null,
+                                   ResultIfaDate = resIfa != null ? resIfa.ResultIfaDate : new DateOnly(),
+                                   ResultIfaResult = resIfa != null ? resIfa.ResultIfaResult : null,
+                                   ResultIfaResultId = resIfa != null ? resIfa.ResultIfaResultId : null,
+                                   ResultPcrDate = resPcr != null ? resPcr.ResultPcrDate : new DateOnly(),
+                                   ResultPcrResult = resPcr != null ? resPcr.ResultPcrResult : null,
+                                   ResultPcrResultId = resPcr != null ? resPcr.ResultPcrResultId : null
                                }).Where(e => (e.ResultBlotDate.CompareTo(date_start) >= 0 && e.ResultBlotDate.CompareTo(date_end) <= 0 && e.ResultBlotResultId == 0) ||
                                              (e.ResultIfaDate.CompareTo(date_start) >= 0 && e.ResultIfaDate.CompareTo(date_end) <= 0 && e.ResultIfaResultId == 0) ||
                                              (e.ResultPcrDate.CompareTo(date_start) >= 0 && e.ResultPcrDate.CompareTo(date_end) <= 0 && e.ResultPcrResultId == 0)).ToList();
+
             int i = 0;
             foreach (var item in lisForInput)
             {
@@ -266,7 +229,7 @@ namespace Reference_Aids.Controllers
                                                               new Bold()),
                                                           new Text("Рег. номер"))));
                 tr.Append(tc7);
-                TableCell tc8 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2500" }),
+                TableCell tc8 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "2900" }),
                                     new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                   new Run(new RunProperties(
                                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
