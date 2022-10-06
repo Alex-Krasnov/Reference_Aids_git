@@ -82,24 +82,24 @@
                             @foreach (var item in Model.TblDistrictBlots)
                             {
                                 <tr>
-                                    <td width="150px"><input type="date" class="form-control inputtbl" name='' value=@item.DBlot.ToString("yyyy-MM-dd") disabled></td>
-                                    <td width="170px"><input type="text" class="form-control inputtbl" name='' value="@item.TestSystemName()" disabled></td>
-                                    <td width="170px"><input type="text" class="form-control inputtbl" name='' value="@item.SendDistrictName()" disabled></td>
-                                    <td width="170px"><input type="text" class="form-control inputtbl" name='' value="@item.SendLabName()" disabled></td>
-                                    <td width="70px"><input type="text" class="form-control inputtbl" name='' value="@item.CutOff" disabled></td>
-                                    <td width="92px"><input type="text" class="form-control inputtbl" name='' value="@item.BlotResult" disabled></td>
-                                    <td width="80px"><input type="text" class="form-control inputtbl" name='' value="@item.BlotCoefficient" disabled></td>
+                                    <td width="150px"><input type="date" class="form-control tbl-input" name='' value=@item.DBlot.ToString("yyyy-MM-dd") disabled></td>
+                                    <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.TestSystemName()" disabled></td>
+                                    <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendDistrictName()" disabled></td>
+                                    <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendLabName()" disabled></td>
+                                    <td width="70px"><input type="text" class="form-control tbl-input" name='' value="@item.CutOff" disabled></td>
+                                    <td width="92px"><input type="text" class="form-control tbl-input" name='' value="@item.BlotResult" disabled></td>
+                                    <td width="80px"><input type="text" class="form-control tbl-input" name='' value="@item.BlotCoefficient" disabled></td>
                                 </tr>
                             }
                             <tr>
-                                <td width="150px"><input type="date" class="form-control inputtbl" name='DBlot'></td>
-                                <td width="170px"><input type="text" class="form-control inputtbl" list="test_system_list" name='TestSystemId'></td>
-                                <td width="170px"><input type="text" class="form-control inputtbl" list="send_district_list" name='SendDistrictId'></td>
-                                <td width="170px"><input type="text" class="form-control inputtbl" list="send_lab_list" name='SendLabId'></td>
-                                <td width="70px"><input type="text" class="form-control inputtbl" name='CutOff'></td>
-                                <td width="92px"><input type="text" class="form-control inputtbl" name='BlotResult'></td>
+                                <td width="150px"><input type="date" class="form-control tbl-input" name='DBlot'></td>
+                                <td width="170px"><input type="text" class="form-control tbl-input" list="test_system_list" name='TestSystemId'></td>
+                                <td width="170px"><input type="text" class="form-control tbl-input" list="send_district_list" name='SendDistrictId'></td>
+                                <td width="170px"><input type="text" class="form-control tbl-input" list="send_lab_list" name='SendLabId'></td>
+                                <td width="70px"><input type="text" class="form-control tbl-input" name='CutOff'></td>
+                                <td width="92px"><input type="text" class="form-control tbl-input" name='BlotResult'></td>
                                 <td width="80px"><input type="submit" class="btn btn-outline-success btn-sm" value="              "/></td>
-                                <td hidden><input type="text" class="form-control inputtbl" name='PatientId' value="@Model.TblPatientCards[0].PatientId"></td>
+                                <td hidden><input type="text" class="form-control tbl-input" name='PatientId' value="@Model.TblPatientCards[0].PatientId"></td>
                             </tr>
                         </tbody>
                     </table>

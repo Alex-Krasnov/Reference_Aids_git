@@ -25,21 +25,22 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
+            List<InputPatients> dataList = new();
+
             if (uploadedFile != null)
             {
                 string path = _appEnvironment.WebRootPath + "/Files/ForInput/" + uploadedFile.FileName;
-
                 using (var fileStream = new FileStream(path, FileMode.Create))
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
-                var Viewdata = GetInputPatients(path);
+                dataList = GetInputPatients(path, _context);
             }
             ViewBag.Title = "InputPatient";
-            return View("RawImport", Viewdata);
+            return View("RawImport", dataList);
         }
 
-        public static List<InputPatients> GetInputPatients(string path)
+        public static List<InputPatients> GetInputPatients(string path, Reference_AIDSContext _context)
         {
             List<InputPatients> list = new();
 
@@ -49,40 +50,39 @@ namespace Reference_Aids.Controllers
                 WorksheetPart worksheetPart = (WorksheetPart)spreadsheetDocument.WorkbookPart.GetPartById(sheets.First().Id.Value);
                 Worksheet worksheet = worksheetPart.Worksheet;
                 SheetData sheetData = worksheet.GetFirstChild<SheetData>();
-
                 var rows = sheetData.Elements<Row>();
 
                 foreach (var row in rows)
                 {
                     if (row.RowIndex == 1)
                         continue;
-
+                    string familyName = row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText;
                     InputPatients patients = new()
                     {
-                        SendLab = row.Elements<Cell>().Where(c => c.CellReference == "A"+ row.RowIndex).First().InnerText.ToString(),
-                        SendDistrict = row.Elements<Cell>().Where(c => c.CellReference == "B" + row.RowIndex).First().InnerText.ToString(),
-                        DateBloodSampling = row.Elements<Cell>().Where(c => c.CellReference == "C" + row.RowIndex).First().InnerText.ToString(),
-                        Category = row.Elements<Cell>().Where(c => c.CellReference == "D" + row.RowIndex).First().InnerText.ToString(),
-                        Anon = row.Elements<Cell>().Where(c => c.CellReference == "E" + row.RowIndex).First().InnerText.ToString(),
-                        FamilyName = row.Elements<Cell>().Where(c => c.CellReference == "F" + row.RowIndex).First().InnerText.ToString(),
-                        FirstName = row.Elements<Cell>().Where(c => c.CellReference == "G" + row.RowIndex).First().InnerText.ToString(),
-                        ThirdName = row.Elements<Cell>().Where(c => c.CellReference == "H" + row.RowIndex).First().InnerText.ToString(),
-                        BirthDate = row.Elements<Cell>().Where(c => c.CellReference == "I" + row.RowIndex).First().InnerText.ToString(),
-                        Sex = row.Elements<Cell>().Where(c => c.CellReference == "J" + row.RowIndex).First().InnerText.ToString(),
-                        Phone = row.Elements<Cell>().Where(c => c.CellReference == "K" + row.RowIndex).First().InnerText.ToString(),
-                        RegionName = row.Elements<Cell>().Where(c => c.CellReference == "L" + row.RowIndex).First().InnerText.ToString(),
-                        CityName = row.Elements<Cell>().Where(c => c.CellReference == "M" + row.RowIndex).First().InnerText.ToString(),
-                        AreaName = row.Elements<Cell>().Where(c => c.CellReference == "N" + row.RowIndex).First().InnerText.ToString(),
-                        AddrStreat = row.Elements<Cell>().Where(c => c.CellReference == "O" + row.RowIndex).First().InnerText.ToString(),
-                        AddrHome = row.Elements<Cell>().Where(c => c.CellReference == "P" + row.RowIndex).First().InnerText.ToString(),
-                        AddrCorps = row.Elements<Cell>().Where(c => c.CellReference == "Q" + row.RowIndex).First().InnerText.ToString(),
-                        AddrFlat = row.Elements<Cell>().Where(c => c.CellReference == "R" + row.RowIndex).First().InnerText.ToString(),
-                        Blotdate = row.Elements<Cell>().Where(c => c.CellReference == "S" + row.RowIndex).First().InnerText.ToString(),
-                        TestSys = row.Elements<Cell>().Where(c => c.CellReference == "T" + row.RowIndex).First().InnerText.ToString(),
-                        CutOff = row.Elements<Cell>().Where(c => c.CellReference == "U" + row.RowIndex).First().InnerText.ToString(),
-                        Result = row.Elements<Cell>().Where(c => c.CellReference == "V" + row.RowIndex).First().InnerText.ToString(),
+                        SendLab = row.Elements<Cell>().First(c => c.CellReference == "A"+ row.RowIndex).InnerText,
+                        SendDistrict = row.Elements<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText,
+                        DateBloodSampling = row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText,
+                        Category = row.Elements<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText,
+                        Anon = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
+                        FamilyName = row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText,
+                        FirstName = row.Elements<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText,
+                        ThirdName = row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText,
+                        BirthDate = row.Elements<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText,
+                        Sex = row.Elements<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText,
+                        Phone = row.Elements<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText,
+                        RegionName = row.Elements<Cell>().First(c => c.CellReference == "L" + row.RowIndex).InnerText,
+                        CityName = row.Elements<Cell>().First(c => c.CellReference == "M" + row.RowIndex).InnerText,
+                        AreaName = row.Elements<Cell>().First(c => c.CellReference == "N" + row.RowIndex).InnerText,
+                        AddrStreat = row.Elements<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText,
+                        AddrHome = row.Elements<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText,
+                        AddrCorps = row.Elements<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText,
+                        AddrFlat = row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText,
+                        Blotdate = row.Elements<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText,
+                        TestSys = row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
+                        CutOff = row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
+                        Result = row.Elements<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText,
+                        PossiblePatients = _context.TblPatientCards.Where(e => e.FamilyName == familyName).ToList()
                     };
-
                     list.Add(patients);
                 }
             }

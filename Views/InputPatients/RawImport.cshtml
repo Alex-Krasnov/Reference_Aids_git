@@ -2,14 +2,119 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
-    Layout = "_LayoutList";
+    Layout = "_Layout";
 }
-<div>
+<div class="container">
+    <br>
     @foreach (var item in Model)
     {
-        <div>
-            <form asp-controller="InputPatients" asp-action="InputPatient" method="post">
-                <input type="file" name="uploadedFile" /><br>
+        <div class="row g-0">
+            <form class="needs-validation" novalidate asp-controller="InputPatients" asp-action="Index" method="post">
+                <div class="row g-0" >
+                    <div class="row g-0">
+                        <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Ид пациента" autocomplete="fals" type="text" class="form-control tbl-input" name="PatientId" >
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Фамилия" autocomplete="fals" type="text" class="form-control" name='FamilyName' value="@item.FamilyName">
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Имя" autocomplete="fals" type="text" class="form-control" name='FirstName' value="@item.FirstName">
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Отчество" autocomplete="fals" type="text" class="form-control" name='ThirdName' value="@item.ThirdName">
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Дата рождения" autocomplete="fals" type="date" class="form-control" id="date" name='BirthDate' value="@item.BirthDate">
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Пол" autocomplete="fals" type="text" list="sex_list" class="form-control" name='SexName' value="@item.Sex">
+                        </div>
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
+                            <input placeholder="Телефон" autocomplete="fals" type="text" class="form-control" name='PhoneNum' value="@item.Phone">
+                        </div>
+                        <div class="col-sm" style="margin-right: 12px">
+                            <input placeholder="Регион" autocomplete="fals" type="text" list="region_list" class="form-control" name='RegionName' value="@item.RegionName">
+                        </div>
+                        <div class="col-sm" style="margin-right: 12px">
+                            <input placeholder="Город" autocomplete="fals" type="text" class="form-control" name='CityName' value="@item.CityName">
+                        </div>
+                        <div class="col-sm" style="margin-right: 12px">
+                            <input placeholder="Населённый пункт" autocomplete="fals" type="text" class="form-control" name='AreaName' value="@item.AreaName">
+                        </div>
+                        <div class="col-sm" style="margin-right: 12px">
+                            <input placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='AddrStreat' value="@item.AddrStreat">
+                        </div>
+                        <div class="col-sm-1" style="margin-right: 5px">
+                            <input placeholder="Дом" type="text" class="form-control" name='AddrHome' value="@item.AddrHome">
+                        </div>
+                        <div class="col-sm-1" style="margin-right: 5px">
+                            <input placeholder="Корп." type="text" class="form-control" name='AddrCorps' value="@item.AddrCorps">
+                        </div>
+                        <div class="col-sm-1" style="margin-right: 5px">
+                            <input placeholder="Кв." type="text" class="form-control" name='AddrFlat' value="@item.AddrFlat">
+                        </div>
+                        <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 12px">
+                            <input autocomplete="fals" type="checkbox" class="form-check-input" name='Anon' value="@true"> @*@item.Anon*@
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="row g-0">
+                        <div class="col-sm-9 table-responsive">
+                            <form class="needs-validation" novalidate asp-controller="" asp-action="" method="post">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Дата блота</th>
+                                            <th scope="col">Тест система</th>
+                                            <th scope="col">Отпр. лаб.</th>
+                                            <th scope="col">Кем напрв.</th>
+                                            <th scope="col">Cut off</th>
+                                            <th scope="col">Результат</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="date" class="form-control tbl-input" name='DBlot' value="@item.Blotdate"></td>
+                                            <td><input type="text" class="form-control tbl-input" list="test_system_list" name='TestSystemName' value="@item.TestSys"></td>
+                                            <td width="170px"><input type="text" class="form-control tbl-input" list="send_district_list" name='SendDistrictName' value="@item.SendDistrict"></td>
+                                            <td><input type="text" class="form-control tbl-input" list="send_lab_list" name='SendLabName' value="@item.SendLab"></td>
+                                            <td><input type="text" class="form-control tbl-input" name='CutOff' value="@item.CutOff"></td>
+                                            <td><input type="text" class="form-control tbl-input" name='BlotResult' value="@item.Result"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>                               
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 6px; margin-left: 6px">
+                            <input placeholder="категория пациента" autocomplete="fals" type="text" class="form-control" name='Category' value="@item.Category">
+                        </div>
+                        <div class="col-sm" style="margin-bottom: 7px; margin-right: 6px">
+                            <input placeholder="Дата забора крови" autocomplete="fals" type="date" class="form-control" name='DateBloodSampling' value="@item.DateBloodSampling">
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row g-0">
+                        @foreach (var patient in item.PossiblePatients)
+                        {
+                            <div class="col-sm-1"><input type="text" class="form-control tbl-input" value=@patient.PatientId disabled></div>
+                            <div class="col-sm-1"><input type="text" class="form-control tbl-input" value=@patient.FamilyName disabled></div>
+                            <div class="col-sm-1"><input type="text" class="form-control tbl-input" value=@patient.FirstName disabled></div>
+                            <div class="col-sm-1"><input type="text" class="form-control tbl-input" value=@patient.ThirdName disabled></div>
+                            <div class="col-sm-1"><input type="text" class="form-control tbl-input" value=@patient.BirthDate disabled></div>
+                        }
+                    </div>
+                    <div class="row g-0">
+                        <div class="col-sm-12" style="text-align:right; margin-top: 10px;">
+                            <input type="submit" class="btn btn-outline-success btn-sm" value="Зарегистрировать" />
+                        </div>
+                    </div>
+                </div>
             </form>
         </div>
     }
