@@ -81,9 +81,6 @@ namespace Reference_Aids.Controllers
                 }
                 else
                 {
-                    //var a = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId;
-                    //var b = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId;
-
                     TblPatientCard tblPatientCard = new()
                     {
                         FamilyName = patient.FamilyName,

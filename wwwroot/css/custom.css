@@ -46,13 +46,13 @@ label {
     color: #fffafa;
 }
 .background-dark-row {
-    background-color: #323737;
+    background-color: #3c4141; /*#323737*/
     padding: 5px;
     border-radius: 0.3rem;
     margin-bottom: 5px;
 }
 .background-fond {
-    background-color: #909B9B; /*#555a5a*/
+    background-color: #8c9191; /*#555a5a #909B9B*/
     padding: 3px;
     border-radius: 0.5rem;
     margin-bottom: 1px;

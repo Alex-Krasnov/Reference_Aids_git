@@ -53,6 +53,10 @@
                     </div>
                     <div class="row g-0">
                         <div class="row g-0 background-dark-row" style="width: 80%;">
+                            <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 12px">
+                                <label class="font-color-text">Анонимный</label>
+                                <input autocomplete="fals" type="checkbox" class="form-check-input" name='[@item.NumPatient].Anon' value="@false"> @*@item.Anon*@
+                            </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Телефон</label>
                                 <input placeholder="Телефон" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Phone' value="@item.Phone">
@@ -85,10 +89,6 @@
                                 <label class="font-color-text">Кв.</label>
                                 <input placeholder="Кв." type="text" class="form-control" name='[@item.NumPatient].AddrFlat' value="@item.AddrFlat">
                             </div>
-                            <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 12px">
-                                <label class="font-color-text">Анонимный</label>
-                                <input autocomplete="fals" type="checkbox" class="form-check-input" name='[@item.NumPatient].Anon' value="@false"> @*@item.Anon*@
-                            </div>
                         </div>
                     </div>
                     <br>
@@ -119,11 +119,11 @@
                                 <label class="font-color-text">Результат</label>
                                 <input placeholder="Результат" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Result' value="@item.Result">
                             </div>
-                            <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 6px; margin-left: 6px; width: 11%;">
+                            <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Кат. пациента</label>
-                                <input placeholder="категория пациента" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Category' value="@item.Category">
+                                <input placeholder="Кат. пациента" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Category' value="@item.Category">
                             </div>
-                            <div class="col-sm-1" style="margin-bottom: 7px; margin-right: 6px; width: 15%;">
+                            <div class="col-sm-1" style="margin-right: 6px; width: 20%;">
                                 <label class="font-color-text">Дата забора крови</label>
                                 <input placeholder="Дата забора крови" autocomplete="fals" type="date" class="form-control" name='[@item.NumPatient].DateBloodSampling' value="@item.DateBloodSampling">
                             </div>
