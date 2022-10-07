@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Reference_Aids.Data;
 using Reference_Aids.ModelsForInput;
+using Reference_Aids.Models;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
@@ -40,6 +41,106 @@ namespace Reference_Aids.Controllers
             return View("RawImport", dataList);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Input(List<InputPatients> listPatients)
+        {
+            foreach (var patient in listPatients)
+            {
+                int labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId,
+                    districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId;
+
+                if (patient.PatienId != null)
+                {
+                    TblDistrictBlot tblDistrictBlot = new()
+                    {
+                        PatientId = Int32.Parse(patient.PatienId),
+                        DBlot = DateOnly.Parse(patient.Blotdate),
+                        CutOff =  Double.Parse(patient.CutOff),
+                        BlotResult = Double.Parse(patient.Result),
+                        BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
+                        TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
+                        SendDistrictId = districtId,
+                        SendLabId = labId
+                    };
+                    TblIncomingBlood tblIncomingBlood = new()
+                    {
+                        PatientId = Int32.Parse(patient.PatienId),
+                        SendDistrictId = districtId,
+                        SendLabId = labId,
+                        CategoryPatientId = Int32.Parse(patient.Category),
+                        //AnonymousPatient = Boolean.Parse(patient.Anon),
+                        DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
+                        DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
+                        NumIfa = (int)patient.NumIfa,
+                        NumInList = Int32.Parse(patient.NumInList)
+                    };
+
+                    _context.TblIncomingBloods.Add(tblIncomingBlood);
+                    _context.TblDistrictBlots.Add(tblDistrictBlot);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    //var a = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId;
+                    //var b = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId;
+
+                    TblPatientCard tblPatientCard = new()
+                    {
+                        FamilyName = patient.FamilyName,
+                        FirstName = patient.FirstName,
+                        ThirdName = patient.ThirdName,
+                        BirthDate = DateOnly.Parse(patient.BirthDate),
+                        SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
+                        RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                        CityName = patient.CityName,
+                        AreaName = patient.AreaName,
+                        PhoneNum = patient.Phone,
+                        AddrHome = patient.AddrHome,
+                        AddrCorps = patient.AddrCorps,
+                        AddrFlat = patient.AddrFlat,
+                        AddrStreat = patient.AddrStreat
+                    };
+                    _context.TblPatientCards.Add(tblPatientCard);
+                    await _context.SaveChangesAsync();
+                    int patienId = _context.TblPatientCards.First(e => e.FirstName == patient.FirstName &&
+                                                                       e.FamilyName == patient.FamilyName &&
+                                                                       e.ThirdName == patient.ThirdName &&
+                                                                       e.BirthDate == DateOnly.Parse(patient.BirthDate) &&
+                                                                       e.CityName == patient.CityName &&
+                                                                       e.AreaName == patient.AreaName).PatientId;
+
+                    TblIncomingBlood tblIncomingBlood = new()
+                    {
+                        PatientId = patienId,
+                        SendDistrictId = districtId,
+                        SendLabId = labId,
+                        CategoryPatientId = Int32.Parse(patient.Category),
+                        //AnonymousPatient = Boolean.Parse(patient.Anon),
+                        DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
+                        DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
+                        NumIfa = (int)patient.NumIfa,
+                        NumInList = Int32.Parse(patient.NumInList)
+                    };
+                    TblDistrictBlot tblDistrictBlot = new()
+                    {
+                        PatientId = patienId,
+                        DBlot = DateOnly.Parse(patient.Blotdate),
+                        CutOff = Double.Parse(patient.CutOff),
+                        BlotResult = Double.Parse(patient.Result),
+                        BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
+                        TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
+                        SendDistrictId = districtId,
+                        SendLabId = labId
+                    };
+
+                    _context.TblIncomingBloods.Add(tblIncomingBlood);
+                    _context.TblDistrictBlots.Add(tblDistrictBlot);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            ViewBag.Title = "InputPatientSuccess";
+            return View("Index");
+        }
         public static List<InputPatients> GetInputPatients(string path, Reference_AIDSContext _context)
         {
             List<InputPatients> list = new();
@@ -51,7 +152,7 @@ namespace Reference_Aids.Controllers
                 Worksheet worksheet = worksheetPart.Worksheet;
                 SheetData sheetData = worksheet.GetFirstChild<SheetData>();
                 var rows = sheetData.Elements<Row>();
-
+                int i = 0;
                 foreach (var row in rows)
                 {
                     if (row.RowIndex == 1)
@@ -81,8 +182,11 @@ namespace Reference_Aids.Controllers
                         TestSys = row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
                         CutOff = row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
                         Result = row.Elements<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText,
-                        PossiblePatients = _context.TblPatientCards.Where(e => e.FamilyName == familyName).ToList()
+                        NumInList = row.Elements<Cell>().First(c => c.CellReference == "W" + row.RowIndex).InnerText,
+                        PossiblePatients = _context.TblPatientCards.Where(e => e.FamilyName == familyName).ToList(),
+                        NumPatient = i
                     };
+                    i++;
                     list.Add(patients);
                 }
             }

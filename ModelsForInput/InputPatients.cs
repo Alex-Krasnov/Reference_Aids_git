@@ -3,6 +3,8 @@ namespace Reference_Aids.ModelsForInput
 {
     public class InputPatients
     {
+        public string? PatienId { get; set; }
+        public int NumPatient { get; set; }
         public string SendLab { get; set; }
         public string SendDistrict { get; set; }
         public string DateBloodSampling { get; set; }
@@ -25,6 +27,8 @@ namespace Reference_Aids.ModelsForInput
         public string TestSys { get; set; }
         public string CutOff { get; set; }
         public string Result { get; set; }
+        public int? NumIfa { get; set; }
+        public string NumInList { get; set; }
         public IEnumerable<TblPatientCard> PossiblePatients { get; set; }
     }
 }

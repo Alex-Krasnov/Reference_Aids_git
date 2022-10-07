@@ -33,3 +33,33 @@ label {
     outline: 0;
     box-shadow: 0 0 0 0.15rem rgba(152, 226, 212, 0.45);
 }
+.background-dark {
+    background-color: #323737;
+}
+.font-color {
+    color: #fffafa;
+}
+.font-color:hover {
+    color: #98e2d4;
+}
+.font-color-text {
+    color: #fffafa;
+}
+.background-dark-row {
+    background-color: #323737;
+    padding: 5px;
+    border-radius: 0.3rem;
+    margin-bottom: 5px;
+}
+.background-fond {
+    background-color: #909B9B; /*#555a5a*/
+    padding: 3px;
+    border-radius: 0.5rem;
+    margin-bottom: 1px;
+}
+
+.col-25 {
+    -ms-flex: 0 0 25%;
+    flex: 0 0 25%;
+    max-width: 25%;
+}
