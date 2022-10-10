@@ -1,13 +1,49 @@
-﻿@model IEnumerable<Reference_Aids.ModelsForInput.InputPatients>
+﻿@model Reference_Aids.ViewModels.ListForImportPatient
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
     Layout = "_Layout";
 }
 <div class="container">
+    <datalist id="sex_list">
+        @foreach (var item in Model.ListSexes)
+        {
+            <option>@item.SexNameShort</option>
+        }
+    </datalist>
+    <datalist id="region_list">
+        @foreach (var item in Model.ListRegions)
+        {
+            <option>@item.RegionName</option>
+        }
+    </datalist>
+    <datalist id="send_lab_list">
+        @foreach (var item in Model.ListSendLabs)
+        {
+            <option>@item.SendLabName</option>
+        }
+    </datalist>
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option>@item.TestSystemName</option>
+        }
+    </datalist>
+    <datalist id="send_district_list">
+        @foreach (var item in Model.ListSendDistricts)
+        {
+            <option>@item.SendDistrictName</option>
+        }
+    </datalist>
+    <datalist id="category_list">
+        @foreach (var item in Model.ListCategories)
+        {
+            <option>@item.CategoryName</option>
+        }
+    </datalist>
     <br>
     <form class="needs-validation" novalidate asp-controller="InputPatients" asp-action="Input" method="post">
-        @foreach (var item in Model)
+        @foreach (var item in Model.Patients)
         {
             <div class="row g-0 background-fond">
                 <div class="row g-0">
@@ -101,15 +137,15 @@
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Тест система</label>
-                                <input placeholder="Тест система" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].TestSys' value="@item.TestSys">
+                                <input placeholder="Тест система" autocomplete="fals" type="text" list="test_system_list" class="form-control" name='[@item.NumPatient].TestSys' value="@item.TestSys">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Отпр. лаб.</label>
-                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
+                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" list="send_lab_list" class="form-control" name='[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Кем напрв.</label>
-                                <input placeholder="Кем напрв." autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].SendLab' value="@item.SendLab">
+                                <input placeholder="Кем напрв." autocomplete="fals" type="text" list="send_district_list" class="form-control" name='[@item.NumPatient].SendLab' value="@item.SendLab">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 8%;">
                                 <label class="font-color-text">Cut off</label>
@@ -121,7 +157,7 @@
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Кат. пациента</label>
-                                <input placeholder="Кат. пациента" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Category' value="@item.Category">
+                                <input placeholder="Кат. пациента" autocomplete="fals" type="text" list="category_list" class="form-control" name='[@item.NumPatient].Category' value="@item.Category">
                             </div>
                             <div class="col-sm-1" style="margin-right: 6px; width: 20%;">
                                 <label class="font-color-text">Дата забора крови</label>

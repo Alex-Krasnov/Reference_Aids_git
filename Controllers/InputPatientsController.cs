@@ -4,6 +4,7 @@ using Reference_Aids.ModelsForInput;
 using Reference_Aids.Models;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Reference_Aids.ViewModels;
 
 namespace Reference_Aids.Controllers
 {
@@ -26,7 +27,7 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFile(IFormFile uploadedFile)
         {
-            List<InputPatients> dataList = new();
+            ListForImportPatient dataList = new();
 
             if (uploadedFile != null)
             {
@@ -138,8 +139,9 @@ namespace Reference_Aids.Controllers
             ViewBag.Title = "InputPatientSuccess";
             return View("Index");
         }
-        public static List<InputPatients> GetInputPatients(string path, Reference_AIDSContext _context)
+        public static ListForImportPatient GetInputPatients(string path, Reference_AIDSContext _context)
         {
+            ListForImportPatient listForImportPatient = new ListForImportPatient();
             List<InputPatients> list = new();
 
             using (SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(path, true))
@@ -187,7 +189,14 @@ namespace Reference_Aids.Controllers
                     list.Add(patients);
                 }
             }
-            return list;
+            listForImportPatient.ListRegions = _context.ListRegions.ToList();
+            listForImportPatient.ListSexes = _context.ListSexes.ToList();
+            listForImportPatient.Patients = list.OrderBy(e => e.NumInList);
+            listForImportPatient.ListSendLabs = _context.ListSendLabs.ToList();
+            listForImportPatient.ListTestSystems = _context.ListTestSystems.ToList();
+            listForImportPatient.ListSendDistricts = _context.ListSendDistricts.ToList();
+            listForImportPatient.ListCategories = _context.ListCategories.ToList();
+            return listForImportPatient;
         }
     }
 }
