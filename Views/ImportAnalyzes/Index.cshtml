@@ -1,0 +1,40 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Reference_Aids.ViewModels.ListForImportAnalyzes
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="type_analyzes_list">
+        @foreach (var item in Model.ListTypeAnalyzes)
+        {
+            <option>@item</option>
+        }
+    </datalist>
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option>@item.TestSystemName</option>
+        }
+    </datalist>
+    <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForTypeAnalyzes" method="post">
+        <div class="row g-0">
+            <div class="col-sm-3">
+                <label>Тип анализа</label>
+                <input type="text" class="form-control" list="type_analyzes_list" name='_typeAnalyzes'>
+            </div>
+            <div class="col-sm-3">
+                <label>Тест система</label>
+                <input type="text" class="form-control" list="test_system_list" name='_testSystem'>
+            </div>
+            <div class="col-sm-3">
+                <label>Номер отчета</label>
+                <input type="text" class="form-control" name='_reportId'>
+            </div>
+            <div class="col-sm-3">
+                <label></label>
+                <input type="submit" class="btn btn-outline-success btn-sm" value="" />
+            </div>
+        </div>
+    </form>
+</div>

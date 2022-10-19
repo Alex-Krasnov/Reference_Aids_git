@@ -59,7 +59,9 @@ namespace Reference_Aids.Controllers
                     ResultAntigenPercentGash = percentGash,
                     ResultAntigenKp = kp,
                     ResultAntigenTypeId = list.TypeAntigen(_context),
-                    ResultAntigenResultId = 0 
+                    ResultAntigenResultId = 0 // положительный для обычного антигена если оп >= ОП крит.
+                                              // положительный для подтв антигена если оп >= оп крит И percentGash >= 50%
+                                              // ОП крит.(CutOff) находится в formulas: calculated : result    
                 };
 
                 _context.TblResultAntigens.Add(tblResultAntigen);
@@ -137,7 +139,7 @@ namespace Reference_Aids.Controllers
                     ResultIfaTestSysId = list.TestSysId(_context),
                     ResultIfaCutOff = list.ResultIfaCutOff,
                     ResultIfaOp = list.ResultIfaOp,
-                    ResultIfaResultId = 0
+                    ResultIfaResultId = 0 // положитнльный если оп >= cutoff и на оборот
                 };
 
                 _context.TblResultIfas.Add(tblResultIfa);
