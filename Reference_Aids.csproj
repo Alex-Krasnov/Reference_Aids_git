@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="Interfaces\" />
+    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,5 +35,7 @@
     <None Include="wwwroot\Files\Sample\form4.xlsx" />
     <None Include="wwwroot\Files\Sample\ReportAnalyzes.docx" />
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

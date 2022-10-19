@@ -8,16 +8,15 @@ namespace Reference_Aids.Controllers
 {
     public class ImportPhotometrController : Controller
     {
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string id)
         {
             HttpClient client = new();
+            id = "756";//
 
-            var json = await client.GetStringAsync("http://169.254.76.239/api/report_gen/preview/756");
+
+            var json = await client.GetStringAsync("http://169.254.76.239/api/report_gen/preview/" + id);// 
             var a = JsonObject.Parse(json);
-            var layaot = JsonObject.Parse(json)["layout"];
-            //var response = await client.GetFromJsonAsync<List<InputPhotometr>>("http://169.254.76.239/api/report_gen/preview/756");//эhttp://169.254.76.239/report/756
-            //response.EnsureSuccessStatusCode();  
-            //string responseBody = await response.Content.ReadAsStringAsync();
+            var layout = JsonObject.Parse(json)["layout"];
 
             return View();
         }
