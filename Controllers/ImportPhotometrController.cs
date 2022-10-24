@@ -24,7 +24,7 @@ namespace Reference_Aids.Controllers
 
             var CutOff = json["formulas"].Where(e => e["name"].Value<string>() == "ОПкрит").Select(e => e["calculated"]).First()
                                          .Select(e => e["Result"].Value<float>()).First();
-
+            
             var layout = json["layout"].Where(e => e["barcode"].Value<string>() != "").ToList();
             var rawResult = layout.Select(e => new { id = e["barcode"].Value<int>(), res = e["od"].Value<float>() }).ToList();
 

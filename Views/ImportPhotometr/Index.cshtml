@@ -24,7 +24,8 @@
             </div>
         </div>
         <form class="needs-validation" novalidate asp-controller="ImportPhotometr" asp-action="Add" method="post">
-            @foreach (var item in Model.ListPhotometrResult)
+            @{
+                @foreach (var item in Model.ListPhotometrResult)
             {
                 <div class="row g-0">
                     <div class="col-sm-2">
@@ -42,8 +43,7 @@
                     <input type="text" class="form-control" name='[@i].TypeAnalyze' value="@Model.TypeAnalyze" style="visibility: hidden">
                     <input type="text" class="form-control" name='[@i].CutOff' value="@Model.CutOff" style="visibility: hidden">
                 </div>
-            @{
-                i++;
+            i++;     
             }
             }
             <div class="row g-0">
@@ -53,5 +53,4 @@
             </div>
         </form>
     </div>
-
 </div>

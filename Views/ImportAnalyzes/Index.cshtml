@@ -17,7 +17,7 @@
             <option>@item.TestSystemName</option>
         }
     </datalist>
-    <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForTypeAnalyzes" method="post">
+    <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForPhotometrAnalyzes" method="post">
         <div class="row g-0">
             <div class="col-sm-3">
                 <label>Тип анализа</label>
@@ -31,9 +31,21 @@
                 <label>Номер отчета</label>
                 <input type="text" class="form-control" name='_reportId'>
             </div>
-            <div class="col-sm-3">
-                <label></label>
+            <div class="col-sm-3" style="visibility: hidden">
+                <label>123</label>
                 <input type="submit" class="btn btn-outline-success btn-sm" value="" />
+            </div>
+        </div>
+    </form>
+    <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForBlotAnalyzes" method="post">
+        <div class="row g-0">
+            <div class="col-sm-3">
+                <label>Количество строк</label>
+                <input type="text" class="form-control" name='_countRow'>
+            </div>
+            <div class="col-sm-3" style="visibility: hidden">
+                <label>123</label>
+                <input type="submit" class="btn btn-outline-success btn-sm" value="Отправить" />
             </div>
         </div>
     </form>

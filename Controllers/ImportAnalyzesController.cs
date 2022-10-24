@@ -14,7 +14,7 @@ namespace Reference_Aids.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            List<string> listTypeAnalyze = new() { "ИФА", "Антиген", "Подтв ag", "Болот", "ПЦР" };
+            List<string> listTypeAnalyze = new() { "ИФА", "Антиген", "Подтв ag"};
             var Viewdata = new ListForImportAnalyzes
             {
                 ListTestSystems = await _context.ListTestSystems.ToListAsync(),
@@ -25,7 +25,7 @@ namespace Reference_Aids.Controllers
             return View("Index", Viewdata);
         }
         [HttpPost]
-        public IActionResult RoutingForTypeAnalyzes(string _reportId, string _testSystem, string _typeAnalyzes)
+        public IActionResult RoutingForPhotometrAnalyzes(string _reportId, string _testSystem, string _typeAnalyzes)
         {
             switch (_typeAnalyzes){
                 case "ИФА":
@@ -34,13 +34,14 @@ namespace Reference_Aids.Controllers
                     return RedirectToAction("Index", "ImportPhotometr", new { reportId = _reportId, testSystem = _testSystem, typeAnalyzes = _typeAnalyzes });
                 case "Подтв ag":
                     return RedirectToAction("Index", "ImportPhotometr", new { reportId = _reportId, testSystem = _testSystem, typeAnalyzes = _typeAnalyzes });
-                case "Болот":
-                    return RedirectToAction("Index");
-                case "ПЦР":
-                    return RedirectToAction("Index");
                 default: 
                     return RedirectToAction("Index");
             }
+        }
+        [HttpPost]
+        public IActionResult RoutingForBlotAnalyzes(int _countRow)
+        {
+            return RedirectToAction("Index", "ImportBlot", new { countRow=_countRow });
         }
     }
 }

@@ -1,0 +1,107 @@
+﻿@model Reference_Aids.ViewModels.ListForImportBlotViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option value="@item.TestSystemName"></option>
+        }
+    </datalist>
+    <br>
+    <div class="row g-0">
+        <div class="col">
+            <div class="row g-0" style="margin-bottom: 2px">
+                <div class="col-sm-1 border border-1"><label>Ном. Ифа</label></div>
+                <div class="col-sm-1 border border-1"><label>Тест система</label></div>
+                <div class="col-sm-1 border border-1" style="width: 115px"><label>Срок годности</label></div>
+                <div class="col-sm-1 border border-1" style="width: 40px"><label>Поле 1</label></div>
+                <div class="col-sm-1 border border-1" style="width: 40px"><label>Поле 2</label></div>
+                <div class="col-sm-1 border border-1" style="width: 135px">
+                    <label>ENV</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>160</label></div>
+                        <div class="col border border-1"><label>120</label></div>
+                        <div class="col border border-1"><label>41</label></div>
+                    </div>
+                </div>
+                <div class="col border border-1">
+                    <label>GAG</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>55</label></div>
+                        <div class="col border border-1"><label>40</label></div>
+                        <div class="col border border-1"><label>24/25</label></div>
+                        <div class="col border border-1"><label>18</label></div>
+                    </div>
+                </div>
+                <div class="col border border-1">
+                    <label>POL</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>68/66</label></div>
+                        <div class="col border border-1"><label>52/51</label></div>
+                        <div class="col border border-1"><label>34/31</label></div>
+                    </div>
+                </div>
+                <div class="col-sm-1 border border-1" style="width:100px">
+                    <label>ВИЧ 2</label>
+                    <div class="row g-0">
+                        <div class="col border border-1"><label>105</label></div>
+                        <div class="col border border-1"><label>36</label></div>
+                    </div>
+                </div>
+                <div class="col-sm-1 border border-1"><label>ВИЧ 0</label></div>
+                <div class="col-sm-1 border border-1"><label>Рез.</label></div>
+            </div>
+            <form class="needs-validation" novalidate asp-controller="ImportPhotometr" asp-action="Add" method="post">
+                @for (int i = 0; i < Model.CountRow; i++)
+                {
+                    <div class="row g-0">
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name=""></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="test_system_list" name="[@i].ResultBlotTestSysName"></div>
+                        <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" name="[@i].ExpirationResultBlotDate"></div>
+                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name=""></div>
+                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name=""></div>
+                        <div class="col-sm-1" style="width: 135px">
+                            <div class="row g-0">
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotEnv160"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotEnv120"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotEnv41"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row g-0">
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotGag55"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotGag40"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotGag2425"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotGag18"></div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row g-0">
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotPol6866"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotPol5251"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotPol3431"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1" style="width:100px">
+                            <div class="row g-0">
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotHiv2105"></div>
+                                <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotHiv236"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotHiv0"></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotResult"></div>
+                    </div>
+                }
+                <div class="row g-0">
+                    <div class="col-sm-12" style="text-align:right;">
+                        <input type="submit" class="btn btn-outline-success btn-sm" value="Зарегистрировать" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
