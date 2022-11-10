@@ -116,7 +116,6 @@ namespace Reference_Aids.Controllers
                     ResultBlotHiv2105 = list.ResultBlotHiv2105Id(_context),
                     ResultBlotHiv236 = list.ResultBlotHiv236Id(_context),
                     ResultBlotHiv0 = list.ResultBlotHiv0Id(_context),
-                    ResultBlotReturnResult = list.ResultBlotReturnResult,
                     ResultBlotResultId = list.ResultId(_context)
                 };
 

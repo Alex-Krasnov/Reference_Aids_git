@@ -27,15 +27,15 @@ namespace Reference_Aids.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("SendLabId,SendLabName")] ListSendLab list)
+        public async Task<IActionResult> Create(ListSendLab listSendLab)
         {
-            if (ModelState.IsValid && await _context.ListSendLabs.FindAsync(list.SendLabId) == null)
+            if (ModelState.IsValid && await _context.ListSendLabs.FindAsync(listSendLab.SendLabId) == null)
             {
-                _context.Add(list);
+                _context.Add(listSendLab);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
-
             return RedirectToAction("Index");
         }
 

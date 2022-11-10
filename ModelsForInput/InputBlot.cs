@@ -5,7 +5,7 @@ namespace Reference_Aids.ModelsForInput
     public class InputBlot
     {
         public int BloodId { get; set; }
-        public string ResultBlotDate { get; set; } = null!;        
+        public string? ResultBlotDate { get; set; }
         public string ExpirationResultBlotDate { get; set; } = null!;
         public string ResultBlotTestSysName { get; set; } = null!;
         public string? ResultBlotEnv160 { get; set; }
@@ -21,8 +21,9 @@ namespace Reference_Aids.ModelsForInput
         public string? ResultBlotHiv2105 { get; set; }
         public string? ResultBlotHiv236 { get; set; }
         public string? ResultBlotHiv0 { get; set; }
-        public bool? ResultBlotReturnResult { get; set; }
         public string? ResultBlotResult { get; set; }
+        public int NumProtocol { get; set; }
+        public int NumStrip { get; set; }
 
         public int TestSysId(Reference_AIDSContext _context)
         {

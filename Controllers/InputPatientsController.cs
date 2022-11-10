@@ -5,6 +5,7 @@ using Reference_Aids.Models;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Reference_Aids.ViewModels;
+using System.Drawing;
 
 namespace Reference_Aids.Controllers
 {
@@ -39,6 +40,7 @@ namespace Reference_Aids.Controllers
                 dataList = GetInputPatients(path, _context);
             }
             ViewBag.Title = "InputPatient";
+            
             return View("RawImport", dataList);
         }
 
@@ -80,24 +82,45 @@ namespace Reference_Aids.Controllers
                     _context.TblDistrictBlots.Add(tblDistrictBlot);
                     await _context.SaveChangesAsync();
                 }
-                else
+                else 
                 {
-                    TblPatientCard tblPatientCard = new()
+                    TblPatientCard tblPatientCard;
+                    try
                     {
-                        FamilyName = patient.FamilyName,
-                        FirstName = patient.FirstName,
-                        ThirdName = patient.ThirdName,
-                        BirthDate = DateOnly.Parse(patient.BirthDate),
-                        SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
-                        RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
-                        CityName = patient.CityName,
-                        AreaName = patient.AreaName,
-                        PhoneNum = patient.Phone,
-                        AddrHome = patient.AddrHome,
-                        AddrCorps = patient.AddrCorps,
-                        AddrFlat = patient.AddrFlat,
-                        AddrStreat = patient.AddrStreat
-                    };
+                        tblPatientCard = new()
+                        {
+                            FamilyName = patient.FamilyName,
+                            FirstName = patient.FirstName,
+                            ThirdName = patient.ThirdName,
+                            BirthDate = DateOnly.Parse(patient.BirthDate),
+                            SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
+                            RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                            CityName = patient.CityName,
+                            AreaName = patient.AreaName,
+                            PhoneNum = patient.Phone,
+                            AddrHome = patient.AddrHome,
+                            AddrCorps = patient.AddrCorps,
+                            AddrFlat = patient.AddrFlat,
+                            AddrStreat = patient.AddrStreat
+                        };
+                    }
+                    catch
+                    {
+                        tblPatientCard = new()
+                        {
+                            BirthDate = DateOnly.Parse(patient.BirthDate),
+                            SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
+                            RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                            CityName = patient.CityName,
+                            AreaName = patient.AreaName,
+                            PhoneNum = patient.Phone,
+                            AddrHome = patient.AddrHome,
+                            AddrCorps = patient.AddrCorps,
+                            AddrFlat = patient.AddrFlat,
+                            AddrStreat = patient.AddrStreat
+                        };
+                    }
+                    
                     _context.TblPatientCards.Add(tblPatientCard);
                     await _context.SaveChangesAsync();
                     int patienId = _context.TblPatientCards.First(e => e.FirstName == patient.FirstName &&
@@ -156,32 +179,33 @@ namespace Reference_Aids.Controllers
                 {
                     if (row.RowIndex == 1)
                         continue;
-                    string familyName = row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText;
+                    string familyName = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText;
+
                     InputPatients patients = new()
                     {
                         SendLab = row.Elements<Cell>().First(c => c.CellReference == "A"+ row.RowIndex).InnerText,
                         SendDistrict = row.Elements<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText,
-                        DateBloodSampling = row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText,
+                        DateBloodSampling = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),
                         Category = row.Elements<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText,
-                        Anon = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
-                        FamilyName = row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText,
-                        FirstName = row.Elements<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText,
-                        ThirdName = row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText,
-                        BirthDate = row.Elements<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText,
-                        Sex = row.Elements<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText,
-                        Phone = row.Elements<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText,
-                        RegionName = row.Elements<Cell>().First(c => c.CellReference == "L" + row.RowIndex).InnerText,
-                        CityName = row.Elements<Cell>().First(c => c.CellReference == "M" + row.RowIndex).InnerText,
-                        AreaName = row.Elements<Cell>().First(c => c.CellReference == "N" + row.RowIndex).InnerText,
-                        AddrStreat = row.Elements<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText,
-                        AddrHome = row.Elements<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText,
-                        AddrCorps = row.Elements<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText,
-                        AddrFlat = row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText,
-                        Blotdate = row.Elements<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText,
-                        TestSys = row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
-                        CutOff = row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
-                        Result = row.Elements<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText,
-                        NumInList = row.Elements<Cell>().First(c => c.CellReference == "W" + row.RowIndex).InnerText,
+                        //Anon = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
+                        FamilyName = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
+                        FirstName = row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText,
+                        ThirdName = row.Elements<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText,
+                        BirthDate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),
+                        Sex = row.Elements<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText,
+                        Phone = row.Elements<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText,
+                        RegionName = row.Elements<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText,
+                        CityName = row.Elements<Cell>().First(c => c.CellReference == "L" + row.RowIndex).InnerText,
+                        AreaName = row.Elements<Cell>().First(c => c.CellReference == "M" + row.RowIndex).InnerText,
+                        AddrStreat = row.Elements<Cell>().First(c => c.CellReference == "N" + row.RowIndex).InnerText,
+                        AddrHome = row.Elements<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText,
+                        AddrCorps = row.Elements<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText,
+                        AddrFlat = row.Elements<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText,
+                        Blotdate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),
+                        TestSys = row.Elements<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText,
+                        CutOff = row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
+                        Result = row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
+                        NumInList = row.Elements<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText,
                         PossiblePatients = _context.TblPatientCards.Where(e => e.FamilyName == familyName).ToList(),
                         NumPatient = i
                     };

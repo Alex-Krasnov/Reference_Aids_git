@@ -4,7 +4,7 @@ namespace Reference_Aids.ModelsForInput
 {
     public class InputPcr
     {
-        public int BloodId { get; set; }
+        public int? BloodId { get; set; }
         public int ResultPcrId { get; set; }
         public string ResultPcrDate { get; set; } = null!;
         public string? ResultPcrTestSysName { get; set; }

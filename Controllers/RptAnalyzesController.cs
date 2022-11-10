@@ -40,6 +40,13 @@ namespace Reference_Aids.Controllers
                                                                             p.ThirdName, 
                                                                             p.Sex, 
                                                                             p.BirthDate, 
+                                                                            p.RegionId,
+                                                                            p.AddrHome,
+                                                                            p.AddrCorps,
+                                                                            p.AddrFlat,
+                                                                            p.AddrStreat,
+                                                                            p.CityName,
+                                                                            p.AreaName,
                                                                             i.CategoryPatientId, 
                                                                             i.SendDistrictNavigation, 
                                                                             i.SendLabNavigation, 
@@ -54,10 +61,14 @@ namespace Reference_Aids.Controllers
             int i = 1;
             foreach (var item in lisForInput)
             {
+                string Addrstr;
+
+                try { Addrstr = $"Регион: {_context.ListRegions.Where(e => e.RegionId == item.RegionId).First().RegionName} ГО: {item.AreaName} г.{item.CityName} ул.{item.AddrStreat} к.{item.AddrCorps} д.{item.AddrHome} кв.{item.AddrFlat}"; }
+                catch { Addrstr = "null"; }
+
+                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, item.NumInList, _context, item.BloodId, item.PatientId, rec, Addrstr);
                 if (i % 2 == 0)
                     InputIndent(path_from);
-
-                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, item.NumInList, _context, item.BloodId, item.PatientId, rec);
                 i++;
             }
 
@@ -66,7 +77,7 @@ namespace Reference_Aids.Controllers
         public static void EditFile(string filepath, string? FamilyName, string? FirstName, string? ThirdName, DateOnly BirthDate, 
                                     ListSex? Sex, ListSendDistrict? SendDistrictNav, ListSendLab? SendLabNav, int? CategoryPatientId,
                                     DateOnly DateBloodSampling, DateOnly DateBloodImport, int NumIfa, int NumInList, 
-                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations)//Добавление содержимого
+                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations, string Addrstr)//Добавление содержимого
         {
             string sendLab, sexName, sendDistrict, birthDate, dateBloodSampling, dateBloodImport;
 
@@ -107,7 +118,7 @@ namespace Reference_Aids.Controllers
 
             //Шапка
             string p1 = "ГКУЗ МО «Центр по профилактике и борьбе со СПИДом и инфекционными заболеваниями»",
-                   p2 = "Адрес: г.Москва, ул.Щепкина 61/2 корп.8, ст.11 тел.: 8(495) 681-38-10,  8(495) 681-37-17 Эл.почта: mz_centrspid@mosreg.ru";
+                   p2 = "Адрес: г.Москва, ул.Щепкина 61/2 корп.8, ст.11 тел.: 8(495) 681-38-10,  8(495) 681-37-17 Эл.почта: ";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(filepath, true))
             {
@@ -145,7 +156,7 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("ЛПУ направившее сыворотку: ") { Space = SpaceProcessingModeValues.Preserve }));
+                                          new Text("ЛПУ направившее биоматериал: ") { Space = SpaceProcessingModeValues.Preserve }));
                 para4.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
@@ -201,6 +212,18 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                           new Text(CategoryPatientId.ToString()))));
+
+                //Адрес
+                Paragraph para12 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                para12.AppendChild(new Run(new RunProperties(
+                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                              new FontSize { Val = new StringValue("20") },
+                                              new Bold()),
+                                          new Text("Адрес: ") { Space = SpaceProcessingModeValues.Preserve }));
+                para12.AppendChild(new Run(new RunProperties(
+                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                              new FontSize { Val = new StringValue("20") },
+                                          new Text(Addrstr + " ") { Space = SpaceProcessingModeValues.Preserve })));
 
                 //Дата забора крови Дата поступления
                 Paragraph para7 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
@@ -761,12 +784,12 @@ namespace Reference_Aids.Controllers
             {
                 Body body = wordDocument.MainDocumentPart.Document.Body;
 
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                body.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
+                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
             }
         }
     }

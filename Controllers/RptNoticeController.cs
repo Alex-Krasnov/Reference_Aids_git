@@ -121,13 +121,13 @@ namespace Reference_Aids.Controllers
         }
         public static void CreateFile(string filepath, Reference_AIDSContext _context)
         {
-            string h1_1 = "МОЦ СПИД, клиннико-диагностическая лаборатория",
+            string h1_1 = "МОЦ СПИД, клинико-диагностическая лаборатория",
                    h1_2 = "г.Москва, ул.Щепкина 61/2, к.8",
                    h2_1 = "Форма № 266/У-88",
                    h2_2 = "Утверждена МЗ СССР 05.08.88 №690",
                    h3 = $"ОПЕРАТИВНОЕ ДОНЕСЕНИЕ № {_context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1} " +
                         $"о лицах, в крови которых обнаружены маркеры ВИЧ" +
-                        $" в Эпидимиологиеский отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СИПД";
+                        $" в Эпидемиологический отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СИПД";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filepath, WordprocessingDocumentType.Document))
             {
@@ -243,7 +243,7 @@ namespace Reference_Aids.Controllers
                                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                               new FontSize { Val = new StringValue("20") },
                                                               new Bold()),
-                                                          new Text("Примечение"))));
+                                                          new Text("Примечание"))));
                 tr.Append(tc10);
                 table.Append(tr);
                 body.Append(table);

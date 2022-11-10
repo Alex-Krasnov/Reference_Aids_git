@@ -18,6 +18,7 @@
         }
     </datalist>
     <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForPhotometrAnalyzes" method="post">
+        <label>Импорт Фотометр</label>
         <div class="row g-0">
             <div class="col-sm-3">
                 <label>Тип анализа</label>
@@ -38,10 +39,40 @@
         </div>
     </form>
     <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForBlotAnalyzes" method="post">
+        <label>Импорт ИБ</label>
         <div class="row g-0">
             <div class="col-sm-3">
                 <label>Количество строк</label>
                 <input type="text" class="form-control" name='_countRow'>
+            </div>
+            <div class="col-sm-3">
+                <label>Тест система</label>
+                <input type="text" class="form-control" list="test_system_list" name='_testSystem'>
+            </div>
+            <div class="col-sm-3">
+                <label>Срок годности</label>
+                <input type="date" class="form-control" name='_date'>
+            </div>
+            <div class="col-sm-3" style="visibility: hidden">
+                <label>123</label>
+                <input type="submit" class="btn btn-outline-success btn-sm" value="Отправить" />
+            </div>
+        </div>
+    </form>
+    <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForPcrAnalyzes" method="post">
+        <label>Импорт ИБ</label>
+        <div class="row g-0">
+            <div class="col-sm-3">
+                <label>Номер ИФА с</label>
+                <input type="text" class="form-control" name='_numIfaStart'>
+            </div>
+            <div class="col-sm-3">
+                <label>Номер ИФА по</label>
+                <input type="text" class="form-control" name='_numIfaEnd'>
+            </div>
+            <div class="col-sm-3">
+                <label>Тест система</label>
+                <input type="text" class="form-control" list="test_system_list" name='_testSystem'>
             </div>
             <div class="col-sm-3" style="visibility: hidden">
                 <label>123</label>

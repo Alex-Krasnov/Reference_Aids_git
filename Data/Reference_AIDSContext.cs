@@ -369,6 +369,9 @@ namespace Reference_Aids.Data
 
                 entity.Property(e => e.ResultBlotResultId).HasColumnName("result_blot_result_id");
 
+                entity.Property(e => e.NumProtocol).HasColumnName("num_protocol");
+
+                entity.Property(e => e.NumStrip).HasColumnName("num_strip");
 
                 entity.HasOne(d => d.Blood)
                     .WithMany()

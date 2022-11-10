@@ -12,6 +12,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index()
         {
             List<string> listTypeAnalyze = new() { "ИФА", "Антиген", "Подтв ag"};
@@ -24,6 +25,7 @@ namespace Reference_Aids.Controllers
             ViewBag.Title = "ImportAnalyzes";
             return View("Index", Viewdata);
         }
+
         [HttpPost]
         public IActionResult RoutingForPhotometrAnalyzes(string _reportId, string _testSystem, string _typeAnalyzes)
         {
@@ -38,10 +40,17 @@ namespace Reference_Aids.Controllers
                     return RedirectToAction("Index");
             }
         }
+
         [HttpPost]
-        public IActionResult RoutingForBlotAnalyzes(int _countRow)
+        public IActionResult RoutingForBlotAnalyzes(int _countRow, string _date, string _testSystem)
         {
-            return RedirectToAction("Index", "ImportBlot", new { countRow=_countRow });
+            return RedirectToAction("Index", "ImportBlot", new { countRow = _countRow, testSystem = _testSystem, date = _date });
+        }
+
+        [HttpPost]
+        public IActionResult RoutingForPcrAnalyzes(int _numIfaStart,int _numIfaEnd, string _testSystem)
+        {
+            return RedirectToAction("Index", "ImportPcr", new { numIfaStart = _numIfaStart, numIfaEnd= _numIfaEnd, testSystem = _testSystem});
         }
     }
 }

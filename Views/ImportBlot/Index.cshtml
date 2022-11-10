@@ -18,8 +18,8 @@
                 <div class="col-sm-1 border border-1"><label>Ном. Ифа</label></div>
                 <div class="col-sm-1 border border-1"><label>Тест система</label></div>
                 <div class="col-sm-1 border border-1" style="width: 115px"><label>Срок годности</label></div>
-                <div class="col-sm-1 border border-1" style="width: 40px"><label>Поле 1</label></div>
-                <div class="col-sm-1 border border-1" style="width: 40px"><label>Поле 2</label></div>
+                <div class="col-sm-1 border border-1" style="width: 40px"><label>Ном. протокола</label></div>
+                <div class="col-sm-1 border border-1" style="width: 40px"><label>Ном. стрипа</label></div>
                 <div class="col-sm-1 border border-1" style="width: 135px">
                     <label>ENV</label>
                     <div class="row g-0">
@@ -55,15 +55,15 @@
                 <div class="col-sm-1 border border-1"><label>ВИЧ 0</label></div>
                 <div class="col-sm-1 border border-1"><label>Рез.</label></div>
             </div>
-            <form class="needs-validation" novalidate asp-controller="ImportPhotometr" asp-action="Add" method="post">
+            <form class="needs-validation" novalidate asp-controller="ImportBlot" asp-action="Add" method="post">
                 @for (int i = 0; i < Model.CountRow; i++)
                 {
                     <div class="row g-0">
-                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name=""></div>
-                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="test_system_list" name="[@i].ResultBlotTestSysName"></div>
-                        <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" name="[@i].ExpirationResultBlotDate"></div>
-                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name=""></div>
-                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name=""></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" name="[@i].BloodId"></div>
+                        <div class="col-sm-1"><input type="text" class="form-control tbl-input" list="test_system_list" name="[@i].ResultBlotTestSysName" value="@Model.TestSystem"></div>
+                        <div class="col-sm-1" style="width: 115px"><input type="date" class="form-control tbl-input" name="[@i].ExpirationResultBlotDate" value="@Model.Date"></div>
+                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name="[@i].NumProtocol"></div>
+                        <div class="col-sm-1" style="width: 40px"><input type="text" class="form-control tbl-input" name="[@i].NumStrip"></div>
                         <div class="col-sm-1" style="width: 135px">
                             <div class="row g-0">
                                 <div class="col"><input type="text" class="form-control tbl-input" name="[@i].ResultBlotEnv160"></div>

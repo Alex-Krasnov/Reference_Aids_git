@@ -22,6 +22,8 @@
         public int? ResultBlotHiv0 { get; set; }
         public bool? ResultBlotReturnResult { get; set; }
         public int? ResultBlotResultId { get; set; }
+        public int NumProtocol { get; set; }
+        public int NumStrip { get; set; }
 
         public virtual ListTestSystem TestSystem { get; set; } = null!;
         public virtual TblIncomingBlood Blood { get; set; } = null!;

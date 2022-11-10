@@ -15,12 +15,14 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int countRow)
+        public async Task<IActionResult> Index(int countRow, string testSystem, string date)
         {
             var Viewdata = new ListForImportBlotViewModel
             {
                 ListTestSystems = await _context.ListTestSystems.ToListAsync(),
-                CountRow = countRow
+                CountRow = countRow, 
+                Date = date,
+                TestSystem = testSystem
             };
             ViewBag.Title = "ImportBlot";
             return View("Index", Viewdata);
@@ -29,38 +31,40 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(List<InputBlot> list)
         {
-            if (ModelState.IsValid)
+            DateOnly dateNow = DateOnly.FromDateTime(DateTime.Today);
+            foreach (var item in list)
             {
-                DateOnly dateNow = DateOnly.FromDateTime(DateTime.Today);
-                foreach (var item in list)
+                try
                 {
                     TblResultBlot tblResultBlot = new()
                     {
-                        //BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
-                        //ResultBlotDate = dateNow,
-                        //ExpirationResultBlotDate = DateOnly.Parse(item.ExpirationResultBlotDate),
-                        //ResultBlotTestSysId = item.TestSysId(_context),
-                        //ResultBlotEnv160 = item.ResultBlotEnv160Id(_context),
-                        //ResultBlotEnv120 = item.ResultBlotEnv120Id(_context),
-                        //ResultBlotEnv41 = item.ResultBlotEnv41Id(_context),
-                        //ResultBlotGag55 = item.ResultBlotGag55Id(_context),
-                        //ResultBlotGag40 = item.ResultBlotGag40Id(_context),
-                        //ResultBlotGag2425 = item.ResultBlotGag2425Id(_context),
-                        //ResultBlotGag18 = item.ResultBlotGag18Id(_context),
-                        //ResultBlotPol6866 = item.ResultBlotPol6866Id(_context),
-                        //ResultBlotPol5251 = item.ResultBlotPol5251Id(_context),
-                        //ResultBlotPol3431 = item.ResultBlotPol3431Id(_context),
-                        //ResultBlotHiv2105 = item.ResultBlotHiv2105Id(_context),
-                        //ResultBlotHiv236 = item.ResultBlotHiv236Id(_context),
-                        //ResultBlotHiv0 = item.ResultBlotHiv0Id(_context),
-                        //ResultBlotReturnResult = item.ResultBlotReturnResult,
-                        //ResultBlotResultId = item.ResultId(_context)
+                        BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
+                        ResultBlotDate = dateNow,
+                        ExpirationResultBlotDate = DateOnly.Parse(item.ExpirationResultBlotDate),
+                        ResultBlotTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.ResultBlotTestSysName).First().TestSystemId,
+                        ResultBlotEnv160 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotEnv160).First().ResultId,
+                        ResultBlotEnv120 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotEnv120).First().ResultId,
+                        ResultBlotEnv41 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotEnv41).First().ResultId,
+                        ResultBlotGag55 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotGag55).First().ResultId,
+                        ResultBlotGag40 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotGag40).First().ResultId,
+                        ResultBlotGag2425 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotGag2425).First().ResultId,
+                        ResultBlotGag18 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotGag18).First().ResultId,
+                        ResultBlotPol6866 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotPol6866).First().ResultId,
+                        ResultBlotPol5251 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotPol5251).First().ResultId,
+                        ResultBlotPol3431 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotPol3431).First().ResultId,
+                        ResultBlotHiv2105 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotHiv2105).First().ResultId,
+                        ResultBlotHiv236 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotHiv236).First().ResultId,
+                        ResultBlotHiv0 = _context.ListResults.Where(e => e.ResultName == item.ResultBlotHiv0).First().ResultId,
+                        ResultBlotResultId = _context.ListResults.Where(e => e.ResultName == item.ResultBlotResult).First().ResultId
                     };
 
-                    //_context.TblResultBlots.Add(tblResultBlot);
-                    //await _context.SaveChangesAsync();
+                    _context.TblResultBlots.Add(tblResultBlot);
+                    await _context.SaveChangesAsync();
                 }
-                return RedirectToAction("Index", "ImportAnalyzes");
+                catch 
+                { 
+                    //return RedirectToAction("Error", "ImportBlot", new { });
+                }
             }
             return RedirectToAction("Index", "ImportAnalyzes");
         }
