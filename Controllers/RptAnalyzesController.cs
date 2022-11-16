@@ -118,7 +118,7 @@ namespace Reference_Aids.Controllers
 
             //Шапка
             string p1 = "ГКУЗ МО «Центр по профилактике и борьбе со СПИДом и инфекционными заболеваниями»",
-                   p2 = "Адрес: г.Москва, ул.Щепкина 61/2 корп.8, ст.11 тел.: 8(495) 681-38-10,  8(495) 681-37-17 Эл.почта: ";
+                   p2 = "Адрес: г.Москва, ул.Щепкина 61/2 корп.8, ст.11 тел.: 8(495) 681-38-10,  8(495) 681-37-17";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(filepath, true))
             {
@@ -256,7 +256,7 @@ namespace Reference_Aids.Controllers
                 para8.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
-                                          new Text("Сыворотка/плазма"))));
+                                          new Text("Сыворотка/плазма крови"))));
 
                 //Таблица Анализов
                 Table table = new(new TableProperties(
@@ -785,11 +785,6 @@ namespace Reference_Aids.Controllers
                 Body body = wordDocument.MainDocumentPart.Document.Body;
 
                 body.AppendChild(new Paragraph(new Run(new Break() { Type = BreakValues.Page })));
-                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
-                //body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
             }
         }
     }
