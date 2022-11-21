@@ -47,13 +47,13 @@ namespace Reference_Aids.Controllers
                     sql += $" and region_id = {list.RegionId(_context)}";
 
                 if (list.FirstName != null)
-                    sql += $" and first_name like '%{list.FirstName}%'";
+                    sql += $" and first_name ilike '%{list.FirstName}%'";
 
                 if (list.ThirdName != null)
-                    sql += $" and third_name like '%{list.ThirdName}%'";
+                    sql += $" and third_name ilike '%{list.ThirdName}%'";
 
                 if (list.FamilyName != null)
-                    sql += $" and family_name like '%{list.FamilyName}%'";
+                    sql += $" and family_name ilike '%{list.FamilyName}%'";
 
                 sql += " order by patient_id";
                 ListForSearchPatientViewModel viewModel = new()

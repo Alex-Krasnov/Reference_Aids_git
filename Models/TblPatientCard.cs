@@ -45,5 +45,22 @@
             }
             return null;
         }
+        public string? AddrFull()
+        {
+            if (RegionId != null)
+            {
+                string adddrFull = null;
+
+                try { adddrFull += $"ГО{AreaName}"; } catch { }
+                try { adddrFull += $" г.{CityName}"; } catch { }
+                try { adddrFull += $" ул.{AddrStreat}"; } catch { }
+                try { adddrFull += $" д.{AddrHome}"; } catch { }
+                try { adddrFull += $" к.{AddrCorps}"; } catch { }
+                try { adddrFull += $" кв.{AddrFlat}"; } catch { }
+
+                return adddrFull;
+            }
+            return null;
+        }
     }
 }

@@ -66,21 +66,33 @@
                     <th scope="col">Дата рождения</th>
                     <th scope="col">Пол</th>
                     <th scope="col">Регион</th>
+                    <th scope="col">Адрес</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.TblPatientCards)
-                {
-                    <tr>
-                        <td><input type="text" class="form-control" value=@item.PatientId disabled></td>
-                        <td><input type="text" class="form-control" value=@item.FamilyName disabled></td>
-                        <td><input type="text" class="form-control" value=@item.FirstName disabled></td>
-                        <td><input type="text" class="form-control" value=@item.ThirdName disabled></td>
-                        <td><input type="text" class="form-control" value=@item.BirthDate disabled></td>
-                        <td><input type="text" class="form-control" value=@item.SexName() disabled></td>
-                        <td><input type="text" class="form-control" value=@item.RegionName() disabled></td>
-                        <td><a class="btn btn-outline-info btn-sm" style="margin-top: 5px" asp-controller="RegIncBloods" asp-action="Index" asp-route-id="@item.PatientId">Открыть</a></td>
-                    </tr>
+                @{
+                    @foreach (var item in Model.TblPatientCards)
+                    {
+                        string adddrFull = "";
+                        try { adddrFull += $"ГО{@item.AreaName}"; } catch { }
+                        try { adddrFull += $" г.{@item.CityName}"; } catch { }
+                        try { adddrFull += $" ул.{@item.AddrStreat}"; } catch { }
+                        try { adddrFull += $" д.{@item.AddrHome}"; } catch { }
+                        try { adddrFull += $" к.{@item.AddrCorps}"; } catch { }
+                        try { adddrFull += $" кв.{@item.AddrFlat}"; } catch { }
+                 
+                        <tr>
+                            <td><input type="text" class="form-control" value=@item.PatientId disabled></td>
+                            <td><input type="text" class="form-control" value=@item.FamilyName disabled></td>
+                            <td><input type="text" class="form-control" value=@item.FirstName disabled></td>
+                            <td><input type="text" class="form-control" value=@item.ThirdName disabled></td>
+                            <td><input type="text" class="form-control" value=@item.BirthDate disabled></td>
+                            <td><input type="text" class="form-control" value="@item.SexName()" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.RegionName()" disabled></td>
+                            <td><input type="text" class="form-control" value="@adddrFull" disabled></td>
+                            <td><a class="btn btn-outline-info btn-sm" style="margin-top: 5px" asp-controller="RegIncBloods" asp-action="Index" asp-route-id="@item.PatientId">Открыть</a></td>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>
