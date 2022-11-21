@@ -70,7 +70,7 @@ namespace Reference_Aids.Controllers
                     PatientId = list.PatientId,
                     SendDistrictId = list.SendDistrictId(_context),
                     SendLabId = list.SendLabId(_context),
-                    CategoryPatientId = list.CategoryPatientId(_context),
+                    CategoryPatientId = list.CategoryPatient,   //CategoryPatientId(_context),
                     AnonymousPatient = list.AnonymousPatient,
                     DateBloodSampling = DateOnly.Parse(list.DateBloodSampling),
                     QualitySerumId = list.QualitySerumId(_context),

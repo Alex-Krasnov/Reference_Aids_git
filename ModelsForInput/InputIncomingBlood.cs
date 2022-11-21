@@ -6,7 +6,7 @@ namespace Reference_Aids.ModelsForInput
         public int PatientId { get; set; }
         public string? SendDistrict { get; set; }
         public string? SendLab { get; set; }
-        public string? CategoryPatient { get; set; }
+        public int? CategoryPatient { get; set; }
         public bool? AnonymousPatient { get; set; }
         public string DateBloodSampling { get; set; } = null!;
         public string? QualitySerum { get; set; }
@@ -30,14 +30,14 @@ namespace Reference_Aids.ModelsForInput
             }
             return null;
         }
-        public int? CategoryPatientId(Reference_AIDSContext _context)
-        {
-            if (CategoryPatient != null)
-            {
-                return _context.ListCategories.Where(e => e.CategoryName == CategoryPatient).ToList()[0].CategoryId;
-            }
-            return null;
-        }
+        //public int? CategoryPatientId(Reference_AIDSContext _context)
+        //{
+        //    if (CategoryPatient != null)
+        //    {
+        //        return _context.ListCategories.Where(e => e.CategoryName == CategoryPatient).ToList()[0].CategoryId;
+        //    }
+        //    return null;
+        //}
         public int? QualitySerumId(Reference_AIDSContext _context)
         {
             if (QualitySerum != null)
