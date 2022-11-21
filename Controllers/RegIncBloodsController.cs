@@ -38,19 +38,24 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDistrictBlot(InputDistricBlot list)  
         {
-            if (ModelState.IsValid)
+            if (list.DBlot != null && 
+                list.BlotResult != null && 
+                list.SendDistrictId != null && 
+                list.CutOff != null && 
+                list.SendLabId != null && 
+                list.TestSystemId != null) //ModelState.IsValid
             {
                 
                 TblDistrictBlot tblDistrictBlot = new()
                 {
                     PatientId = list.PatientId,
-                    DBlot = list.DBlot,
+                    DBlot = DateOnly.Parse(list.DBlot),
                     CutOff = list.CutOff,
                     BlotResult = list.BlotResult,
                     BlotCoefficient = Math.Round((list.BlotResult / list.CutOff), 3),
-                    TestSystemId = list.TestSystemId,
-                    SendDistrictId = list.SendDistrictId,
-                    SendLabId = list.SendLabId
+                    TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == list.TestSystemId).TestSystemId,
+                    SendDistrictId =_context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrictId).SendDistrictId,
+                    SendLabId = _context.ListSendLabs.First(e => e.SendLabName == list.SendLabId).SendLabId
                 };
 
                 _context.TblDistrictBlots.Add(tblDistrictBlot);

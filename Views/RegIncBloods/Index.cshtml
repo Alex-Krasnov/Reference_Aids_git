@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="col-sm-9" > 
-            <label>Обл блот</label>
+            <label>Обл ИФА</label>
             <table class="table table-bordered table-blot" style="margin-bottom: 0px">
                 <thead>
                     <tr>
@@ -169,12 +169,12 @@
                     <tr>
                         <td><input type="text" class="form-control" name='NumIfa'></td>
                         <td><input type="text" class="form-control" name='NumInList'></td>
-                        <td><input type="date" class="form-control" name='DateBloodImport'></td>
+                        <td><input type="date" class="form-control" name='DateBloodImport' value="@DateTime.Now.ToString("yyyy-MM-dd")"></td>
                         <td><input type="date" class="form-control" name='DateBloodSampling'></td>
                         <td><input type="text" class="form-control" name='SendLab' list="send_lab_list"></td>
                         <td><input type="text" class="form-control" name='SendDistrict' list="send_district_list"></td>
                         <td><input type="text" class="form-control" name='CategoryPatient' list="category_list"></td>
-                        <td><input type="text" class="form-control" name='QualitySerum' list="quality_serum_list"></td>
+                        <td><input type="text" class="form-control" name='QualitySerum' list="quality_serum_list" value="прозрачная"></td>
                         <td><input type="checkbox" class="form-check-input" name='AnonymousPatient'></td>
                         <td hidden><input type="text" class="form-control inputtbl" name='PatientId' value="@Model.TblPatientCards[0].PatientId"></td>
                         <td><input type="submit" class="btn btn-outline-success btn-sm" style="margin-top: 5px" value="Добавить"></td>
@@ -182,5 +182,6 @@
                 </tbody>
             </table>
         </form>
+        <a class="btn btn-outline-danger btn-sm" asp-controller="UpdatePatientCard" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать</a>
     </div>
 </div>

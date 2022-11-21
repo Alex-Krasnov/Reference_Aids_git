@@ -1,0 +1,100 @@
+﻿@model Reference_Aids.ViewModels.ListForPatientCardViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="send_lab_list">
+        @foreach (var item in Model.ListSendLabs)
+        {
+            <option>@item.SendLabName</option>
+        }
+    </datalist>
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option>@item.TestSystemName</option>
+        }
+    </datalist>
+    <datalist id="send_district_list">
+        @foreach (var item in Model.ListSendDistricts)
+        {
+            <option>@item.SendDistrictName</option>
+        }
+    </datalist>
+    <datalist id="category_list">
+        @foreach (var item in Model.ListCategories)
+        {
+            <option>@item.CategoryId</option>
+        }
+    </datalist>
+    <datalist id="quality_serum_list">
+        @foreach (var item in Model.ListQualitySerums)
+        {
+            <option>@item.QualitySerumName</option>
+        }
+    </datalist>
+    <br>
+    <form class="needs-validation" novalidate asp-controller="UpdatePatientCard" asp-action="Update" method="post">
+
+        <div class="row g-0">
+            <div class="col-sm-3">
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Ид пациента(Auto)" type="text" class="form-control" name="PatientId" value=@Model.TblPatientCards[0].PatientId>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Фамилия" type="text" class="form-control" name='FirstName' value=@Model.TblPatientCards[0].FamilyName>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Имя" type="text" class="form-control" name='FamilyName' value=@Model.TblPatientCards[0].FirstName>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Отчество" type="text" class="form-control" name='ThirdName' value=@Model.TblPatientCards[0].ThirdName>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Дата рождения" type="date" class="form-control" id="date" name='BirthDate' value=@Model.TblPatientCards[0].BirthDate.ToString("yyyy-MM-dd")>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Пол" type="text" class="form-control" name='SexId' value=@Model.TblPatientCards[0].SexName()>
+                </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Телефон" type="text" class="form-control" name='PhoneNum' value=@Model.TblPatientCards[0].PhoneNum>
+                </div>
+            </div>
+            <div class="row g-0">
+                <div class="col-sm-2" style="margin-right: 12px">
+                    <input placeholder="Регион" autocomplete="fals" type="text" class="form-control" name='RegionId' value=@Model.TblPatientCards[0].RegionName()>
+                </div>
+                <div class="col-sm-2" style="margin-right: 12px">
+                    <input placeholder="Город" autocomplete="fals" type="text" class="form-control" name='CityName' value=@Model.TblPatientCards[0].CityName>
+                </div>
+                <div class="col-sm-2" style="margin-right: 12px">
+                    <input placeholder="Населённый пункт" autocomplete="fals" type="text" class="form-control" name='AreaName' value=@Model.TblPatientCards[0].AreaName>
+                </div>
+                <div class="col-sm-2" style="margin-right: 62px">
+                    <input placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='AddrStreat' value=@Model.TblPatientCards[0].AddrStreat>
+                </div>
+                <div class="col-sm-1" style="margin-right: 5px">
+                    <input placeholder="Дом" type="text" class="form-control" name='AddrHome' value=@Model.TblPatientCards[0].AddrHome>
+                </div>
+                <div class="col-sm-1" style="margin-right: 5px">
+                    <input placeholder="Корп." type="text" class="form-control" name='AddrCorps' value=@Model.TblPatientCards[0].AddrCorps>
+                </div>
+                <div class="col-sm-1">
+                    <input placeholder="Кв." type="text" class="form-control" name='AddrFlat' value=@Model.TblPatientCards[0].AddrFlat>
+                </div>
+            </div>
+            <div class="row g-0" style="margin-top: 1rem">
+                <textarea placeholder="Комментарий" name="PatientCom" autocomplete="fals" cols="100" rows="3">@Model.TblPatientCards[0].PatientCom</textarea>
+            </div>
+        </div>
+        <div class="row g-0">
+            <div class="col-11"></div>
+            <div class="col-1" style="text-align:right;">
+                <input type="submit" class="btn btn-outline-success btn-sm" value="Обновить" />
+            </div>
+        </div>
+        
+    </form>
+</div>
