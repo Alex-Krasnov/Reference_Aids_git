@@ -168,10 +168,10 @@ namespace Reference_Aids.Controllers
             try { dateBloodImport = DateBloodImport.ToString("dd-MM-yyyy"); }
             catch { dateBloodImport = "null"; }
 
-            var ifaList = _context.TblResultIfas.Select(e =>new { e.BloodId, e.ResultIfaDate, e.TestSystem, e.ResultIfaResult} ).Where(e => e.BloodId == bloodId).ToList();
-            var ibList = _context.TblResultBlots.Select(e => new {  e.ResultBlotResult,e.ResultBlotResultEnv160,e.ResultBlotResultEnv120,e.ResultBlotResultEnv41,e.ResultBlotResultGag55,e.ResultBlotResultGag40,e.ResultBlotResultGag2425,e.ResultBlotResultGag18,e.ResultBlotResultPol6866,e.ResultBlotResultPol5251,e.ResultBlotResultPol3431,e.ResultBlotResultHiv2105,e.ResultBlotResultHiv236,e.ResultBlotResultHiv0,e.BloodId,e.TestSystem,e.ResultBlotDate}).Where(e => e.BloodId == bloodId).ToList();
-            var antigenList = _context.TblResultAntigens.Select(e => new {e.BloodId, e.ResultAntigenDate, e.TestSystem,e.ResultAntigenResult }).Where(e => e.BloodId == bloodId).ToList();
-            var pcrList = _context.TblResultPcrs.Select(e => new {e.BloodId, e.ResultPcrDate, e.ResultPcrResult , e.TestSystem}).Where(e => e.BloodId == bloodId).ToList();
+            var ifaList = _context.TblResultIfas.Select(e =>new { e.BloodId, e.ResultIfaDate, e.ResultIfaTestSysId, e.ResultIfaResultId} ).Where(e => e.BloodId == bloodId).ToList();
+            var ibList = _context.TblResultBlots.Select(e => new {  e.ResultBlotResultId,e.ResultBlotEnv160,e.ResultBlotEnv120,e.ResultBlotEnv41,e.ResultBlotGag55,e.ResultBlotGag40,e.ResultBlotGag2425,e.ResultBlotGag18,e.ResultBlotPol6866,e.ResultBlotPol5251,e.ResultBlotPol3431,e.ResultBlotHiv2105,e.ResultBlotHiv236,e.ResultBlotHiv0,e.BloodId,e.ResultBlotTestSysId,e.ResultBlotDate}).Where(e => e.BloodId == bloodId).ToList();
+            var antigenList = _context.TblResultAntigens.Select(e => new {e.BloodId, e.ResultAntigenDate, e.ResultAntigenTestSysId,e.ResultAntigenResultId }).Where(e => e.BloodId == bloodId).ToList();
+            var pcrList = _context.TblResultPcrs.Select(e => new {e.BloodId, e.ResultPcrDate, e.ResultPcrResultId , e.ResultPcrTestSysId}).Where(e => e.BloodId == bloodId).ToList();
             
             var oldIBList = (from patient in _context.TblPatientCards
                              join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
@@ -180,8 +180,8 @@ namespace Reference_Aids.Controllers
                              {
                                  patient.PatientId,
                                  resIB.ResultBlotDate,
-                                 resIB.ResultBlotResult,
-                                 resIB.TestSystem
+                                 resIB.ResultBlotResultId,
+                                 resIB.ResultBlotTestSysId
                              })
                            .Where(e => e.PatientId == patientId && e.ResultBlotDate.Year < DateTime.Now.Year).ToList();
 
@@ -390,19 +390,21 @@ namespace Reference_Aids.Controllers
                                                                            new FontSize { Val = new StringValue("20") }),
                                                                        new Text(item.ResultIfaDate.ToString("dd-MM-yyyy")))));
                     trOp.Append(tcOp2);
+                    string ifaTs = null;
+                    try { ifaTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultIfaTestSysId).TestSystemName; } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName))));
+                                                                     new Text(ifaTs))));
                     trOp.Append(tcOp3);
                     string ifaRes = "";
-                    try { ifaRes = item.ResultIfaResult.ResultNameForRpt; } catch { }
+                    try { ifaRes = _context.ListResults.First(e => e.ResultId == item.ResultIfaResultId).ResultName; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultIfaResult.ResultNameForRpt))));
+                                                                     new Text(ifaRes))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -422,14 +424,16 @@ namespace Reference_Aids.Controllers
                                                                            new FontSize { Val = new StringValue("20") }),
                                                                        new Text(item.ResultBlotDate.ToString("dd-MM-yyyy")))));
                     trOp.Append(tcOp2);
+                    string ibTs = null;
+                    try {ibTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).TestSystemName; } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName))));
+                                                                     new Text(ibTs))));
                     trOp.Append(tcOp3);
                     string blotRes = "";
-                    try { blotRes = item.ResultBlotResult.ResultNameForRpt; } catch { }
+                    try { blotRes = _context.ListResults.First(e => e.ResultId == item.ResultBlotResultId).ResultName; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -454,19 +458,21 @@ namespace Reference_Aids.Controllers
                                                                            new FontSize { Val = new StringValue("20") }),
                                                                        new Text(item.ResultAntigenDate.ToString("dd-MM-yyyy")))));
                     trOp.Append(tcOp2);
+                    string agTs = null;
+                    try { agTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultAntigenTestSysId).TestSystemName; } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName))));
+                                                                     new Text(agTs))));
                     trOp.Append(tcOp3);
                     string anRes = "";
-                    try { anRes = item.ResultAntigenResult.ResultNameForRpt; } catch { }
+                    try { anRes = _context.ListResults.First(e => e.ResultId == item.ResultAntigenResultId).ResultName; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text())));
+                                                                     new Text(anRes))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -486,20 +492,22 @@ namespace Reference_Aids.Controllers
                                                                            new FontSize { Val = new StringValue("20") }),
                                                                        new Text(item.ResultPcrDate.ToString("dd-MM-yyyy")))));
                     trOp.Append(tcOp2);
+                    string pcrTs = null;
+                    try {pcrTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultPcrTestSysId).TestSystemName; } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName))));
+                                                                     new Text(pcrTs))));
                     trOp.Append(tcOp3);
 
                     string pcrRes = "";
-                    try { pcrRes = item.ResultPcrResult.ResultNameForRpt; } catch { }
+                    try { pcrRes =_context.ListResults.First(e => e.ResultId == item.ResultPcrResultId).ResultName; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text())));
+                                                                     new Text(pcrRes))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -519,14 +527,16 @@ namespace Reference_Aids.Controllers
                                                                            new FontSize { Val = new StringValue("20") }),
                                                                        new Text(item.ResultBlotDate.ToString("dd-MM-yyyy")))));
                     trOp.Append(tcOp2);
+                    string oldIbTs = null;
+                    try { oldIbTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).TestSystemName; } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName))));
+                                                                     new Text(oldIbTs))));
                     trOp.Append(tcOp3);
                     string resIb = "";
-                    try { resIb = item.ResultBlotResult.ResultNameForRpt; } catch { }
+                    try { resIb = _context.ListResults.First(e => e.ResultId == item.ResultBlotResultId).ResultName; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -729,111 +739,124 @@ namespace Reference_Aids.Controllers
                     tableIB.Append(tr2);
 
                     TableRow tr3 = new();
+                    string res160 = null;
+                    try { res160 = _context.ListResults.First(e =>e.ResultId ==item.ResultBlotEnv160).ResultName; } catch { }
                     TableCell tc1_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultEnv160.ResultName))));
+                                                              new Text(res160))));
+                    string res120 = null;
+                    try { res120 = _context.ListResults.First(e => e.ResultId ==item.ResultBlotEnv120).ResultName; } catch { }
                     TableCell tc2_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultEnv120.ResultName))));
+                                                              new Text(res120))));
+                    string res41 = null;
+                    try { res41 = _context.ListResults.First(e => e.ResultId ==item.ResultBlotEnv41).ResultName; } catch { }
                     TableCell tc3_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultEnv41.ResultName))));
+                                                              new Text(res41))));
                     tr3.Append(tc1_3);
                     tr3.Append(tc2_3);
                     tr3.Append(tc3_3);
-
+                    string res55 = null;
+                    try { res55 = _context.ListResults.First(e => e.ResultId == item.ResultBlotGag55).ResultName; } catch { }
                     TableCell tc4_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultGag55.ResultName))));
+                                                              new Text(res55))));
+                    string res40 = null;
+                    try { res40 = _context.ListResults.First(e => e.ResultId == item.ResultBlotGag40).ResultName; } catch { }
                     TableCell tc5_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultGag40.ResultName))));
+                                                              new Text(res40))));
+                    string res2425 = null;
+                    try { res2425 = _context.ListResults.First(e => e.ResultId == item.ResultBlotGag2425).ResultName; } catch { }
                     TableCell tc6_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultGag2425.ResultName))));
+                                                              new Text(res2425))));
+                    string res18 = null;
+                    try { res18 = _context.ListResults.First(e => e.ResultId == item.ResultBlotGag18).ResultName; } catch { }
                     TableCell tc7_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultGag18.ResultName))));
+                                                              new Text(res18))));
                     tr3.Append(tc4_3);
                     tr3.Append(tc5_3);
                     tr3.Append(tc6_3);
                     tr3.Append(tc7_3);
 
-                    string res = "";
-                    try { res = item.ResultBlotResultPol6866.ResultName; } catch { }
+                    string res6866 = null;
+                    try { res6866 = _context.ListResults.First(e => e.ResultId == item.ResultBlotPol6866).ResultName; } catch { }
                     TableCell tc8_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
-                    res = "";
-                    try { res = item.ResultBlotResultPol5251.ResultName; } catch { }
+                                                              new Text(res6866))));
+                    string res5251 = null;
+                    try { res5251 = _context.ListResults.First(e => e.ResultId == item.ResultBlotPol5251).ResultName; } catch { }
                     TableCell tc9_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
-                    res = "";
-                    try { res = item.ResultBlotResultPol3431.ResultName; } catch { }
+                                                              new Text(res5251))));
+                    string res3431 = null;
+                    try { res3431 = _context.ListResults.First(e => e.ResultId == item.ResultBlotPol3431).ResultName; } catch { }
                     TableCell tc10_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
+                                                              new Text(res3431))));
                     tr3.Append(tc8_3);
                     tr3.Append(tc9_3);
                     tr3.Append(tc10_3);
 
-                    res = "";
-                    try { res = item.ResultBlotResultHiv2105.ResultName; } catch { }
+                    string res2105 = null;
+                    try { res2105 = _context.ListResults.First(e => e.ResultId == item.ResultBlotHiv2105).ResultName; } catch { }
                     TableCell tc11_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
-                    res = "";
-                    try { res = item.ResultBlotResultHiv236.ResultName; } catch { }
+                                                              new Text(res2105))));
+                    string res236 = null;
+                    try { res236 = _context.ListResults.First(e => e.ResultId == item.ResultBlotHiv236).ResultName; } catch { }
                     TableCell tc12_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
+                                                              new Text(res236))));
                     tr3.Append(tc11_3);
                     tr3.Append(tc12_3);
-                    res = "";
-                    try { res = item.ResultBlotResultHiv0.ResultName; } catch { }
+                    string res0 = null;
+                    try { res0 = _context.ListResults.First(e => e.ResultId == item.ResultBlotHiv0).ResultName; } catch { }
                     TableCell tc13_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(res))));
+                                                              new Text(res0))));
                     tr3.Append(tc13_3);
                     tableIB.Append(tr3);
 
