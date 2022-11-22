@@ -14,7 +14,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int numIfaStart, int  numIfaEnd, string testSystem)
+        public async Task<IActionResult> Index(int numIfaStart, int  numIfaEnd, string testSystem, string date)
         {
             var Viewdata = new ListForImportPcr
             {
@@ -22,7 +22,8 @@ namespace Reference_Aids.Controllers
                 ListResults = await _context.ListResults.ToListAsync(),
                 IfaStart = numIfaStart,
                 IfaEnd = numIfaEnd,
-                TestSystemName = testSystem
+                TestSystemName = testSystem,
+                Date = date
             };
 
             ViewBag.Title = "ImportPcr";
@@ -37,14 +38,13 @@ namespace Reference_Aids.Controllers
             {
                 if (item.BloodId == null)
                     continue;
-
                 try
                 {
                     TblResultPcr tblResultPcr = new()
                     {
-                        BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
-                        ResultPcrDate = dateNow,
-                        ResultPcrTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.ResultPcrTestSysName).First().TestSystemId,
+                        BloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == dateNow.Year).BloodId,
+                        ResultPcrDate = DateOnly.Parse(item.ResultPcrDate),
+                        ResultPcrTestSysId = _context.ListTestSystems.First(e => e.TestSystemName == item.ResultPcrTestSysName).TestSystemId,
                         ResultPcrResultId = _context.ListResults.Where(e => e.ResultName == item.ResultPcrResultName).First().ResultId
                     };
 

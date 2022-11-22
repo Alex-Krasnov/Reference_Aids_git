@@ -62,17 +62,21 @@
     <form class="needs-validation" novalidate asp-controller="ImportAnalyzes" asp-action="RoutingForPcrAnalyzes" method="post">
         <label>Импорт ПЦР</label>
         <div class="row g-0">
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>Рег. номер с</label>
                 <input type="text" class="form-control" name='_numIfaStart'>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>Рег. номер по</label>
                 <input type="text" class="form-control" name='_numIfaEnd'>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>Тест система</label>
                 <input type="text" class="form-control" list="test_system_list" name='_testSystem'>
+            </div>
+            <div class="col-sm-2">
+                <label>Дата</label>
+                <input type="date" class="form-control" name='_date'>
             </div>
             <div class="col-sm-3" style="visibility: hidden">
                 <label>123</label>

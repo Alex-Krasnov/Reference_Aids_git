@@ -67,8 +67,8 @@
                     <tr>
                         <th scope="col" width="150px">Дата блота</th>
                         <th scope="col" width="170px">Тест система</th>
-                        <th scope="col" width="170px">Отпр. лаб.</th>
                         <th scope="col" width="170px">Кем напрв.</th>
+                        <th scope="col" width="170px">Отпр. лаб.</th>
                         <th scope="col" width="70px">Cut off</th>
                         <th scope="col" width="92px">Результат</th>
                         <th scope="col" width="80px">КП</th>
@@ -108,29 +108,29 @@
         </div>
         <div class="row g-0" >
             <div class="col-sm-2" style="margin-right: 12px">
-                <input disabled placeholder="Регион" autocomplete="fals" type="text" class="form-control" name='RegionId' value=@Model.TblPatientCards[0].RegionName()>                    
+                <input disabled placeholder="Регион" autocomplete="fals" type="text" class="form-control" name='RegionId' value="@Model.TblPatientCards[0].RegionName()">                    
             </div>
             <div class="col-sm-2" style="margin-right: 12px">
-                <input disabled placeholder="Город" autocomplete="fals" type="text" class="form-control" name='CityName' value=@Model.TblPatientCards[0].CityName>
+                <input disabled placeholder="Город" autocomplete="fals" type="text" class="form-control" name='CityName' value="@Model.TblPatientCards[0].CityName">
             </div>
             <div class="col-sm-2" style="margin-right: 12px">
-                <input disabled placeholder="Населённый пункт" autocomplete="fals" type="text" class="form-control" name='AreaName' value=@Model.TblPatientCards[0].AreaName>
+                <input disabled placeholder="Населённый пункт" autocomplete="fals" type="text" class="form-control" name='AreaName' value="@Model.TblPatientCards[0].AreaName">
             </div>
             <div class="col-sm-2" style="margin-right: 62px">
-                <input disabled placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='AddrStreat' value=@Model.TblPatientCards[0].AddrStreat>
+                <input disabled placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='AddrStreat' value="@Model.TblPatientCards[0].AddrStreat">
             </div>
             <div class="col-sm-1" style="margin-right: 5px">
-                <input disabled placeholder="Дом" type="text" class="form-control" name='AddrHome' value=@Model.TblPatientCards[0].AddrHome>
+                <input disabled placeholder="Дом" type="text" class="form-control" name='AddrHome' value="@Model.TblPatientCards[0].AddrHome">
             </div>
             <div class="col-sm-1" style="margin-right: 5px">
-                <input disabled placeholder="Корп." type="text" class="form-control" name='AddrCorps' value=@Model.TblPatientCards[0].AddrCorps>
+                <input disabled placeholder="Корп." type="text" class="form-control" name='AddrCorps' value="@Model.TblPatientCards[0].AddrCorps">
             </div>
             <div class="col-sm-1">
-                <input disabled placeholder="Кв." type="text" class="form-control" name='AddrFlat' value=@Model.TblPatientCards[0].AddrFlat>
+                <input disabled placeholder="Кв." type="text" class="form-control" name='AddrFlat' value="@Model.TblPatientCards[0].AddrFlat">
             </div>
         </div>
         <div class="row g-0" style="margin-top: 1rem">
-            <textarea placeholder="Комментарий" name="PatientCom" autocomplete="fals" cols="100" rows="3" disabled>@Model.TblPatientCards[0].PatientCom</textarea>
+            <textarea placeholder="Комментарий" name="PatientCom" autocomplete="fals" cols="100" rows="3" disabled>"@Model.TblPatientCards[0].PatientCom"</textarea>
         </div> 
     </div>
     <br>

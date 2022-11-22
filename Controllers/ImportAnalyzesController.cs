@@ -48,9 +48,9 @@ namespace Reference_Aids.Controllers
         }
 
         [HttpPost]
-        public IActionResult RoutingForPcrAnalyzes(int _numIfaStart,int _numIfaEnd, string _testSystem)
+        public IActionResult RoutingForPcrAnalyzes(int _numIfaStart,int _numIfaEnd, string _testSystem, string _date)
         {
-            return RedirectToAction("Index", "ImportPcr", new { numIfaStart = _numIfaStart, numIfaEnd= _numIfaEnd, testSystem = _testSystem});
+            return RedirectToAction("Index", "ImportPcr", new { numIfaStart = _numIfaStart, numIfaEnd= _numIfaEnd, testSystem = _testSystem, date = _date});
         }
     }
 }
