@@ -1,0 +1,7 @@
+﻿@model List<string>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@foreach (var item in Model)
+{
+    <p>@item</p>
+}

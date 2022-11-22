@@ -16,13 +16,13 @@ namespace Reference_Aids.Controllers
             _appEnvironment = appEnvironment;
         }
         [HttpPost]
-        public IActionResult Create()
+        public IActionResult Create(string dat)
         {
-            string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\ReportNotice_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\DailyReport_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "DailyReport.docx";
 
-            DateOnly date_now = DateOnly.Parse(DateTime.Now.ToString("dd-MM-yyyy"));
+            DateOnly date_now = DateOnly.Parse(dat);
 
             FileInfo fileInf1 = new(path_from);
             if (fileInf1.Exists)
@@ -214,15 +214,8 @@ namespace Reference_Aids.Controllers
                                                     new Run(new RunProperties(
                                                                 new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                 new FontSize { Val = new StringValue("20") }),
-                                                            new Text(lpuLab))));
-                tr2.Append(tc6_2);
-                TableCell tc8_2 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa }),
-                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                                    new Run(new RunProperties(
-                                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                                new FontSize { Val = new StringValue("20") }),
                                                             new Text(strAnalyzes))));
-                tr2.Append(tc8_2);
+                tr2.Append(tc6_2);
                 table.Append(tr2);
             }
         }

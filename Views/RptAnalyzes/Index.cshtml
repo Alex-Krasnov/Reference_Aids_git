@@ -1,0 +1,62 @@
+﻿@model Reference_Aids.ViewModels.ListForRptAnalyzesViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class="container">
+    <datalist id="rec_list">
+        @foreach (var item in Model.ListRecForRpts)
+        {
+            <option>@item.RecName</option>
+        }
+    </datalist>
+
+    <br>
+    <div class="row g-0">
+        <form class="needs-validation" novalidate asp-controller="RptAnalyzes" asp-action="Create" method="post">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">ИД пациента</th>
+                        <th scope="col">Фамилия</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Отчество</th>
+                        <th scope="col">Дата рождения</th>
+                        <th scope="col">Кат.</th>
+                        <th style ="width: 300px;" scope="col">Адрес</th>
+                        <th style="width: 300px;" scope="col">Анализы</th>
+                        <th scope="col">Рекомендации</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int i = 0;
+                        @foreach (var item in Model.TblPatientCards)
+                        {
+                            <tr>
+                                <td><input type="text" class="form-control" value=@item.NumIfa disabled></td>
+                                <td><input type="text" class="form-control" value=@item.FamilyName disabled></td>
+                                <td><input type="text" class="form-control" value=@item.FirstName disabled></td>
+                                <td><input type="text" class="form-control" value=@item.ThirdName disabled></td>
+                                <td><input type="text" class="form-control" value=@item.BirthDate disabled></td>
+                                <td><input type="text" class="form-control" value="@item.CategoryPatientId" disabled></td>
+                                <td><input type="text" class="form-control" value="@item.AddrFull" disabled></td>
+                                <td><input type="text" class="form-control" value="@item.ResFull" disabled></td>
+                                <td><input type="text" class="form-control" name="[@i].Rec" name='rec' list="rec_list"></td>
+                                <td style="display: none;"><input type="text" name="[@i].PatientId" value="@item.PatientId"></td>
+                            </tr>
+                            i++;
+                        }
+                    }
+                </tbody>
+            </table>
+            <input type="text" style="display: none;" name="ifaStart" value="@Model.IfaStart">
+            <input type="text" style="display: none;" name="ifaEnd" value="@Model.IfaEnd">
+            <input type="text" style="display: none;" name="doctor" value="@Model.Doctor">
+            <div class="col" style="margin: 7px">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Создать отчет по анализам">
+            </div>
+        </form>
+    </div>
+</div>

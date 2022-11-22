@@ -29,6 +29,7 @@ namespace Reference_Aids.ModelsForInput
         public string Result { get; set; }
         public int? NumIfa { get; set; }
         public string NumInList { get; set; }
+        public string? PatientCom { get; set; }
         public IEnumerable<TblPatientCard> PossiblePatients { get; set; }
     }
 }

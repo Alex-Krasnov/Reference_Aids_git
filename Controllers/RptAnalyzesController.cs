@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Reference_Aids.Models;
+using Reference_Aids.ViewModels;
 
 namespace Reference_Aids.Controllers
 {
@@ -16,9 +17,89 @@ namespace Reference_Aids.Controllers
             _context = context;
             _appEnvironment = appEnvironment;
         }
-        [HttpPost]
-        public IActionResult Create(int ifaStart, int ifaEnd, string rec)
+
+        public IActionResult Index(int ifaStart, int ifaEnd, string doctor)
         {
+            List<ListPatientForRpt> listPatient = new();
+            var lisForInput = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
+                                                           (p, i) => new {
+                                                               p.FamilyName,
+                                                               p.FirstName,
+                                                               p.ThirdName,
+                                                               p.BirthDate,
+                                                               p.RegionId,
+                                                               p.AddrHome,
+                                                               p.AddrCorps,
+                                                               p.AddrFlat,
+                                                               p.AddrStreat,
+                                                               p.CityName,
+                                                               p.AreaName,
+                                                               i.CategoryPatientId,
+                                                               i.DateBloodImport,
+                                                               i.NumIfa,
+                                                               i.BloodId,
+                                                               p.PatientId
+                                                           })
+                                                     .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
+                                                              && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
+            foreach (var item in lisForInput)
+            {
+                string adddrFull = "", resFull = "";
+                try { adddrFull += $"ГО{item.AreaName}"; } catch { }
+                try { adddrFull += $" г.{item.CityName}"; } catch { }
+                try { adddrFull += $" ул.{item.AddrStreat}"; } catch { }
+                try { adddrFull += $" д.{item.AddrHome}"; } catch { }
+                try { adddrFull += $" к.{item.AddrCorps}"; } catch { }
+                try { adddrFull += $" кв.{item.AddrFlat}"; } catch { }
+
+                var ifaList = _context.TblResultIfas.Select(e => new { e.BloodId, e.ResultIfaDate, e.ResultIfaResultId }).Where(e => e.BloodId == item.BloodId).ToList();
+                foreach (var ifa in ifaList)
+                    try { resFull += $"Ифа {_context.ListResults.First(e => e.ResultId == ifa.ResultIfaResultId).ResultName};";} catch { }
+
+                var ibList = _context.TblResultBlots.Select(e => new { e.BloodId, e.ResultBlotResultId, e.ResultBlotDate }).Where(e => e.BloodId == item.BloodId).ToList();
+                foreach (var ib in ibList)
+                    try { resFull += $"ИБ {_context.ListResults.First(e => e.ResultId == ib.ResultBlotResultId).ResultName};";} catch { }
+
+                var antigenList = _context.TblResultAntigens.Select(e => new { e.BloodId, e.ResultAntigenDate, e.ResultAntigenResultId }).Where(e => e.BloodId == item.BloodId).ToList();
+                foreach (var antigen in antigenList)
+                    try { resFull += $"Антиген {_context.ListResults.First(e => e.ResultId == antigen.ResultAntigenResultId).ResultName}";} catch { }
+
+                var pcrList = _context.TblResultPcrs.Select(e => new { e.BloodId, e.ResultPcrDate, e.ResultPcrResultId}).Where(e => e.BloodId == item.BloodId).ToList();
+                foreach (var pcr in pcrList)
+                    try { resFull += $"Пцр {_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultName}";} catch { }
+
+                ListPatientForRpt patient = new()
+                {
+                    NumIfa = item.NumIfa,
+                    PatientId = item.PatientId,
+                    FirstName = item.FirstName,
+                    FamilyName = item.FamilyName,
+                    ThirdName = item.ThirdName,
+                    BirthDate = item.BirthDate.ToString("dd-MM-yyyy"),
+                    CategoryPatientId = item.CategoryPatientId,
+                    AddrFull = adddrFull,
+                    ResFull = resFull,
+                };
+
+                listPatient.Add(patient);
+            }
+
+            var Viewdata = new ListForRptAnalyzesViewModel 
+            { 
+                ListRecForRpts = _context.ListRecForRpts.ToList(),
+                TblPatientCards = listPatient,
+                IfaEnd = ifaEnd,
+                IfaStart = ifaStart,
+                Doctor = doctor
+            };
+
+            ViewBag.Title = "RptAnalyzes";
+            return View("Index", Viewdata);
+        }
+        [HttpPost]
+        public IActionResult Create(int ifaStart, int ifaEnd, string doctor, List<ForCreateRptAnalazys> list)
+        {
+            string rec = "";
             string path_from = _appEnvironment.WebRootPath + @$"\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "ReportAnalyzes.docx";
@@ -35,27 +116,13 @@ namespace Reference_Aids.Controllers
             }
 
             var lisForInput = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.FamilyName, 
-                                                                            p.FirstName, 
-                                                                            p.ThirdName, 
-                                                                            p.Sex, 
-                                                                            p.BirthDate, 
-                                                                            p.RegionId,
-                                                                            p.AddrHome,
-                                                                            p.AddrCorps,
-                                                                            p.AddrFlat,
-                                                                            p.AddrStreat,
-                                                                            p.CityName,
-                                                                            p.AreaName,
-                                                                            i.CategoryPatientId, 
-                                                                            i.SendDistrictNavigation, 
-                                                                            i.SendLabNavigation, 
-                                                                            i.NumInList, 
-                                                                            i.DateBloodSampling, 
-                                                                            i.DateBloodImport, 
-                                                                            i.NumIfa, 
-                                                                            i.BloodId, 
-                                                                            p.PatientId })
+                                                            (p, i) => new { p.FamilyName, p.FirstName, p.ThirdName, p.Sex, 
+                                                                            p.BirthDate, p.RegionId, p.AddrHome, p.AddrCorps,
+                                                                            p.AddrFlat, p.AddrStreat, p.CityName, p.AreaName,
+                                                                            i.CategoryPatientId, i.SendDistrictNavigation, 
+                                                                            i.SendLabNavigation, i.NumInList, 
+                                                                            i.DateBloodSampling, i.DateBloodImport, 
+                                                                            i.NumIfa,  i.BloodId, p.PatientId })
                                                       .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
                                                                && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
             int i = 1;
@@ -66,7 +133,9 @@ namespace Reference_Aids.Controllers
                 try { Addrstr = $"Регион: {_context.ListRegions.Where(e => e.RegionId == item.RegionId).First().RegionName} ГО: {item.AreaName} г.{item.CityName} ул.{item.AddrStreat} к.{item.AddrCorps} д.{item.AddrHome} кв.{item.AddrFlat}"; }
                 catch { Addrstr = "null"; }
 
-                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, item.NumInList, _context, item.BloodId, item.PatientId, rec, Addrstr);
+                rec = list.First(e => e.PatientId == item.PatientId).Rec;
+
+                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, _context, item.BloodId, item.PatientId, rec, Addrstr, doctor);
                 if (i % 2 == 0)
                     InputIndent(path_from);
                 i++;
@@ -76,8 +145,8 @@ namespace Reference_Aids.Controllers
         }
         public static void EditFile(string filepath, string? FamilyName, string? FirstName, string? ThirdName, DateOnly BirthDate, 
                                     ListSex? Sex, ListSendDistrict? SendDistrictNav, ListSendLab? SendLabNav, int? CategoryPatientId,
-                                    DateOnly DateBloodSampling, DateOnly DateBloodImport, int NumIfa, int NumInList, 
-                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations, string Addrstr)//Добавление содержимого
+                                    DateOnly DateBloodSampling, DateOnly DateBloodImport, int NumIfa, 
+                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations, string Addrstr, string doctor)//Добавление содержимого
         {
             string sendLab, sexName, sendDistrict, birthDate, dateBloodSampling, dateBloodImport;
 
@@ -325,8 +394,10 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName+" "+ item.TestSystem.DTestSystemShelfLife.ToString("dd-MM-yyyy")))));
+                                                                     new Text(item.TestSystem.TestSystemName))));
                     trOp.Append(tcOp3);
+                    string ifaRes = "";
+                    try { ifaRes = item.ResultIfaResult.ResultNameForRpt; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -355,13 +426,15 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName+" "+item.TestSystem.DTestSystemShelfLife.ToString("dd-MM-yyyy")))));
+                                                                     new Text(item.TestSystem.TestSystemName))));
                     trOp.Append(tcOp3);
+                    string blotRes = "";
+                    try { blotRes = item.ResultBlotResult.ResultNameForRpt; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultBlotResult.ResultNameForRpt))));
+                                                                     new Text(blotRes))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -385,13 +458,15 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName+" "+ item.TestSystem.DTestSystemShelfLife.ToString("dd-MM-yyyy")))));
+                                                                     new Text(item.TestSystem.TestSystemName))));
                     trOp.Append(tcOp3);
+                    string anRes = "";
+                    try { anRes = item.ResultAntigenResult.ResultNameForRpt; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultAntigenResult.ResultNameForRpt))));
+                                                                     new Text())));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -415,13 +490,16 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName+" "+item.TestSystem.DTestSystemShelfLife.ToString("dd-MM-yyyy")))));
+                                                                     new Text(item.TestSystem.TestSystemName))));
                     trOp.Append(tcOp3);
+
+                    string pcrRes = "";
+                    try { pcrRes = item.ResultPcrResult.ResultNameForRpt; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultPcrResult.ResultNameForRpt))));
+                                                                     new Text())));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
                 }
@@ -445,13 +523,15 @@ namespace Reference_Aids.Controllers
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("14") }),
-                                                                     new Text(item.TestSystem.TestSystemName+" "+item.TestSystem.DTestSystemShelfLife.ToString("dd-MM-yyyy")))));
+                                                                     new Text(item.TestSystem.TestSystemName))));
                     trOp.Append(tcOp3);
+                    string resIb = "";
+                    try { resIb = item.ResultBlotResult.ResultNameForRpt; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                          new FontSize { Val = new StringValue("20") }),
-                                                                     new Text(item.ResultBlotResult.ResultNameForRpt))));
+                                                                     new Text(resIb))));
                     trOp.Append(tcOp4);
                     table.Append(trOp);
 
@@ -700,49 +780,60 @@ namespace Reference_Aids.Controllers
                     tr3.Append(tc6_3);
                     tr3.Append(tc7_3);
 
+                    string res = "";
+                    try { res = item.ResultBlotResultPol6866.ResultName; } catch { }
                     TableCell tc8_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultPol6866.ResultName))));
+                                                              new Text(res))));
+                    res = "";
+                    try { res = item.ResultBlotResultPol5251.ResultName; } catch { }
                     TableCell tc9_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultPol5251.ResultName))));
+                                                              new Text(res))));
+                    res = "";
+                    try { res = item.ResultBlotResultPol3431.ResultName; } catch { }
                     TableCell tc10_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultPol3431.ResultName))));
+                                                              new Text(res))));
                     tr3.Append(tc8_3);
                     tr3.Append(tc9_3);
                     tr3.Append(tc10_3);
 
+                    res = "";
+                    try { res = item.ResultBlotResultHiv2105.ResultName; } catch { }
                     TableCell tc11_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultHiv2105.ResultName))));
+                                                              new Text(res))));
+                    res = "";
+                    try { res = item.ResultBlotResultHiv236.ResultName; } catch { }
                     TableCell tc12_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultHiv236.ResultName))));
+                                                              new Text(res))));
                     tr3.Append(tc11_3);
                     tr3.Append(tc12_3);
-
+                    res = "";
+                    try { res = item.ResultBlotResultHiv0.ResultName; } catch { }
                     TableCell tc13_3 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1" }, new VerticalMerge() { Val = MergedCellValues.Restart }, new Justification() { Val = JustificationValues.Center }),
                                         new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center }),
                                                       new Run(new RunProperties(
                                                                   new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                                   new FontSize { Val = new StringValue("20") }),
-                                                              new Text(item.ResultBlotResultHiv0.ResultName))));
+                                                              new Text(res))));
                     tr3.Append(tc13_3);
                     tableIB.Append(tr3);
 
@@ -774,11 +865,14 @@ namespace Reference_Aids.Controllers
                 para11.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
-                                          new Text("                                                                                                                Врач: _________ ______") { Space = SpaceProcessingModeValues.Preserve })));
+                                          new Text($"                                                                                            Врач: {doctor} ______") { Space = SpaceProcessingModeValues.Preserve })));
+                Paragraph para13 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                Paragraph para14 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                Paragraph para15 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
             }
         }
 
-        public static void InputIndent(string filepath)//Ввод абзацев
+        public static void InputIndent(string filepath)
         {
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(filepath, true))
             {

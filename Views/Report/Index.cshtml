@@ -12,6 +12,12 @@
             <option>@item.RecName</option>
         }
     </datalist>
+    <datalist id="doc_list">
+        <option>Садыков С.Р.</option>
+        <option>Щетинина Н.В.</option>
+        <option>Маас Л.Ф.</option>
+        <option>Серова Н.В.</option>
+    </datalist>
     <br>
     <form class="needs-validation" novalidate asp-controller="Form4" asp-action="Create" method="post">
         <div class="row g-0">
@@ -27,7 +33,7 @@
         </div>
     </form>
     <br>
-    <form class="needs-validation" novalidate asp-controller="RptAnalyzes" asp-action="Create" method="post">
+    <form class="needs-validation" novalidate asp-controller="RptAnalyzes" asp-action="Index" method="post">
         <div class="row g-0">
             <div class="col" style="margin: 7px">
                 <input autocomplete="fals" placeholder="Ифа1" type="text" class="form-control" name='ifaStart'>
@@ -35,8 +41,11 @@
             <div class="col" style="margin: 7px">
                 <input autocomplete="fals" placeholder="Ифа2" type="text" class="form-control" name='ifaEnd'>
             </div>
-            <div class="col" style="margin: 7px">
+            @*<div class="col" style="margin: 7px">
                 <input placeholder="Рекомендации" type="text" class="form-control" name='rec' list="rec_list">
+            </div>*@
+            <div class="col" style="margin: 7px">
+                <input placeholder="Врач" type="text" class="form-control" name='doctor' list="doc_list">
             </div>
             <div class="col" style="margin: 7px">
                 <input class="btn btn-outline-success btn-sm" type="submit" value="Создать отчет по анализам">
@@ -59,6 +68,9 @@
     </form>
     <form class="needs-validation" novalidate asp-controller="RptDaily" asp-action="Create" method="post">
         <div class="row g-0">
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата1" type="date" class="form-control" name='dat'>
+            </div>
             <div class="col" style="margin: 7px">
                 <input class="btn btn-outline-success btn-sm" type="submit" value="Создать ежедневный отчет">
             </div>

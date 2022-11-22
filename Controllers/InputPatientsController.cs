@@ -52,10 +52,31 @@ namespace Reference_Aids.Controllers
             foreach (var patient in listPatients)
             {
                 int labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId,
-                    districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId;
+                    districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId,
+                    testSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId;
 
                 if (patient.PatienId != null)
                 {
+                    TblPatientCard tblPatientCard1 = new()
+                    {
+                        PatientId = Int32.Parse(patient.PatienId),
+                        FamilyName = patient.FamilyName,
+                        FirstName = patient.FirstName,
+                        ThirdName = patient.ThirdName,
+                        BirthDate = DateOnly.Parse(patient.BirthDate),
+                        SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
+                        RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                        CityName = patient.CityName,
+                        AreaName = patient.AreaName,
+                        PhoneNum = patient.Phone,
+                        AddrHome = patient.AddrHome,
+                        AddrCorps = patient.AddrCorps,
+                        AddrFlat = patient.AddrFlat,
+                        AddrStreat = patient.AddrStreat,
+                        PatientCom = patient.PatientCom
+                    };
+                    _context.TblPatientCards.Update(tblPatientCard1);
+
                     TblDistrictBlot tblDistrictBlot = new()
                     {
                         PatientId = Int32.Parse(patient.PatienId),
@@ -63,10 +84,12 @@ namespace Reference_Aids.Controllers
                         CutOff =  Double.Parse(patient.CutOff),
                         BlotResult = Double.Parse(patient.Result),
                         BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
-                        TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
+                        TestSystemId = testSystemId,
                         SendDistrictId = districtId,
                         SendLabId = labId
                     };
+                    _context.TblDistrictBlots.Add(tblDistrictBlot);
+
                     TblIncomingBlood tblIncomingBlood = new()
                     {
                         PatientId = Int32.Parse(patient.PatienId),
@@ -79,9 +102,8 @@ namespace Reference_Aids.Controllers
                         NumIfa = (int)patient.NumIfa,
                         NumInList = Int32.Parse(patient.NumInList)
                     };
-
                     _context.TblIncomingBloods.Add(tblIncomingBlood);
-                    _context.TblDistrictBlots.Add(tblDistrictBlot);
+                    
                     await _context.SaveChangesAsync();
                 }
                 else 
@@ -103,7 +125,8 @@ namespace Reference_Aids.Controllers
                             AddrHome = patient.AddrHome,
                             AddrCorps = patient.AddrCorps,
                             AddrFlat = patient.AddrFlat,
-                            AddrStreat = patient.AddrStreat
+                            AddrStreat = patient.AddrStreat,
+                            PatientCom = patient.PatientCom
                         };
                     }
                     catch
@@ -119,7 +142,8 @@ namespace Reference_Aids.Controllers
                             AddrHome = patient.AddrHome,
                             AddrCorps = patient.AddrCorps,
                             AddrFlat = patient.AddrFlat,
-                            AddrStreat = patient.AddrStreat
+                            AddrStreat = patient.AddrStreat,
+                            PatientCom = patient.PatientCom
                         };
                     }
                     
@@ -200,13 +224,13 @@ namespace Reference_Aids.Controllers
                     {
                         SendLab = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "A" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "A"+ row.RowIndex).InnerText,
                         SendDistrict = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText,
-                        DateBloodSampling = row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText,//DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd")
+                        DateBloodSampling = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),//row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText,//
                         Category = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText,
                         //Anon = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
                         FamilyName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
                         FirstName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText,
                         ThirdName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText,
-                        BirthDate = row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText,//DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd")
+                        BirthDate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),//row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText,//
                         Sex = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText,
                         Phone = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText,
                         RegionName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText,
@@ -216,7 +240,7 @@ namespace Reference_Aids.Controllers
                         AddrHome = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText,
                         AddrCorps = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText,
                         AddrFlat = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText,
-                        Blotdate = row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText,//DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd")
+                        Blotdate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd"),//row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText,//
                         TestSys = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText,
                         CutOff = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
                         Result = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText)).InnerText,//row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
