@@ -3,6 +3,7 @@ using Reference_Aids.Data;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Drawing.Charts;
 
 namespace Reference_Aids.Controllers
 {
@@ -32,9 +33,6 @@ namespace Reference_Aids.Controllers
             
             var lisForInput = (from patient in _context.TblPatientCards
                                join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
-                               from resIfa in _context.TblResultIfas.Where(resIfa => resIfa.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                               from resPcr in _context.TblResultPcrs.Where(resPcr => resPcr.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                               from resIb in _context.TblResultBlots.Where(resIb => resIb.BloodId == incBlood.BloodId).DefaultIfEmpty()
                                select new
                                {
                                    patient.FamilyName,
@@ -44,7 +42,10 @@ namespace Reference_Aids.Controllers
                                    patient.Sex,
                                    incBlood.DateBloodImport,
                                    incBlood.NumIfa,
-                                   incBlood.CategoryPatientId
+                                   incBlood.CategoryPatientId,
+                                   incBlood.BloodId,
+                                   incBlood.SendDistrictId,
+                                   incBlood.SendLabId
                                }).Where(e => e.DateBloodImport == date_now).OrderBy(e => e.NumIfa).ToList();
 
             int i = 0;
@@ -59,11 +60,41 @@ namespace Reference_Aids.Controllers
                 try { fio += " " + item.ThirdName; }
                 catch { }
 
+                try { categery =item.CategoryPatientId.ToString(); }
+                catch { }
+
                 try { dateSex += item.BirthDate.ToString("dd-MM-yyyy"); }
                 catch { }
                 try { dateSex += " ," + item.Sex.SexNameShort; }
                 catch { }
 
+                try { lpuLab +=_context.ListSendLabs.First(e => e.SendLabId == item.SendLabId).SendLabName; }
+                catch { }
+
+                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId).ToList();
+                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId).ToList();
+                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId).ToList();
+                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId).ToList();
+
+                foreach (var ifa in resIfa)
+                {
+                    try { strAnalyzes += $"ИФА {ifa.ResultIfaDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == ifa.ResultIfaResultId).ResultNameForRpt}; "; } catch { }
+                }
+
+
+                foreach (var blot in resBlot)
+                {
+                    try { strAnalyzes += $"ИБ {blot.ResultBlotDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == blot.ResultBlotResultId).ResultNameForRpt}; "; } catch { }
+                }
+
+
+                foreach (var pcr in resPcr)
+                {
+                    try { strAnalyzes += $"ПЦР {pcr.ResultPcrDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultNameForRpt}; "; } catch { }
+                }
 
                 EditFile(path_from, item.NumIfa, fio, dateSex, categery, lpuLab, strAnalyzes);
                 i++;
@@ -71,6 +102,7 @@ namespace Reference_Aids.Controllers
 
             return PhysicalFile(path_from, file_type, file_name);
         }
+
         public static void CreateFile(string filepath, Reference_AIDSContext _context)
         {
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filepath, WordprocessingDocumentType.Document))
@@ -78,14 +110,15 @@ namespace Reference_Aids.Controllers
                 MainDocumentPart mainPart = wordDocument.AddMainDocumentPart();
                 mainPart.Document = new Document();
                 Body body = mainPart.Document.AppendChild(new Body());
-                
-                Paragraph para5 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }, new Justification() { Val = JustificationValues.Center })));
-                para5.AppendChild(new Run(new RunProperties(
-                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("20") }),
-                                          new Text()));
+                //Paragraph para = 
+                body.AppendChild(new SectionProperties(
+                    new PageSize() { Width = (UInt32Value)15840U, Height = (UInt32Value)12240U, Orient = PageOrientationValues.Landscape },
+                    new PageMargin() { Top = 708, Right = 1134, Bottom = 850, Left = 1440, Header = 450, Footer = 708 }));
 
                 Table table = new(new TableProperties(
+                    new SectionProperties(
+                        new PageSize() { Width = (UInt32Value)15840U, Height = (UInt32Value)12240U, Orient = PageOrientationValues.Landscape },
+                        new PageMargin() { Top = 720, Right = Convert.ToUInt32(1 * 1440.0), Bottom = 360, Left = Convert.ToUInt32(1 * 1440.0), Header = (UInt32Value)450U, Footer = (UInt32Value)720U, Gutter = (UInt32Value)0U }),
                     new TableBorders(
                         new TopBorder() { Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines), Size = 0 },
                         new BottomBorder() { Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines), Size = 0 },
@@ -95,7 +128,6 @@ namespace Reference_Aids.Controllers
                         new InsideVerticalBorder() { Val = new EnumValue<BorderValues>(BorderValues.BasicThinLines), Size = 0 })));
 
                 TableRow tr = new();
-
                 TableCell tc1 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "500" }),
                                     new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                   new Run(new RunProperties(
@@ -136,13 +168,13 @@ namespace Reference_Aids.Controllers
                                                               new Bold()),
                                                           new Text("Лаборатория"))));
                 tr.Append(tc5);
-                TableCell tc6 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "1000" }),
+                TableCell tc6 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "10000" }),
                                     new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                   new Run(new RunProperties(
                                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                                               new FontSize { Val = new StringValue("20") },
                                                               new Bold()),
-                                                          new Text("Дата постановки, Результат"))));
+                                                          new Text("Анализы в базе"))));
                 tr.Append(tc6);
                 table.Append(tr);
                 body.Append(table);
