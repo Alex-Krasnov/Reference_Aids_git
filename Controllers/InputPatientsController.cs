@@ -216,7 +216,7 @@ namespace Reference_Aids.Controllers
                     string familyName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText)).InnerText;
                     List<TblPatientCard> posPatient = new();
 
-                        if (familyName != "")
+                    if (familyName != "")
                         posPatient = _context.TblPatientCards.Where(e => e.FamilyName.ToUpper().Contains(familyName.ToUpper())).OrderBy(e => e.PatientId).ToList();
 
 

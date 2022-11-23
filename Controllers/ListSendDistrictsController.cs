@@ -29,7 +29,7 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([Bind("SendDistrictId,SendDistrictName")] ListSendDistrict list)
         {
-            if (ModelState.IsValid && await _context.ListSendLabs.FindAsync(list.SendDistrictId) == null)
+            if (ModelState.IsValid && await _context.ListSendDistricts.FindAsync(list.SendDistrictId) == null)
             {
                 _context.Add(list);
                 await _context.SaveChangesAsync();

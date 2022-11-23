@@ -32,7 +32,7 @@ namespace Reference_Aids.Controllers
         {
             if (ModelState.IsValid)
             {
-                string sql = "select tbl_patient_card.* from tbl_patient_card join tbl_incoming_blood on tbl_patient_card.patient_id = tbl_incoming_blood.patient_id where 1=1";
+                string sql = "select tbl_patient_card.* from tbl_patient_card left join tbl_incoming_blood on tbl_patient_card.patient_id = tbl_incoming_blood.patient_id where 1=1";
 
                 if (list.PatientId != null)
                     sql += $" and patient_id = {list.PatientId}";

@@ -67,8 +67,8 @@
                     <tr>
                         <th scope="col" width="150px">Дата блота</th>
                         <th scope="col" width="170px">Тест система</th>
-                        <th scope="col" width="170px">Кем напрв.</th>
                         <th scope="col" width="170px">Отпр. лаб.</th>
+                        <th scope="col" width="170px">Кем напрв.</th>
                         <th scope="col" width="70px">Cut off</th>
                         <th scope="col" width="92px">Результат</th>
                         <th scope="col" width="80px">КП</th>
@@ -84,8 +84,8 @@
                                 <tr>
                                     <td width="150px"><input type="date" class="form-control tbl-input" name='' value=@item.DBlot.ToString("yyyy-MM-dd") disabled></td>
                                     <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.TestSystemName()" disabled></td>
-                                    <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendDistrictName()" disabled></td>
                                     <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendLabName()" disabled></td>
+                                    <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendDistrictName()" disabled></td>
                                     <td width="70px"><input type="text" class="form-control tbl-input" name='' value="@item.CutOff" disabled></td>
                                     <td width="92px"><input type="text" class="form-control tbl-input" name='' value="@item.BlotResult" disabled></td>
                                     <td width="80px"><input type="text" class="form-control tbl-input" name='' value="@item.BlotCoefficient" disabled></td>
@@ -94,8 +94,8 @@
                             <tr>
                                 <td width="150px"><input type="date" class="form-control tbl-input" name='DBlot'></td>
                                 <td width="170px"><input type="text" class="form-control tbl-input" list="test_system_list" name='TestSystemId'></td>
-                                <td width="170px"><input type="text" class="form-control tbl-input" list="send_district_list" name='SendDistrictId'></td>
                                 <td width="170px"><input type="text" class="form-control tbl-input" list="send_lab_list" name='SendLabId'></td>
+                                <td width="170px"><input type="text" class="form-control tbl-input" list="send_district_list" name='SendDistrictId'></td>
                                 <td width="70px"><input type="text" class="form-control tbl-input" name='CutOff'></td>
                                 <td width="92px"><input type="text" class="form-control tbl-input" name='BlotResult'></td>
                                 <td width="80px"><input type="submit" class="btn btn-outline-success btn-sm" value="              "/></td>

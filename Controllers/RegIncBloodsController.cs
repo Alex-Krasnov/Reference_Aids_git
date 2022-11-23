@@ -60,6 +60,9 @@ namespace Reference_Aids.Controllers
 
                 _context.TblDistrictBlots.Add(tblDistrictBlot);
                 await _context.SaveChangesAsync();
+                List<string> ErrList = new() { "Ошибка в блоте" };
+                if(!ModelState.IsValid)
+                    return RedirectToAction("Index", "Error", new { list = ErrList });
                 return RedirectToAction("Index", new { id = list.PatientId });
             }
             return RedirectToAction("Index", new { id = list.PatientId });
@@ -73,12 +76,12 @@ namespace Reference_Aids.Controllers
                 TblIncomingBlood tblIncomingBlood = new()
                 {
                     PatientId = list.PatientId,
-                    SendDistrictId = list.SendDistrictId(_context),
-                    SendLabId = list.SendLabId(_context),
+                    SendDistrictId =  _context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrict).SendDistrictId,
+                    SendLabId = _context.ListSendLabs.First(e => e.SendLabName == list.SendLab).SendLabId,
                     CategoryPatientId = list.CategoryPatient,   //CategoryPatientId(_context),
                     AnonymousPatient = list.AnonymousPatient,
                     DateBloodSampling = DateOnly.Parse(list.DateBloodSampling),
-                    QualitySerumId = list.QualitySerumId(_context),
+                    QualitySerumId = _context.ListQualitySerums.First(e => e.QualitySerumName == list.QualitySerum).QualitySerumId,
                     DateBloodImport = DateOnly.Parse(list.DateBloodImport),
                     NumIfa = list.NumIfa,
                     NumInList = list.NumInList
@@ -87,7 +90,8 @@ namespace Reference_Aids.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index", new { id = list.PatientId });
             }
-            return RedirectToAction("Index", new { id = list.PatientId });
+            List<string> ErrList = new() { "Ошибка в данных по пробирке" };
+            return RedirectToAction("Index", "Error", new { list = ErrList });
         }
     }
 }

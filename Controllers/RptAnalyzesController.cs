@@ -41,7 +41,7 @@ namespace Reference_Aids.Controllers
                                                                p.PatientId
                                                            })
                                                      .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
-                                                              && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
+                                                              && e.DateBloodImport.Year == DateTime.Now.Year).OrderBy(e => e.NumIfa).ToList();
             foreach (var item in lisForInput)
             {
                 string adddrFull = "", resFull = "";

@@ -117,68 +117,151 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(List<InputAnalyzes> list)
         {
+            List<string> ErrList = new();
             if (ModelState.IsValid)
             {
                 DateOnly dateNow = DateOnly.FromDateTime(DateTime.Today);
                 switch (list.First().TypeAnalyze)
                 {
                     case "ИФА":
+                        List<TblResultIfa> listIfa = new();
                         foreach (var item in list)
                         {
+                            int? bloodId = null, resultIfaTestSysId = null;
+
+                            try 
+                            { 
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId; 
+                            } 
+                            catch 
+                            {
+                                ErrList.Add($"Не найден Рег. ном.:{item.PatientId}");
+                                continue;
+                            }
+                            try
+                            {
+                                resultIfaTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId;
+                            }
+                            catch
+                            {
+                                ErrList.Add($"Не найдена тест система:{item.TestSystem}");
+                                continue;
+                            }
+
                             TblResultIfa tblResultIfa = new()
                             {
-                                BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
+                                BloodId = bloodId,
                                 ResultIfaDate = dateNow,
-                                ResultIfaTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId,
+                                ResultIfaTestSysId = resultIfaTestSysId,
                                 ResultIfaCutOff = item.CutOff,
                                 ResultIfaOp = item.PatientResult,
                                 ResultIfaResultId = _context.ListResults.Where(e => e.ResultName == item.Result).First().ResultId
                             };
-
-                            _context.TblResultIfas.Add(tblResultIfa);
+                            listIfa.Add(tblResultIfa);
+                            //_context.TblResultIfas.Add(tblResultIfa);
+                            //await _context.SaveChangesAsync();
+                        }
+                        foreach(var ifa in listIfa)
+                        {
+                            _context.TblResultIfas.Add(ifa);
                             await _context.SaveChangesAsync();
                         }
+                            
                         break;
                     case "Антиген":
+                        List<TblResultAntigen> listAntigen = new();
                         foreach (var item in list)
                         {
+                            int? bloodId = null, resultIfaTestSysId = null;
+
+                            try
+                            {
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId;
+                            }catch
+                            {
+                                ErrList.Add($"Не найден Рег. ном.:{item.PatientId}");
+                                continue;
+                            }
+                            try
+                            {
+                                resultIfaTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId;
+                            }catch
+                            {
+                                ErrList.Add($"Не найдена тест система:{item.TestSystem}");
+                                continue;
+                            }
                             TblResultAntigen tblResultAntigen = new()
                             {
-                                BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
+                                BloodId = bloodId,
                                 ResultAntigenDate = dateNow,
-                                ResultAntigenTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId,
+                                ResultAntigenTestSysId = resultIfaTestSysId,
                                 ResultAntigenCutOff = item.CutOff,
                                 ResultAntigenOp = item.PatientResult,
                                 ResultAntigenTypeId = 0,
                                 ResultAntigenResultId = _context.ListResults.Where(e => e.ResultName == item.Result).First().ResultId
                             };
-
-                            _context.TblResultAntigens.Add(tblResultAntigen);
+                            listAntigen.Add(tblResultAntigen);
+                            //_context.TblResultAntigens.Add(tblResultAntigen);
+                            //await _context.SaveChangesAsync();
+                        }
+                        foreach (var antigen in listAntigen)
+                        {
+                            _context.TblResultAntigens.Add(antigen);
                             await _context.SaveChangesAsync();
                         }
+                            
                         break;
                     case "Подтв ag":
+                        List<TblResultAntigen> listAntigenP = new();
                         foreach (var item in list)
                         {
+                            int? bloodId = null, resultIfaTestSysId = null;
+
+                            try
+                            {
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId;
+                            }catch
+                            {
+                                ErrList.Add($"Не найден Рег. ном.:{item.PatientId}");
+                                continue;
+                            }
+                            try
+                            {
+                                resultIfaTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId;
+                            }catch
+                            {
+                                ErrList.Add($"Не найдена тест система:{item.TestSystem}");
+                                continue;
+                            }
                             TblResultAntigen tblResultAntigen = new()
                             {
-                                BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
+                                BloodId = bloodId,
                                 ResultAntigenDate = dateNow,
-                                ResultAntigenTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.TestSystem).First().TestSystemId,
+                                ResultAntigenTestSysId = resultIfaTestSysId,
                                 ResultAntigenCutOff = item.CutOff,
                                 ResultAntigenOp = item.PatientResult,
                                 ResultAntigenTypeId = 1,
                                 ResultAntigenResultId = _context.ListResults.Where(e => e.ResultName == item.Result).First().ResultId
                             };
-
-                            _context.TblResultAntigens.Add(tblResultAntigen);
+                            listAntigenP.Add(tblResultAntigen);
+                            //_context.TblResultAntigens.Add(tblResultAntigen);
+                            //await _context.SaveChangesAsync();
+                        }
+                        foreach (var antigen in listAntigenP)
+                        {
+                            _context.TblResultAntigens.Add(antigen);
                             await _context.SaveChangesAsync();
                         }
+                            
                         break;
                     default:
                         return RedirectToAction("Index", "ImportAnalyzes");
                 }
             }
+            if (ErrList != null)
+                return RedirectToAction("Index", "Error", new { list = ErrList });
+
+            //await _context.SaveChangesAsync();
             return RedirectToAction("Index", "ImportAnalyzes");
         }
     }

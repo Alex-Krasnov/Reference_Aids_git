@@ -5,7 +5,7 @@ namespace Reference_Aids.Models
 {
     public partial class TblResultAntigen
     {
-        public int BloodId { get; set; }
+        public int? BloodId { get; set; }
         public int ResultAntigenId { get; set; }
         public DateOnly ResultAntigenDate { get; set; }
         public int? ResultAntigenTestSysId { get; set; }

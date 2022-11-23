@@ -3,6 +3,8 @@ using Reference_Aids.Data;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
+using System.Reflection.Metadata;
+using Document = DocumentFormat.OpenXml.Wordprocessing.Document;
 
 namespace Reference_Aids.Controllers
 {
@@ -30,12 +32,9 @@ namespace Reference_Aids.Controllers
                 fileInf1.Delete();
 
             CreateFile(path_from, _context);
-            
+
             var lisForInput = (from patient in _context.TblPatientCards
                                join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
-                               from resIfa in _context.TblResultIfas.Where(resIfa => resIfa.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                               from resPcr in _context.TblResultPcrs.Where(resPcr => resPcr.BloodId == incBlood.BloodId).DefaultIfEmpty()
-                               from resIb in _context.TblResultBlots.Where(resIb => resIb.BloodId == incBlood.BloodId).DefaultIfEmpty()
                                select new
                                {
                                    patient.PatientId,
@@ -55,23 +54,19 @@ namespace Reference_Aids.Controllers
                                    incBlood.SendLabNavigation,
                                    incBlood.SendDistrictNavigation,
                                    incBlood.NumIfa,
-                                   ResultBlotDate = resIb != null ? resIb.ResultBlotDate : new DateOnly(),
-                                   ResultBlotResult = resIb != null ? resIb.ResultBlotResult : null,
-                                   ResultBlotResultId = resIb != null ? resIb.ResultBlotResultId : null,
-                                   ResultIfaDate = resIfa != null ? resIfa.ResultIfaDate : new DateOnly(),
-                                   ResultIfaResult = resIfa != null ? resIfa.ResultIfaResult : null,
-                                   ResultIfaResultId = resIfa != null ? resIfa.ResultIfaResultId : null,
-                                   ResultPcrDate = resPcr != null ? resPcr.ResultPcrDate : new DateOnly(),
-                                   ResultPcrResult = resPcr != null ? resPcr.ResultPcrResult : null,
-                                   ResultPcrResultId = resPcr != null ? resPcr.ResultPcrResultId : null
-                               }).Where(e => (e.ResultBlotDate.CompareTo(date_start) >= 0 && e.ResultBlotDate.CompareTo(date_end) <= 0 && e.ResultBlotResultId == 0) ||
-                                             (e.ResultIfaDate.CompareTo(date_start) >= 0 && e.ResultIfaDate.CompareTo(date_end) <= 0 && e.ResultIfaResultId == 0) ||
-                                             (e.ResultPcrDate.CompareTo(date_start) >= 0 && e.ResultPcrDate.CompareTo(date_end) <= 0 && e.ResultPcrResultId == 0)).ToList();
+                                   incBlood.DateBloodImport,
+                                   incBlood.BloodId
+                               }).Where(e => (e.DateBloodImport.CompareTo(date_start) >= 0 && e.DateBloodImport.CompareTo(date_end) <= 0)).OrderBy(e => e.NumIfa).ToList();
 
             int i = 0;
             foreach (var item in lisForInput)
             {
                 string fio = "", dateSex = "", residence = "", categery = "", lpuLab = "", strAnalyzes = "";
+
+                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId && e.ResultIfaResultId != 1).ToList();
+                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId && e.ResultPcrResultId != 1).ToList();
+                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId && e.ResultAntigenResultId != 1).ToList();
+                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1).ToList();
 
                 try { fio += item.FamilyName; } 
                 catch { }
@@ -106,13 +101,26 @@ namespace Reference_Aids.Controllers
                 try { lpuLab += ", " + item.SendLabNavigation.SendLabName; }
                 catch { }
 
-                try { strAnalyzes += $"{item.ResultIfaDate:dd-MM-yyyy}, ИФА {item.ResultIfaResult.ResultNameForRpt}; "; }
-                catch { }
-                try { strAnalyzes += $"{item.ResultBlotDate:dd-MM-yyyy}, ИБ {item.ResultBlotResult.ResultNameForRpt}; "; }
-                catch { }
-                try { strAnalyzes += $"{item.ResultPcrDate:dd-MM-yyyy}, ПЦР {item.ResultPcrResult.ResultNameForRpt}; "; }
-                catch { }
+                foreach(var ifa in resIfa)
+                {
+                    try { strAnalyzes += $"ИФА {ifa.ResultIfaDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == ifa.ResultIfaResultId).ResultNameForRpt}; "; } catch { }
+                }
+                    
 
+                foreach (var blot in resBlot)
+                {
+                    try { strAnalyzes += $"ИБ {blot.ResultBlotDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == blot.ResultBlotResultId).ResultNameForRpt}; "; } catch { }
+                }
+                    
+
+                foreach (var pcr in resPcr)
+                {
+                    try { strAnalyzes += $"ПЦР {pcr.ResultPcrDate:dd-MM-yyyy}, "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultNameForRpt}; "; } catch { }
+                }
+                
                 EditFile(path_from, i, fio, dateSex, residence, categery, lpuLab, item.NumIfa, strAnalyzes);
                 i++;
             }
@@ -126,8 +134,8 @@ namespace Reference_Aids.Controllers
                    h2_1 = "Форма № 266/У-88",
                    h2_2 = "Утверждена МЗ СССР 05.08.88 №690",
                    h3 = $"ОПЕРАТИВНОЕ ДОНЕСЕНИЕ № {_context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1} " +
-                        $"о лицах, в крови которых обнаружены маркеры ВИЧ" +
-                        $" в Эпидемиологический отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СИПД";
+                        $"о лицах, в крови которых обнаружены маркеры ВИЧ," +
+                        $" в Эпидемиологический отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СПИД";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filepath, WordprocessingDocumentType.Document))
             {

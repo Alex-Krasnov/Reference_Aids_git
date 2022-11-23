@@ -44,17 +44,8 @@ namespace Reference_Aids.Controllers
                                    patient.Sex,
                                    incBlood.DateBloodImport,
                                    incBlood.NumIfa,
-                                   incBlood.CategoryPatientId,
-                                   ResultBlotDate = resIb != null ? resIb.ResultBlotDate : new DateOnly(),
-                                   ResultBlotResult = resIb != null ? resIb.ResultBlotResult : null,
-                                   ResultBlotResultId = resIb != null ? resIb.ResultBlotResultId : null,
-                                   ResultIfaDate = resIfa != null ? resIfa.ResultIfaDate : new DateOnly(),
-                                   ResultIfaResult = resIfa != null ? resIfa.ResultIfaResult : null,
-                                   ResultIfaResultId = resIfa != null ? resIfa.ResultIfaResultId : null,
-                                   ResultPcrDate = resPcr != null ? resPcr.ResultPcrDate : new DateOnly(),
-                                   ResultPcrResult = resPcr != null ? resPcr.ResultPcrResult : null,
-                                   ResultPcrResultId = resPcr != null ? resPcr.ResultPcrResultId : null
-                               }).Where(e => e.DateBloodImport == date_now).ToList();
+                                   incBlood.CategoryPatientId
+                               }).Where(e => e.DateBloodImport == date_now).OrderBy(e => e.NumIfa).ToList();
 
             int i = 0;
             foreach (var item in lisForInput)
@@ -73,12 +64,6 @@ namespace Reference_Aids.Controllers
                 try { dateSex += " ," + item.Sex.SexNameShort; }
                 catch { }
 
-                try { strAnalyzes += $"{item.ResultIfaDate:dd-MM-yyyy}, ИФА {item.ResultIfaResult.ResultNameForRpt}; "; }
-                catch { }
-                try { strAnalyzes += $"{item.ResultBlotDate:dd-MM-yyyy}, ИБ {item.ResultBlotResult.ResultNameForRpt}; "; }
-                catch { }
-                try { strAnalyzes += $"{item.ResultPcrDate:dd-MM-yyyy}, ПЦР {item.ResultPcrResult.ResultNameForRpt}; "; }
-                catch { }
 
                 EditFile(path_from, item.NumIfa, fio, dateSex, categery, lpuLab, strAnalyzes);
                 i++;
