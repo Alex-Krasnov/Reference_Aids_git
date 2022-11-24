@@ -28,7 +28,7 @@ namespace Reference_Aids.Controllers
                 TblDistrictBlots = await _context.TblDistrictBlots.Where(e => e.PatientId == id).ToListAsync(),
                 TblIncomingBloods = await _context.TblIncomingBloods.Where(e => e.PatientId == id).ToListAsync(),
                 ListSendDistricts = await _context.ListSendDistricts.ToListAsync(),
-                ListCategories = await _context.ListCategories.ToListAsync(),
+                ListCategories = await _context.ListCategories.OrderBy(e => e.CategoryId).ToListAsync(),
                 ListQualitySerums = await _context.ListQualitySerums.ToListAsync()
             };
             ViewBag.Title = "InputIncBlood";

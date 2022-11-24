@@ -46,7 +46,7 @@ namespace Reference_Aids.Controllers
                 if (list.TypeAntigen(_context) == 0)
                     kp = (list.ResultAntigenOp / list.ResultAntigenCutOff);
                 else
-                    percentGash = (int)((list.ResultAntigenOp - list.ResultAntigenConfirmOp) / list.ResultAntigenOp) * 100;   
+                    percentGash = (int)((list.ResultAntigenOp - list.ResultAntigenConfirmOp) / list.ResultAntigenOp) * 100;
 
                 TblResultAntigen tblResultAntigen = new()
                 {
@@ -79,10 +79,9 @@ namespace Reference_Aids.Controllers
                 TblResultPcr tblResultPcr = new()
                 {
                     BloodId = list.BloodId,
-                    ResultPcrId = list.ResultPcrId,
                     ResultPcrDate = DateOnly.Parse(list.ResultPcrDate),
                     ResultPcrTestSysId = list.TestSysId(_context),
-                    ResultPcrResultId = list.ResultId(_context)
+                    ResultPcrResultId = _context.ListResults.First(e => e.ResultName == list.ResultPcrResultName).ResultId
                 };
 
                 _context.TblResultPcrs.Add(tblResultPcr);
@@ -102,7 +101,7 @@ namespace Reference_Aids.Controllers
                     BloodId = list.BloodId,
                     ResultBlotDate = DateOnly.Parse(list.ResultBlotDate),
                     ExpirationResultBlotDate = DateOnly.Parse(list.ExpirationResultBlotDate),
-                    ResultBlotTestSysId =list.TestSysId(_context),
+                    ResultBlotTestSysId = list.TestSysId(_context),
                     ResultBlotEnv160 = list.ResultBlotEnv160Id(_context),
                     ResultBlotEnv120 = list.ResultBlotEnv120Id(_context),
                     ResultBlotEnv41 = list.ResultBlotEnv41Id(_context),
@@ -146,6 +145,42 @@ namespace Reference_Aids.Controllers
                 return RedirectToAction("Index", new { blood_id = list.BloodId });
             }
             return RedirectToAction("Index", new { blood_id = list.BloodId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DelAnalyzesAntigen(int id, int bloodid)
+        {
+            var a = _context.TblResultAntigens.First(e => e.ResultAntigenId == id);
+            _context.TblResultAntigens.Remove(a);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { blood_id = bloodid });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DelAnalyzesPcr(int id, int bloodid)
+        {
+            var a = _context.TblResultPcrs.First(e => e.ResultPcrId == id);
+            _context.TblResultPcrs.Remove(a);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { blood_id = bloodid });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DelAnalyzesIfa(int id, int bloodid)
+        {
+            var a = _context.TblResultIfas.First(e => e.ResultIfaId == id);
+            _context.TblResultIfas.Remove(a);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { blood_id = bloodid });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DelAnalyzesBlot(int id, int bloodid)
+        {
+            var a = _context.TblResultBlots.First(e => e.ResultBlotId == id);
+            _context.TblResultBlots.Remove(a);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", new { blood_id = bloodid });
         }
     }
 }

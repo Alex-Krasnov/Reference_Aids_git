@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="row g-0" style="margin-top: 1rem">
-            <textarea placeholder="Комментарий" name="PatientCom" autocomplete="fals" cols="100" rows="3" disabled>"@Model.TblPatientCards[0].PatientCom"</textarea>
+            <textarea placeholder="Комментарий" name="PatientCom" autocomplete="fals" cols="100" rows="3" disabled>@Model.TblPatientCards[0].PatientCom</textarea>
         </div> 
     </div>
     <br>
@@ -182,6 +182,12 @@
                 </tbody>
             </table>
         </form>
-        <a class="btn btn-outline-danger btn-sm" asp-controller="UpdatePatientCard" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать</a>
+        <div>
+            <a class="btn btn-outline-danger btn-sm" asp-controller="UpdIncBloods" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать обл. ИФА и данные по крови</a>
+        </div>
+        <br>
+        <div>
+            <a class="btn btn-outline-danger btn-sm" asp-controller="UpdatePatientCard" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать данные пациента</a>
+        </div>
     </div>
 </div>

@@ -58,7 +58,7 @@ namespace Reference_Aids.Controllers
                 if (list.NumIfa != null)
                     sql += $" and tbl_incoming_blood.num_ifa = {list.NumIfa}";
 
-                sql += " group by tbl_patient_card.patient_id, first_name, family_name, third_name, birth_date, sex_id, region_id, patient_com, phone_num, d_edit, user_edit, addr_home, addr_corps, addr_flat, addr_streat, city_name, area_name, die_id, old_nom order by patient_id";
+                sql += " group by tbl_patient_card.patient_id, first_name, family_name, third_name, birth_date, sex_id, region_id, patient_com, phone_num, d_edit, user_edit, addr_home, addr_corps, addr_flat, addr_streat, city_name, area_name, die_id, old_nom order by first_name, family_name, third_name, birth_date";
                 ListForSearchPatientViewModel viewModel = new()
                 {
                     ListRegions = await _context.ListRegions.ToListAsync(),

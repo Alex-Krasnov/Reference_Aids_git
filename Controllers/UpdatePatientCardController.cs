@@ -38,31 +38,41 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(InputRegPatient list)
         {
-            if (ModelState.IsValid)
+            List<string> ErrList = new();
+            int? sexId = null, regionId = null;
+
+            try { sexId = _context.ListSexes.First(e => e.SexNameLong == list.SexName).SexId; } 
+            catch { sexId = _context.ListSexes.First(e => e.SexNameShort == list.SexName).SexId; }
+
+            try { regionId = _context.ListRegions.First(e => e.RegionName == list.RegionName).RegionId; }
+            catch { ErrList.Add($"Ошибка в регионе:{list.RegionName}"); }
+
+            TblPatientCard tblPatientCard = new()
             {
-                TblPatientCard tblPatientCard = new()
-                {
-                    PatientId = list.PatientId,
-                    FamilyName = list.FamilyName,
-                    FirstName = list.FirstName,
-                    ThirdName = list.ThirdName,
-                    BirthDate = DateOnly.Parse(list.BirthDate),
-                    SexId = list.SexId(_context),
-                    RegionId = list.RegionId(_context),
-                    CityName = list.CityName,
-                    AreaName = list.AreaName,
-                    PatientCom = list.PatientCom,
-                    PhoneNum = list.PhoneNum,
-                    AddrHome = list.AddrHome,
-                    AddrCorps = list.AddrCorps,
-                    AddrFlat = list.AddrFlat,
-                    AddrStreat = list.AddrStreat
-                };
-                _context.TblPatientCards.Update(tblPatientCard);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "RegIncBloods", new { id = tblPatientCard.PatientId });
-            }
-            return RedirectToAction("Index");
+                PatientId = list.PatientId,
+                FamilyName = list.FamilyName,
+                FirstName = list.FirstName,
+                ThirdName = list.ThirdName,
+                BirthDate = DateOnly.Parse(list.BirthDate),
+                SexId = sexId,
+                RegionId = regionId,
+                CityName = list.CityName,
+                AreaName = list.AreaName,
+                PatientCom = list.PatientCom,
+                PhoneNum = list.PhoneNum,
+                AddrHome = list.AddrHome,
+                AddrCorps = list.AddrCorps,
+                AddrFlat = list.AddrFlat,
+                AddrStreat = list.AddrStreat
+            };
+            if (ErrList.Count != 0)
+                return RedirectToAction("Index", "Error", new { list = ErrList });
+
+            _context.TblPatientCards.Update(tblPatientCard);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "RegIncBloods", new { id = tblPatientCard.PatientId });
+            
+           // return RedirectToAction("Index");
         }
     }
 }
