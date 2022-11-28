@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Reflection.Metadata;
 using Document = DocumentFormat.OpenXml.Wordprocessing.Document;
+using Reference_Aids.Models;
 
 namespace Reference_Aids.Controllers
 {
@@ -63,10 +64,13 @@ namespace Reference_Aids.Controllers
             {
                 string fio = "", dateSex = "", residence = "", categery = "", lpuLab = "", strAnalyzes = "";
 
-                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId && e.ResultIfaResultId != 1).ToList();
-                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId && e.ResultPcrResultId != 1).ToList();
-                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId && e.ResultAntigenResultId != 1).ToList();
-                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1).ToList();
+                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId && e.ResultIfaResultId != 1 && e.ResultIfaResultId != null).ToList();
+                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId && e.ResultPcrResultId != 1 && e.ResultPcrResultId != null).ToList();
+                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId && e.ResultAntigenResultId != 1 && e.ResultAntigenResultId != null).ToList();
+                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1 && e.ResultBlotResultId != null).ToList();
+
+                if (resIfa.Count() == 0 && resPcr.Count() == 0 && resAntigen.Count() == 0 && resBlot.Count() == 0)
+                    continue;
 
                 try { fio += item.FamilyName; } 
                 catch { }
@@ -124,7 +128,11 @@ namespace Reference_Aids.Controllers
                 EditFile(path_from, i, fio, dateSex, residence, categery, lpuLab, item.NumIfa, strAnalyzes);
                 i++;
             }
-
+            ListNumForRptNotice num = new ListNumForRptNotice()
+            {
+                Num = _context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1
+            };
+            _context.ListNumForRptNotices.Add(num);
             return PhysicalFile(path_from, file_type, file_name);
         }
         public static void CreateFile(string filepath, Reference_AIDSContext _context)

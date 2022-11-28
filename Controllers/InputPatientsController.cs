@@ -51,9 +51,55 @@ namespace Reference_Aids.Controllers
         {
             foreach (var patient in listPatients)
             {
-                int labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId,
-                    districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId,
+                int labId, districtId, testSystemId, regionId;
+
+                try { labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId; } 
+                catch 
+                {
+                    ListSendLab lab = new()
+                    {
+                        SendLabId = _context.ListSendLabs.Max(e => e.SendLabId) + 1,
+                        SendLabName = patient.SendLab
+                    };
+                    _context.Add(lab);
+                    labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId;
+                }
+
+                try { districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId; }
+                catch
+                {
+                    ListSendDistrict dist = new()
+                    {
+                        SendDistrictId = _context.ListSendDistricts.Max(e => e.SendDistrictId) + 1,
+                        SendDistrictName = patient.SendDistrict
+                    };
+                    _context.Add(dist);
+                    districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId;
+                }
+
+                try { testSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId; }
+                catch
+                {
+                    ListTestSystem testSystem = new()
+                    {
+                        TestSystemId = _context.ListTestSystems.Max(e => e.TestSystemId) + 1,
+                        TestSystemName = patient.TestSys
+                    };
+                    _context.Add(testSystem);
                     testSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId;
+                }
+
+                try { regionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId; }
+                catch
+                {
+                    ListRegion region = new()
+                    {
+                        RegionId = _context.ListSendLabs.Max(e => e.SendLabId) + 1,
+                        RegionName = patient.RegionName
+                    };
+                    _context.Add(region);
+                    regionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId;
+                }
 
                 if (patient.PatienId != null)
                 {
@@ -65,7 +111,7 @@ namespace Reference_Aids.Controllers
                         ThirdName = patient.ThirdName,
                         BirthDate = DateOnly.Parse(patient.BirthDate),
                         SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
-                        RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                        RegionId = regionId,
                         CityName = patient.CityName,
                         AreaName = patient.AreaName,
                         PhoneNum = patient.Phone,
