@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\Files\Sample\form4.xlsx" />
     <None Include="wwwroot\Files\Sample\ReportAnalyzes.docx" />
   </ItemGroup>
 

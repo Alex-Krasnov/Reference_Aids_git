@@ -49,7 +49,7 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Input(List<InputPatients> listPatients)
         {
-            List<string> successfulList = new();
+            List<Success> successfulList = new();
             List<string> errList = new();
 
             foreach (var patient in listPatients)
@@ -161,7 +161,8 @@ namespace Reference_Aids.Controllers
                         _context.TblIncomingBloods.Add(tblIncomingBlood);
 
                         await _context.SaveChangesAsync();
-                        successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
+                        successfulList.Add(new Success { NumIfa = (int)patient.NumIfa, Com = $"ИД: {patient.PatienId}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};" });
+                        //successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
                     } 
                     catch { errList.Add($"ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName}; Дата рождения {patient.BirthDate}"); }
                 }
@@ -221,7 +222,8 @@ namespace Reference_Aids.Controllers
                         _context.TblIncomingBloods.Add(tblIncomingBlood);
                         _context.TblDistrictBlots.Add(tblDistrictBlot);
                         await _context.SaveChangesAsync();
-                        successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
+                        successfulList.Add(new Success { NumIfa = (int)patient.NumIfa, Com = $"ИД: {patientId}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};" });
+                        //successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
                     } 
                     catch { errList.Add($"ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName}; Дата рождения {patient.BirthDate}"); }
                 }
@@ -229,7 +231,7 @@ namespace Reference_Aids.Controllers
             ListForResultImport viewModel = new() 
             {
                 Error = errList,
-                Success = successfulList
+                SuccessList = successfulList.OrderBy(e => e.NumIfa).ToList()
             };
 
             ViewBag.Title = "ResultImport";

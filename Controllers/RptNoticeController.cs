@@ -86,15 +86,17 @@ namespace Reference_Aids.Controllers
 
                 try { residence += item.Region.RegionName; }
                 catch { }
-                try { residence += " " + item.CityName; }
+                try { residence += " г. " + item.CityName; }
                 catch { }
                 try { residence += " " + item.AreaName; }
                 catch { }
-                try { residence += " " + item.AddrHome; }
+                try { residence += "ул. " + item.AddrStreat; }
                 catch { }
-                try { residence += " " + item.AddrCorps; }
+                try { residence += "д. " + item.AddrHome; }
                 catch { }
-                try { residence += " " + item.AddrFlat; }
+                try { residence += "к. " + item.AddrCorps; }
+                catch { }
+                try { residence += "кв. " + item.AddrFlat; }
                 catch { }
 
                 try { categery += item.CategoryPatientId.ToString(); }
@@ -137,13 +139,14 @@ namespace Reference_Aids.Controllers
         }
         public static void CreateFile(string filepath, Reference_AIDSContext _context)
         {
+            int num = _context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1;
             string h1_1 = "МОЦ СПИД, клинико-диагностическая лаборатория",
                    h1_2 = "г.Москва, ул.Щепкина 61/2, к.8",
                    h2_1 = "Форма № 266/У-88",
                    h2_2 = "Утверждена МЗ СССР 05.08.88 №690",
-                   h3 = $"ОПЕРАТИВНОЕ ДОНЕСЕНИЕ № {_context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1} " +
+                   h3 = $"ОПЕРАТИВНОЕ ДОНЕСЕНИЕ № {num} " +
                         $"о лицах, в крови которых обнаружены маркеры ВИЧ," +
-                        $" в Эпидемиологический отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СПИД";
+                        $" в эпидемиологический отдел Московского областного центра СПИД от референс подразделения КДЛ МОЦ СПИД";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Create(filepath, WordprocessingDocumentType.Document))
             {
@@ -253,19 +256,19 @@ namespace Reference_Aids.Controllers
                                                               new Bold()),
                                                           new Text("Дата постановки, Результат"))));
                 tr.Append(tc8);
-                TableCell tc10 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "950" }),
-                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                                  new Run(new RunProperties(
-                                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                              new FontSize { Val = new StringValue("20") },
-                                                              new Bold()),
-                                                          new Text("Примечание"))));
-                tr.Append(tc10);
+                //TableCell tc10 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa, Width = "950" }),
+                //                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                //                                  new Run(new RunProperties(
+                //                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                //                                              new FontSize { Val = new StringValue("20") },
+                //                                              new Bold()),
+                //                                          new Text("Примечание"))));
+                //tr.Append(tc10);
                 table.Append(tr);
                 body.Append(table);
             }
-            //_context.ListNumForRptNotices.Add(new ListNumForRptNotice { Num = _context.ListNumForRptNotices.Last().Num + 1 });
-            //_context.SaveChanges();
+            _context.ListNumForRptNotices.Add(new ListNumForRptNotice { Num = num });
+            _context.SaveChanges();
         }
 
         public static void EditFile(string filepath, int i, string fio, string dateSex, string residence, string categery, string lpuLab, int numIfa, string strAnalyzes)
@@ -332,13 +335,13 @@ namespace Reference_Aids.Controllers
                                                                 new FontSize { Val = new StringValue("20") }),
                                                             new Text(strAnalyzes))));
                 tr2.Append(tc8_2);
-                TableCell tc10_2 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa}),
-                                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
-                                                    new Run(new RunProperties(
-                                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                                                new FontSize { Val = new StringValue("20") }),
-                                                            new Text())));
-                tr2.Append(tc10_2);
+                //TableCell tc10_2 = new(new TableCellProperties(new TableCellWidth() { Type = TableWidthUnitValues.Dxa}),
+                //                    new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
+                //                                    new Run(new RunProperties(
+                //                                                new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                //                                                new FontSize { Val = new StringValue("20") }),
+                //                                            new Text())));
+                //tr2.Append(tc10_2);
                 table.Append(tr2);
             }
         }

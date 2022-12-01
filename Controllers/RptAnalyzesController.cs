@@ -38,19 +38,23 @@ namespace Reference_Aids.Controllers
                                                                i.DateBloodImport,
                                                                i.NumIfa,
                                                                i.BloodId,
-                                                               p.PatientId
+                                                               p.PatientId,
+                                                               i.SendLabId
                                                            })
                                                      .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
                                                               && e.DateBloodImport.Year == DateTime.Now.Year).OrderBy(e => e.NumIfa).ToList();
             foreach (var item in lisForInput)
             {
                 string adddrFull = "", resFull = "";
-                try { adddrFull += $"ГО{item.AreaName}"; } catch { }
-                try { adddrFull += $" г.{item.CityName}"; } catch { }
-                try { adddrFull += $" ул.{item.AddrStreat}"; } catch { }
-                try { adddrFull += $" д.{item.AddrHome}"; } catch { }
-                try { adddrFull += $" к.{item.AddrCorps}"; } catch { }
-                try { adddrFull += $" кв.{item.AddrFlat}"; } catch { }
+
+                try { adddrFull = _context.ListSendLabs.First(e => e.SendLabId == item.SendLabId).SendLabName; } catch { }
+                
+                //try { adddrFull += $"ГО{item.AreaName}"; } catch { }
+                //try { adddrFull += $" г.{item.CityName}"; } catch { }
+                //try { adddrFull += $" ул.{item.AddrStreat}"; } catch { }
+                //try { adddrFull += $" д.{item.AddrHome}"; } catch { }
+                //try { adddrFull += $" к.{item.AddrCorps}"; } catch { }
+                //try { adddrFull += $" кв.{item.AddrFlat}"; } catch { }
 
                 var ifaList = _context.TblResultIfas.Select(e => new { e.BloodId, e.ResultIfaDate, e.ResultIfaResultId }).Where(e => e.BloodId == item.BloodId).ToList();
                 foreach (var ifa in ifaList)
@@ -122,7 +126,7 @@ namespace Reference_Aids.Controllers
                                                                             i.CategoryPatientId, i.SendDistrictNavigation, 
                                                                             i.SendLabNavigation, i.NumInList, 
                                                                             i.DateBloodSampling, i.DateBloodImport, 
-                                                                            i.NumIfa,  i.BloodId, p.PatientId })
+                                                                            i.NumIfa,  i.BloodId, p.PatientId, p.PatientCom })
                                                       .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
                                                                && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
             int i = 1;
@@ -135,7 +139,7 @@ namespace Reference_Aids.Controllers
 
                 rec = list.First(e => e.PatientId == item.PatientId).Rec;
 
-                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, _context, item.BloodId, item.PatientId, rec, Addrstr, doctor);
+                EditFile(path_from, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.Sex, item.SendDistrictNavigation, item.SendLabNavigation, item.CategoryPatientId, item.DateBloodSampling, item.DateBloodImport, item.NumIfa, _context, item.BloodId, item.PatientId, rec, Addrstr, doctor, item.PatientCom);
                 if (i % 2 == 0)
                     InputIndent(path_from);
                 i++;
@@ -146,7 +150,7 @@ namespace Reference_Aids.Controllers
         public static void EditFile(string filepath, string? FamilyName, string? FirstName, string? ThirdName, DateOnly BirthDate, 
                                     ListSex? Sex, ListSendDistrict? SendDistrictNav, ListSendLab? SendLabNav, int? CategoryPatientId,
                                     DateOnly DateBloodSampling, DateOnly DateBloodImport, int NumIfa, 
-                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations, string Addrstr, string doctor)//Добавление содержимого
+                                    Reference_AIDSContext _context, int bloodId, int patientId, string recommendations, string Addrstr, string doctor, string com)//Добавление содержимого
         {
             string sendLab, sexName, sendDistrict, birthDate, dateBloodSampling, dateBloodImport;
 
@@ -862,6 +866,17 @@ namespace Reference_Aids.Controllers
 
                     body.Append(tableIB);
                 }
+
+                Paragraph para16 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
+                para16.AppendChild(new Run(new RunProperties(
+                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                              new FontSize { Val = new StringValue("20") },
+                                              new Bold()),
+                                          new Text("Комментарии: ") { Space = SpaceProcessingModeValues.Preserve }));
+                para16.AppendChild(new Run(new RunProperties(
+                                              new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
+                                              new FontSize { Val = new StringValue("20") },
+                                          new Text(com))));
 
                 //Рекомендовано
                 Paragraph para10 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
