@@ -1,0 +1,20 @@
+﻿@model Reference_Aids.ViewModels.ListForResultImport
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<b>
+<div class="container">
+    <p>Удачно</p>
+    @foreach (var item in Model.Success)
+    {
+        <input disabled type="text" class="form-control" value="@item">
+    }
+    <b>
+    <p>Ошибки</p>
+    @foreach (var item in Model.Error)
+    {
+        <input disabled type="text" class="form-control" value="@item">
+    }
+</div>

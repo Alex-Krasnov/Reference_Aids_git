@@ -39,25 +39,25 @@
     <div class="row g-0" >
         <div class="col-sm-3">
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Ид пациента(Auto)" type="text" class="form-control" name="PatientId" value=@Model.TblPatientCards[0].PatientId >
+                <input disabled placeholder="Ид пациента(Auto)" type="text" class="form-control" name="PatientId" value="@Model.TblPatientCards[0].PatientId">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Фамилия" type="text" class="form-control" name='FirstName' value=@Model.TblPatientCards[0].FamilyName>
+                <input disabled placeholder="Фамилия" type="text" class="form-control" name='FirstName' value="@Model.TblPatientCards[0].FamilyName">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Имя" type="text" class="form-control" name='FamilyName' value=@Model.TblPatientCards[0].FirstName>
+                <input disabled placeholder="Имя" type="text" class="form-control" name='FamilyName' value="@Model.TblPatientCards[0].FirstName">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Отчество" type="text" class="form-control" name='ThirdName' value=@Model.TblPatientCards[0].ThirdName>
+                <input disabled placeholder="Отчество" type="text" class="form-control" name='ThirdName' value="@Model.TblPatientCards[0].ThirdName">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Дата рождения" type="date" class="form-control" id="date" name='BirthDate' value=@Model.TblPatientCards[0].BirthDate.ToString("yyyy-MM-dd")>
+                <input disabled placeholder="Дата рождения" type="date" class="form-control" id="date" name='BirthDate' value="@Model.TblPatientCards[0].BirthDate.ToString("yyyy-MM-dd")">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Пол" type="text" class="form-control" name='SexId' value=@Model.TblPatientCards[0].SexName()>
+                <input disabled placeholder="Пол" type="text" class="form-control" name='SexId' value="@Model.TblPatientCards[0].SexName()">
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
-                <input disabled placeholder="Телефон" type="text" class="form-control" name='PhoneNum' value=@Model.TblPatientCards[0].PhoneNum>
+                <input disabled placeholder="Телефон" type="text" class="form-control" name='PhoneNum' value="@Model.TblPatientCards[0].PhoneNum">
             </div>
         </div>
         <div class="col-sm-9" > 
@@ -65,7 +65,7 @@
             <table class="table table-bordered table-blot" style="margin-bottom: 0px">
                 <thead>
                     <tr>
-                        <th scope="col" width="150px">Дата блота</th>
+                        <th scope="col" width="150px">Дата ифа</th>
                         <th scope="col" width="170px">Тест система</th>
                         <th scope="col" width="170px">Отпр. лаб.</th>
                         <th scope="col" width="170px">Кем напрв.</th>
@@ -82,7 +82,7 @@
                             @foreach (var item in Model.TblDistrictBlots)
                             {
                                 <tr>
-                                    <td width="150px"><input type="date" class="form-control tbl-input" name='' value=@item.DBlot.ToString("yyyy-MM-dd") disabled></td>
+                                    <td width="150px"><input type="date" class="form-control tbl-input" name='' value="@item.DBlot.ToString("yyyy-MM-dd")" disabled></td>
                                     <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.TestSystemName()" disabled></td>
                                     <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendLabName()" disabled></td>
                                     <td width="170px"><input type="text" class="form-control tbl-input" name='' value="@item.SendDistrictName()" disabled></td>
@@ -154,10 +154,10 @@
                     @foreach (var item in Model.TblIncomingBloods)
                     {
                         <tr>
-                            <td><input type="text" class="form-control" name='' value=@item.NumIfa disabled></td>
-                            <td><input type="text" class="form-control" name='' value=@item.NumInList disabled></td>
-                            <td><input type="date" class="form-control" name='' value=@item.DateBloodImport.ToString("yyyy-MM-dd") disabled></td>
-                            <td><input type="date" class="form-control" name='' value=@item.DateBloodSampling.ToString("yyyy-MM-dd") disabled></td>
+                            <td><input type="text" class="form-control" name='' value="@item.NumIfa" disabled></td>
+                            <td><input type="text" class="form-control" name='' value="@item.NumInList" disabled></td>
+                            <td><input type="date" class="form-control" name='' value="@item.DateBloodImport.ToString("yyyy-MM-dd")" disabled></td>
+                            <td><input type="date" class="form-control" name='' value="@item.DateBloodSampling.ToString("yyyy-MM-dd")" disabled></td>
                             <td><input type="text" class="form-control" name='' value="@item.SendLabName()" disabled></td>
                             <td><input type="text" class="form-control" name='' value="@item.SendDistrictName()" disabled></td>
                             <td><input type="text" class="form-control" name='' value="@item.CategoryPatientId" disabled></td>@*CategoryPatientName()*@

@@ -49,10 +49,13 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> Input(List<InputPatients> listPatients)
         {
+            List<string> successfulList = new();
+            List<string> errList = new();
+
             foreach (var patient in listPatients)
             {
                 int labId, districtId, testSystemId, regionId;
-
+                //гарантирован ввод лаборатории, кем. напр., тест системы, региона
                 try { labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId; } 
                 catch 
                 {
@@ -62,6 +65,7 @@ namespace Reference_Aids.Controllers
                         SendLabName = patient.SendLab
                     };
                     _context.Add(lab);
+                    await _context.SaveChangesAsync();
                     labId = _context.ListSendLabs.First(e => e.SendLabName == patient.SendLab).SendLabId;
                 }
 
@@ -74,6 +78,7 @@ namespace Reference_Aids.Controllers
                         SendDistrictName = patient.SendDistrict
                     };
                     _context.Add(dist);
+                    await _context.SaveChangesAsync();
                     districtId = _context.ListSendDistricts.First(e => e.SendDistrictName == patient.SendDistrict).SendDistrictId;
                 }
 
@@ -86,6 +91,7 @@ namespace Reference_Aids.Controllers
                         TestSystemName = patient.TestSys
                     };
                     _context.Add(testSystem);
+                    await _context.SaveChangesAsync();
                     testSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId;
                 }
 
@@ -94,77 +100,27 @@ namespace Reference_Aids.Controllers
                 {
                     ListRegion region = new()
                     {
-                        RegionId = _context.ListSendLabs.Max(e => e.SendLabId) + 1,
+                        RegionId = _context.ListRegions.Max(e => e.RegionId) + 1,
                         RegionName = patient.RegionName
                     };
                     _context.Add(region);
+                    await _context.SaveChangesAsync();
                     regionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId;
                 }
 
                 if (patient.PatienId != null)
                 {
-                    TblPatientCard tblPatientCard1 = new()
+                    try 
                     {
-                        PatientId = Int32.Parse(patient.PatienId),
-                        FamilyName = patient.FamilyName,
-                        FirstName = patient.FirstName,
-                        ThirdName = patient.ThirdName,
-                        BirthDate = DateOnly.Parse(patient.BirthDate),
-                        SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
-                        RegionId = regionId,
-                        CityName = patient.CityName,
-                        AreaName = patient.AreaName,
-                        PhoneNum = patient.Phone,
-                        AddrHome = patient.AddrHome,
-                        AddrCorps = patient.AddrCorps,
-                        AddrFlat = patient.AddrFlat,
-                        AddrStreat = patient.AddrStreat,
-                        PatientCom = patient.PatientCom
-                    };
-                    _context.TblPatientCards.Update(tblPatientCard1);
-
-                    TblDistrictBlot tblDistrictBlot = new()
-                    {
-                        PatientId = Int32.Parse(patient.PatienId),
-                        DBlot = DateOnly.Parse(patient.Blotdate),
-                        CutOff =  Double.Parse(patient.CutOff),
-                        BlotResult = Double.Parse(patient.Result),
-                        BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
-                        TestSystemId = testSystemId,
-                        SendDistrictId = districtId,
-                        SendLabId = labId
-                    };
-                    _context.TblDistrictBlots.Add(tblDistrictBlot);
-
-                    TblIncomingBlood tblIncomingBlood = new()
-                    {
-                        PatientId = Int32.Parse(patient.PatienId),
-                        SendDistrictId = districtId,
-                        SendLabId = labId,
-                        CategoryPatientId = Int32.Parse(patient.Category),
-                        //AnonymousPatient = Boolean.Parse(patient.Anon),
-                        DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
-                        DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
-                        NumIfa = (int)patient.NumIfa,
-                        NumInList = Int32.Parse(patient.NumInList)
-                    };
-                    _context.TblIncomingBloods.Add(tblIncomingBlood);
-                    
-                    await _context.SaveChangesAsync();
-                }
-                else 
-                {
-                    TblPatientCard tblPatientCard;
-                    try
-                    {
-                        tblPatientCard = new()
+                        TblPatientCard tblPatientCard1 = new()
                         {
+                            PatientId = Int32.Parse(patient.PatienId),
                             FamilyName = patient.FamilyName,
                             FirstName = patient.FirstName,
                             ThirdName = patient.ThirdName,
                             BirthDate = DateOnly.Parse(patient.BirthDate),
                             SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
-                            RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                            RegionId = regionId,
                             CityName = patient.CityName,
                             AreaName = patient.AreaName,
                             PhoneNum = patient.Phone,
@@ -174,14 +130,57 @@ namespace Reference_Aids.Controllers
                             AddrStreat = patient.AddrStreat,
                             PatientCom = patient.PatientCom
                         };
-                    }
-                    catch
+                        _context.TblPatientCards.Update(tblPatientCard1);
+
+                        TblDistrictBlot tblDistrictBlot = new()
+                        {
+                            PatientId = Int32.Parse(patient.PatienId),
+                            DBlot = DateOnly.Parse(patient.Blotdate),
+                            CutOff = Double.Parse(patient.CutOff),
+                            BlotResult = Double.Parse(patient.Result),
+                            BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
+                            TestSystemId = testSystemId,
+                            SendDistrictId = districtId,
+                            SendLabId = labId
+                        };
+                        _context.TblDistrictBlots.Add(tblDistrictBlot);
+
+                        TblIncomingBlood tblIncomingBlood = new()
+                        {
+                            PatientId = Int32.Parse(patient.PatienId),
+                            SendDistrictId = districtId,
+                            SendLabId = labId,
+                            CategoryPatientId = Int32.Parse(patient.Category),
+                            //AnonymousPatient = Boolean.Parse(patient.Anon),
+                            DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
+                            DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
+                            NumIfa = (int)patient.NumIfa,
+                            NumInList = Int32.Parse(patient.NumInList),
+                            QualitySerumId = 11
+                        };
+                        _context.TblIncomingBloods.Add(tblIncomingBlood);
+
+                        await _context.SaveChangesAsync();
+                        successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
+                    } 
+                    catch { errList.Add($"ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName}; Дата рождения {patient.BirthDate}"); }
+                }
+                else 
+                {
+                    try 
                     {
+                        TblPatientCard tblPatientCard;
+                        int patientId = _context.TblPatientCards.Max(e => e.PatientId) + 1;
+
                         tblPatientCard = new()
                         {
+                            PatientId = patientId,
+                            FamilyName = patient.FamilyName,
+                            FirstName = patient.FirstName,
+                            ThirdName = patient.ThirdName,
                             BirthDate = DateOnly.Parse(patient.BirthDate),
                             SexId = _context.ListSexes.First(e => e.SexNameShort == patient.Sex).SexId,
-                            RegionId = _context.ListRegions.First(e => e.RegionName == patient.RegionName).RegionId,
+                            RegionId = regionId,
                             CityName = patient.CityName,
                             AreaName = patient.AreaName,
                             PhoneNum = patient.Phone,
@@ -191,48 +190,50 @@ namespace Reference_Aids.Controllers
                             AddrStreat = patient.AddrStreat,
                             PatientCom = patient.PatientCom
                         };
-                    }
-                    
-                    _context.TblPatientCards.Add(tblPatientCard);
-                    await _context.SaveChangesAsync();
-                    int patienId = _context.TblPatientCards.First(e => e.FirstName == patient.FirstName &&
-                                                                       e.FamilyName == patient.FamilyName &&
-                                                                       e.ThirdName == patient.ThirdName &&
-                                                                       e.BirthDate == DateOnly.Parse(patient.BirthDate) &&
-                                                                       e.CityName == patient.CityName &&
-                                                                       e.AreaName == patient.AreaName).PatientId;
 
-                    TblIncomingBlood tblIncomingBlood = new()
-                    {
-                        PatientId = patienId,
-                        SendDistrictId = districtId,
-                        SendLabId = labId,
-                        CategoryPatientId = Int32.Parse(patient.Category),
-                        //AnonymousPatient = Boolean.Parse(patient.Anon),
-                        DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
-                        DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
-                        NumIfa = (int)patient.NumIfa,
-                        NumInList = Int32.Parse(patient.NumInList)
-                    };
-                    TblDistrictBlot tblDistrictBlot = new()
-                    {
-                        PatientId = patienId,
-                        DBlot = DateOnly.Parse(patient.Blotdate),
-                        CutOff = Double.Parse(patient.CutOff),
-                        BlotResult = Double.Parse(patient.Result),
-                        BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
-                        TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
-                        SendDistrictId = districtId,
-                        SendLabId = labId
-                    };
+                        _context.TblPatientCards.Add(tblPatientCard);
+                        await _context.SaveChangesAsync();
 
-                    _context.TblIncomingBloods.Add(tblIncomingBlood);
-                    _context.TblDistrictBlots.Add(tblDistrictBlot);
-                    await _context.SaveChangesAsync();
+                        TblIncomingBlood tblIncomingBlood = new()
+                        {
+                            PatientId = patientId,
+                            SendDistrictId = districtId,
+                            SendLabId = labId,
+                            CategoryPatientId = Int32.Parse(patient.Category),
+                            //AnonymousPatient = Boolean.Parse(patient.Anon),
+                            DateBloodSampling = DateOnly.Parse(patient.DateBloodSampling),
+                            DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
+                            NumIfa = (int)patient.NumIfa,
+                            NumInList = Int32.Parse(patient.NumInList)
+                        };
+                        TblDistrictBlot tblDistrictBlot = new()
+                        {
+                            PatientId = patientId,
+                            DBlot = DateOnly.Parse(patient.Blotdate),
+                            CutOff = Double.Parse(patient.CutOff),
+                            BlotResult = Double.Parse(patient.Result),
+                            BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
+                            TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
+                            SendDistrictId = districtId,
+                            SendLabId = labId
+                        };
+
+                        _context.TblIncomingBloods.Add(tblIncomingBlood);
+                        _context.TblDistrictBlots.Add(tblDistrictBlot);
+                        await _context.SaveChangesAsync();
+                        successfulList.Add($"ИД: {patient.PatienId}; Рег. ном.: {patient.NumIfa}; ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName};");
+                    } 
+                    catch { errList.Add($"ФИО: {patient.FamilyName} {patient.FirstName} {patient.ThirdName}; Дата рождения {patient.BirthDate}"); }
                 }
             }
-            ViewBag.Title = "InputPatientSuccess";
-            return View("Index");
+            ListForResultImport viewModel = new() 
+            {
+                Error = errList,
+                Success = successfulList
+            };
+
+            ViewBag.Title = "ResultImport";
+            return View("ResultImport", viewModel);
         }
         public static ListForImportPatient GetInputPatients(string path, Reference_AIDSContext _context)
         {
@@ -263,7 +264,7 @@ namespace Reference_Aids.Controllers
                     List<TblPatientCard> posPatient = new();
 
                     if (familyName != "")
-                        posPatient = _context.TblPatientCards.Where(e => e.FamilyName.ToUpper().Contains(familyName.ToUpper())).OrderBy(e => e.PatientId).ToList();
+                        posPatient = _context.TblPatientCards.Where(e => e.FamilyName.ToUpper().Contains(familyName.ToUpper())).OrderBy(e => e.FamilyName).ToList();
 
 
                     InputPatients patients = new()

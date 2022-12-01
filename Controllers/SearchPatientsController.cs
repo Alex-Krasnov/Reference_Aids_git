@@ -35,7 +35,7 @@ namespace Reference_Aids.Controllers
                 string sql = "select tbl_patient_card.* from tbl_patient_card left join tbl_incoming_blood on tbl_patient_card.patient_id = tbl_incoming_blood.patient_id where 1=1";
 
                 if (list.PatientId != null)
-                    sql += $" and patient_id = {list.PatientId}";
+                    sql += $" and tbl_patient_card.patient_id = {list.PatientId}";
 
                 if (list.BirthDate != null)
                     sql += $" and birth_date = '{list.BirthDate}'";

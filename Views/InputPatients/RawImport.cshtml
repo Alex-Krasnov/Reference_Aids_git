@@ -133,7 +133,7 @@
                         <div class="row g-0 background-dark-row" style="width: 90%;">
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Дата ифа</label>
-                                <input placeholder="Дата блота" autocomplete="fals" type="date" class="form-control" name='[@item.NumPatient].Blotdate' value="@item.Blotdate">
+                                <input placeholder="Дата ифа" autocomplete="fals" type="date" class="form-control" name='[@item.NumPatient].Blotdate' value="@item.Blotdate">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Тест система</label>
@@ -170,35 +170,37 @@
                         <textarea placeholder="Комментарий" name='[@item.NumPatient].PatientCom' autocomplete="fals" cols="100" rows="3"></textarea>
                     </div>
                     <br>
-                    <div class="row g-0 background-dark-row" style="width: 90%;">
-                        <div style="overflow-x: auto; height: 93px">
+                    <div class="row g-0 background-dark-row" @*style="width: 90%;"*@>
+                        <div style="overflow-x: auto; height: 210px">
                             <div class="row g-0">
-                                <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Ид пациента" disabled></div>
+                                <div class="col-sm font-weight-bold" style="width: 5px; box-sizing: border-box;"><input type="text" class="form-control tbl-input" value="Ид пациента" disabled></div>
                                 <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Фамилия" disabled></div>
                                 <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Имя" disabled></div>
                                 <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Отчество" disabled></div>
                                 <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Дата рождения" disabled></div>
                                 <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Адрес" disabled></div>
+                                <div class="col-sm font-weight-bold"><input type="text" class="form-control tbl-input" value="Комментарий" disabled></div>
                             </div>
                             @{
                                 
-                                @foreach (var patient in item.PossiblePatients)
+                                    @foreach (var patient in item.PossiblePatients)
                                 {
                                     string adddrFull = "";
-                                    try { adddrFull += $"ГО{@patient.AreaName}"; } catch { }
+                                    try { adddrFull += $"ГО {@patient.AreaName}"; } catch { }
                                     try { adddrFull += $" г.{@patient.CityName}"; } catch { }
                                     try { adddrFull += $" ул.{@patient.AddrStreat}"; } catch { }
                                     try { adddrFull += $" д.{@patient.AddrHome}"; } catch { }
                                     try { adddrFull += $" к.{@patient.AddrCorps}"; } catch { }
                                     try { adddrFull += $" кв.{@patient.AddrFlat}"; } catch { }
-                                    <div class="row g-0">
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.PatientId" disabled></div>
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FamilyName" disabled></div>
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FirstName" disabled></div>
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.ThirdName" disabled></div>
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.BirthDate" disabled></div>
-                                        <div class="col-sm"><input type="text" class="form-control tbl-input" value="@adddrFull" disabled></div>
-                                    </div>
+                                        <div class="row g-0">
+                                        <div class="col-sm" style="width: 5px; box-sizing: border-box;"><input type="text" class="form-control tbl-input" value="@patient.PatientId"></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FamilyName" disabled></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FirstName" disabled></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.ThirdName" disabled></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.BirthDate" disabled></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@adddrFull" disabled></div>
+                                            <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.PatientCom" disabled></div>
+                                        </div>
                                 }
                             }
                             
