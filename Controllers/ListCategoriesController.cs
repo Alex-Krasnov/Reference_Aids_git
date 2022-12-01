@@ -17,7 +17,7 @@ namespace Reference_Aids.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Title = "ListCategories";
-            return View("Index", await _context.ListCategories.ToListAsync());
+            return View("Index", await _context.ListCategories.OrderBy(e => e.CategoryId).ToListAsync());
         }
 
         [HttpPost]

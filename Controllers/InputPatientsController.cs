@@ -264,7 +264,8 @@ namespace Reference_Aids.Controllers
                     List<TblPatientCard> posPatient = new();
 
                     if (familyName != "")
-                        posPatient = _context.TblPatientCards.Where(e => e.FamilyName.ToUpper().Contains(familyName.ToUpper())).OrderBy(e => e.FamilyName).ToList();
+                        posPatient = _context.TblPatientCards.Where(e => e.FamilyName.ToUpper().Contains(familyName.ToUpper()))
+                            .OrderBy(e => e.FamilyName).ThenBy(e => e.FirstName).ThenBy(e => e.ThirdName).ToList();
 
 
                     InputPatients patients = new()

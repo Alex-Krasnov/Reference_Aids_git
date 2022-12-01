@@ -130,6 +130,10 @@ namespace Reference_Aids.Controllers
         {
             if (ModelState.IsValid)
             {
+                int resIfa = 0;
+                if (list.ResultIfaOp < list.ResultIfaCutOff) // положитнльный если оп >= cutoff и на оборот
+                    resIfa = 1;
+
                 TblResultIfa tblResultIfa = new()
                 {
                     BloodId = list.BloodId,
@@ -137,7 +141,7 @@ namespace Reference_Aids.Controllers
                     ResultIfaTestSysId = list.TestSysId(_context),
                     ResultIfaCutOff = list.ResultIfaCutOff,
                     ResultIfaOp = list.ResultIfaOp,
-                    ResultIfaResultId = 0 // положитнльный если оп >= cutoff и на оборот
+                    ResultIfaResultId = resIfa 
                 };
 
                 _context.TblResultIfas.Add(tblResultIfa);

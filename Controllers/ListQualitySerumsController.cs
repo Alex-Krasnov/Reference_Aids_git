@@ -23,7 +23,7 @@ namespace Reference_Aids.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Title = "ListQualitySerums";
-            return View("Index", await _context.ListQualitySerums.ToListAsync());
+            return View("Index", await _context.ListQualitySerums.OrderBy(e => e.QualitySerumId).ToListAsync());
         }
 
         [HttpPost]
