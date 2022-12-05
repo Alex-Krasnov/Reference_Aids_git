@@ -57,7 +57,7 @@ namespace Reference_Aids.Controllers
                                    incBlood.NumIfa,
                                    incBlood.DateBloodImport,
                                    incBlood.BloodId
-                               }).Where(e => (e.DateBloodImport.CompareTo(date_start) >= 0 && e.DateBloodImport.CompareTo(date_end) <= 0)).OrderBy(e => e.NumIfa).ToList();
+                               }).Where(e => (e.DateBloodImport.CompareTo(date_start) >= 0 && e.DateBloodImport.CompareTo(date_end) <= 0)).OrderBy(e => e.FamilyName).ThenBy(e => e.FirstName).ThenBy(e => e.ThirdName).ToList();
 
             int i = 0;
             foreach (var item in lisForInput)

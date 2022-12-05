@@ -4,8 +4,8 @@
     {
         public int PatientId { get; set; }
         public string DBlot { get; set; }
-        public double CutOff { get; set; }
-        public double BlotResult { get; set; }
+        public string CutOff { get; set; }//
+        public string BlotResult { get; set; }//
         public double? BlotCoefficient { get; set; }
         public string? TestSystemId { get; set; }
         public string? SendDistrictId { get; set; }

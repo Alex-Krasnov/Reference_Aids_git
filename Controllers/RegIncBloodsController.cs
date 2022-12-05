@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Evaluation;
 using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
 using Reference_Aids.ModelsForInput;
 using Reference_Aids.ViewModels;
+using System.Globalization;
 
 namespace Reference_Aids.Controllers
 {
@@ -38,21 +40,17 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateDistrictBlot(InputDistricBlot list)  
         {
-            if (list.DBlot != null && 
-                list.BlotResult != null && 
-                list.SendDistrictId != null && 
-                list.CutOff != null && 
-                list.SendLabId != null && 
-                list.TestSystemId != null) //ModelState.IsValid
+            if (list.DBlot != null && list.BlotResult != null &&  list.SendDistrictId != null 
+                && list.CutOff != null && list.SendLabId != null && list.TestSystemId != null) //ModelState.IsValid
             {
-                
+
                 TblDistrictBlot tblDistrictBlot = new()
                 {
                     PatientId = list.PatientId,
                     DBlot = DateOnly.Parse(list.DBlot),
-                    CutOff = list.CutOff,
-                    BlotResult = list.BlotResult,
-                    BlotCoefficient = Math.Round((list.BlotResult / list.CutOff), 3),
+                    CutOff = Convert.ToDouble(list.CutOff),
+                    BlotResult = Convert.ToDouble(list.BlotResult),
+                    BlotCoefficient = Math.Round((Convert.ToDouble(list.BlotResult) / Convert.ToDouble(list.CutOff)), 3),
                     TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == list.TestSystemId).TestSystemId,
                     SendDistrictId =_context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrictId).SendDistrictId,
                     SendLabId = _context.ListSendLabs.First(e => e.SendLabName == list.SendLabId).SendLabId

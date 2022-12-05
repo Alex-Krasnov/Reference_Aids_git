@@ -7,8 +7,8 @@ namespace Reference_Aids.Models
     {
         public int PatientId { get; set; }
         public DateOnly DBlot { get; set; }
-        public double CutOff { get; set; }
-        public double BlotResult { get; set; }
+        public double? CutOff { get; set; }
+        public double? BlotResult { get; set; }
         public double? BlotCoefficient { get; set; }
         public int? TestSystemId { get; set; }
         public int? SendDistrictId { get; set; }

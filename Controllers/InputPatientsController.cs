@@ -7,6 +7,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Reference_Aids.ViewModels;
 using System.Drawing;
 using System.Linq;
+using System.Globalization;
 
 namespace Reference_Aids.Controllers
 {
@@ -207,13 +208,28 @@ namespace Reference_Aids.Controllers
                             NumIfa = (int)patient.NumIfa,
                             NumInList = Int32.Parse(patient.NumInList)
                         };
+
+                        double cutOff, res, blotKP;
+                        NumberFormatInfo provider1 = new NumberFormatInfo();
+                        provider1.NumberDecimalSeparator = ",";
+                        provider1.NumberGroupSeparator = "_";
+                        provider1.NumberGroupSizes = new int[] { 3 };
+                        NumberFormatInfo provider2 = new NumberFormatInfo();
+                        provider2.NumberDecimalSeparator = ".";
+                        provider2.NumberGroupSeparator = "_";
+                        provider2.NumberGroupSizes = new int[] { 3 };
+
+                        try { cutOff = Double.Parse(patient.CutOff, provider1); } catch { cutOff = Double.Parse(patient.CutOff, provider2); }
+                        try { res = Double.Parse(patient.Result, provider1); } catch { res = Double.Parse(patient.Result, provider2); }
+                        blotKP = res / cutOff;
+
                         TblDistrictBlot tblDistrictBlot = new()
                         {
                             PatientId = patientId,
                             DBlot = DateOnly.Parse(patient.Blotdate),
-                            CutOff = Double.Parse(patient.CutOff),
-                            BlotResult = Double.Parse(patient.Result),
-                            BlotCoefficient = (Double.Parse(patient.Result) / Double.Parse(patient.CutOff)),
+                            CutOff = cutOff,
+                            BlotResult = res,
+                            BlotCoefficient = blotKP,
                             TestSystemId = _context.ListTestSystems.First(e => e.TestSystemName == patient.TestSys).TestSystemId,
                             SendDistrictId = districtId,
                             SendLabId = labId
