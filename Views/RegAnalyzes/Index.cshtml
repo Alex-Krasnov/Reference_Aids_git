@@ -50,7 +50,7 @@
                 <div class="col border border-1"><label>ОП подт.</label></div>
                 <div class="col" style="visibility: hidden;"><a class="btn btn-outline-danger btn-sm">Удалить</a></div>
             </div>
-            <div style="overflow-x: auto; height: 75px;">
+            <div @*style="overflow-x: auto; height: 75px;"*@>
                 @foreach (var item in Model.TblResultAntigens)
                 {
                     <div class="row g-0">
@@ -86,7 +86,7 @@
                 <div class="col-sm-2 border border-1"><label>Рез.</label></div>
                 <div class="col" style="visibility: hidden;"><a class="btn btn-outline-danger btn-sm">Удалить</a></div>
             </div>
-            <div style="overflow-x: auto; height: 75px;">
+            <div @*style="overflow-x: auto; height: 75px;"*@>
                  @foreach (var item in Model.TblResultPcrs)
                 {
                     <div class="row g-0">
@@ -120,7 +120,7 @@
                 <div class="col-sm-1 border border-1"><label>ОП</label></div>
                 <div class="col" style="visibility: hidden;"><a class="btn btn-outline-danger btn-sm">Удалить</a></div>
             </div>
-            <div style="overflow-x: auto; height: 75px;">
+            <div @*style="overflow-x: auto; height: 75px;"*@>
                  @foreach (var item in Model.TblResultIfas)
                 {
                     <div class="row g-0">
