@@ -2,17 +2,22 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 
 @{
+    int i = 1;
     Layout = "_Layout";
 }
 <b>
 <div class="container">
     <p>Удачно</p>
-    @foreach (var item in Model.SuccessList)
-    {
-        <div class="row g-0">
-            <div class="col-1"><input disabled type="text" class="form-control " value="@item.NumIfa"></div>
-            <div class="col"><input disabled type="text" class="form-control col" value="@item.Com"></div>
-        </div>
+    @{
+            @foreach (var item in Model.SuccessList)
+            {
+                <div class="row g-0">
+                    <div class="col-1"><input disabled type="text" class="form-control " value="@i"></div>
+                    <div class="col-1"><input disabled type="text" class="form-control " value="@item.NumIfa"></div>
+                    <div class="col"><input disabled type="text" class="form-control col" value="@item.Com"></div>
+                </div>
+                i++;
+            }
     }
     <b>
     <p>Ошибки</p>

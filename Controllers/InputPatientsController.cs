@@ -253,6 +253,7 @@ namespace Reference_Aids.Controllers
             ViewBag.Title = "ResultImport";
             return View("ResultImport", viewModel);
         }
+
         public static ListForImportPatient GetInputPatients(string path, Reference_AIDSContext _context)
         {
             ListForImportPatient listForImportPatient = new ListForImportPatient();

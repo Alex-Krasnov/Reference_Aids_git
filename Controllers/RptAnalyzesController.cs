@@ -239,12 +239,12 @@ namespace Reference_Aids.Controllers
                 Paragraph para5 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("20") },
+                                              new FontSize { Val = new StringValue("22") },
                                               new Bold()),
                                           new Text("Рег.№ СПИД: ") { Space = SpaceProcessingModeValues.Preserve }));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("20") },
+                                              new FontSize { Val = new StringValue("22") },
                                           new Text(NumIfa+" ") { Space = SpaceProcessingModeValues.Preserve })));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },

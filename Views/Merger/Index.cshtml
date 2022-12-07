@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Reference_Aids.Models.ListRegion>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<br>
+<div class="container">
+    <form class="needs-validation" novalidate asp-controller="Merger" asp-action="Merger" method="post">
+        <div class="row g-0">
+            <div class="col-sm-1">
+                <input type="text" class="form-control" placeholder="Куда" name="PatientId1" value="">
+            </div>
+            <div class="col-sm-1">
+                <input type="text" class="form-control" placeholder="Откуда" name="PatientId2" value="">
+            </div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2 d-grid gap-2 d-md-block">
+              <button type="submit" class="btn btn-outline-success btn-sm">Объединить</button>
+            </div>
+        </div>
+    </form>
+</div>

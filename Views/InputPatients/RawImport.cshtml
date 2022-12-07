@@ -51,15 +51,15 @@
                         <div class="row g-0 background-dark-row" style="width: 30%;">
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text" >Ид пациента</label>
-                                <input placeholder="Ид пациента" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold;" name="[@item.NumPatient].PatienId">
+                                <input placeholder="Ид пациента" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].PatienId">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text" >Ном. в списке</label>
-                                <input placeholder="Ном. в списке" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold;" name="[@item.NumPatient].NumInList" value="@item.NumInList" >
+                                <input placeholder="Ном. в списке" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].NumInList" value="@item.NumInList">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px;">
                                 <label class="font-color-text">Ном. Ифа</label>
-                                <input placeholder="Ном. Ифа" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold;" name="[@item.NumPatient].NumIfa" >
+                                <input placeholder="Ном. Ифа" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].NumIfa" >
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="row g-0 background-dark-row" style="width: 70%;">
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Фамилия</label>
-                                <input placeholder="Фамилия" autocomplete="fals" type="text" class="form-control" style="font-weight: bold;" name='[@item.NumPatient].FamilyName' value="@item.FamilyName">
+                                <input placeholder="Фамилия" autocomplete="fals" type="text" class="form-control" style="font-weight: bold; font-size: 1.2rem;" name='[@item.NumPatient].FamilyName' value="@item.FamilyName">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Имя</label>
@@ -141,11 +141,11 @@
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 12%;">
                                 <label class="font-color-text">Отпр. лаб.</label>
-                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" list="send_lab_list" class="form-control" name='[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
+                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" list="send_lab_list" class="form-control" name='[@item.NumPatient].SendLab' value="@item.SendLab">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11.5%;">
                                 <label class="font-color-text">Кем напрв.</label>
-                                <input placeholder="Кем напрв." autocomplete="fals" type="text" list="send_district_list" class="form-control" name='[@item.NumPatient].SendLab' value="@item.SendLab">
+                                <input placeholder="Кем напрв." autocomplete="fals" type="text" list="send_district_list" class="form-control" name='[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 8%;">
                                 <label class="font-color-text">Cut off</label>
@@ -183,7 +183,7 @@
                             </div>
                             @{
                                 
-                                        @foreach (var patient in item.PossiblePatients)
+                                            @foreach (var patient in item.PossiblePatients)
                                 {
                                     string adddrFull = "";
                                     try { adddrFull += $"ГО {@patient.AreaName}"; } catch { }
@@ -192,15 +192,15 @@
                                     try { adddrFull += $" д.{@patient.AddrHome}"; } catch { }
                                     try { adddrFull += $" к.{@patient.AddrCorps}"; } catch { }
                                     try { adddrFull += $" кв.{@patient.AddrFlat}"; } catch { }
-                                            <div class="row g-0">
-                                            <div class="col-sm" style="width: 5px; box-sizing: border-box;"><input type="text" class="form-control tbl-input" value="@patient.PatientId"></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FamilyName" disabled></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FirstName" disabled></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.ThirdName" disabled></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.BirthDate" disabled></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@adddrFull" disabled></div>
-                                                <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.PatientCom" disabled></div>
-                                            </div>
+                                                <div class="row g-0">
+                                                <div class="col-sm" style="width: 5px; box-sizing: border-box;"><input type="text" class="form-control tbl-input" value="@patient.PatientId"></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FamilyName" disabled></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.FirstName" disabled></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.ThirdName" disabled></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.BirthDate" disabled></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@adddrFull" disabled></div>
+                                                    <div class="col-sm"><input type="text" class="form-control tbl-input" value="@patient.PatientCom" disabled></div>
+                                                </div>
                                 }
                             }
                             

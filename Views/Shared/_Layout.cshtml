@@ -11,21 +11,22 @@
 <body>
     <div class="container">
         <nav class="navbar navbar-expand-lg rounded background-dark" aria-label="Eleventh navbar example">
-          <div class="container-fluid background-dark">
+            <div class="container-fluid background-dark">
             <a class="navbar-brand font-color" asp-controller="Home" asp-action="Index">Reference_AIDS</a>
             <div class="collapse navbar-collapse" id="navbars">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link font-color" asp-controller="SearchPatients" asp-action="Index">Поиск пациентов</a></li>
                 <li class="nav-item"><a class="nav-link font-color" asp-controller="Report" asp-action="Index">Отчеты</a></li>
                 <li class="nav-item"><a class="nav-link font-color" asp-controller="ListCategories" asp-action="Index">Списки</a></li>
                 <li class="nav-item"><a class="nav-link font-color" asp-controller="InputPatients" asp-action="Index">Импорт пациентов</a></li>
                 <li class="nav-item"><a class="nav-link font-color" asp-controller="ImportAnalyzes" asp-action="Index">Импорт анализов</a></li>
-              </ul>
+                <li class="nav-item"><a class="nav-link font-color" asp-controller="Merger" asp-action="Index">Объединение</a></li>
+                </ul>
             </div>
-          </div>
+            </div>
         </nav>
-      </div>
-      @RenderBody()
+    </div>
+    @RenderBody()
 
 </body>
 <div class="container">
