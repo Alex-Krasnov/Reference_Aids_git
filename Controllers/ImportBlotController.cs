@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office2016.Drawing.ChartDrawing;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
@@ -15,14 +16,15 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int countRow, string testSystem, string date)
+        public async Task<IActionResult> Index(int countRow, string testSystem, string date, string dateId)
         {
             var Viewdata = new ListForImportBlotViewModel
             {
                 ListTestSystems = await _context.ListTestSystems.ToListAsync(),
                 CountRow = countRow, 
                 Date = date,
-                TestSystem = testSystem
+                TestSystem = testSystem,
+                DateId = dateId
             };
             ViewBag.Title = "ImportBlot";
             return View("Index", Viewdata);
@@ -56,7 +58,7 @@ namespace Reference_Aids.Controllers
 
                     TblResultBlot tblResultBlot = new()
                     {
-                        BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == dateNow.Year).First().BloodId,
+                        BloodId = _context.TblIncomingBloods.Where(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).First().BloodId,
                         ResultBlotDate = dateNow,
                         ExpirationResultBlotDate = DateOnly.Parse(item.ExpirationResultBlotDate),
                         ResultBlotTestSysId = _context.ListTestSystems.Where(e => e.TestSystemName == item.ResultBlotTestSysName).First().TestSystemId,

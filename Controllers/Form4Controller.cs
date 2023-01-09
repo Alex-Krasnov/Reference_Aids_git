@@ -39,7 +39,9 @@ namespace Reference_Aids.Controllers
             {
                 foreach(char c in "DEFGHIJKLMNOP")
                 {
-                    try { ChangeTextInCell(path_to, cat[j], cat[1], c); }
+                    try { 
+                        ChangeTextInCell(path_to, cat[j], cat[1], c); 
+                    }
                     catch { }
                     j++;
                 }

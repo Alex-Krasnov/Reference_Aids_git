@@ -12,5 +12,6 @@
         public int PatientId { get; set; }
         public float PatientResult { get; set; }
         public string Result { get; set; }
+        public string DateId { get; set; }
     }
 }

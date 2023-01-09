@@ -42,27 +42,35 @@ namespace Reference_Aids.Controllers
             {
                 int? percentGash = null;
                 double? kp = null;
+                int res = 1;
 
                 if (list.TypeAntigen(_context) == 0)
                     kp = (list.ResultAntigenOp / list.ResultAntigenCutOff);
                 else
                     percentGash = (int)((list.ResultAntigenOp - list.ResultAntigenConfirmOp) / list.ResultAntigenOp) * 100;
 
+                if (list.TypeAntigen(_context) == 0)
+                    if (list.ResultAntigenOp >= list.ResultAntigenConfirmOp)
+                        res = 0;
+                else
+                    if (list.ResultAntigenOp >= list.ResultAntigenConfirmOp && percentGash >= 50)
+                        res = 0;
+
                 TblResultAntigen tblResultAntigen = new()
-                {
-                    BloodId = list.BloodId,
-                    ResultAntigenDate = DateOnly.Parse(list.ResultAntigenDate),
-                    ResultAntigenTestSysId = list.TestSysId(_context),
-                    ResultAntigenCutOff = list.ResultAntigenCutOff,
-                    ResultAntigenOp = list.ResultAntigenOp,
-                    ResultAntigenConfirmOp = list.ResultAntigenConfirmOp,
-                    ResultAntigenPercentGash = percentGash,
-                    ResultAntigenKp = kp,
-                    ResultAntigenTypeId = list.TypeAntigen(_context),
-                    ResultAntigenResultId = 0 // положительный для обычного антигена если оп >= ОП крит.
-                                              // положительный для подтв антигена если оп >= оп крит И percentGash >= 50%
-                                              // ОП крит.(CutOff) находится в formulas: calculated : result    
-                };
+                        {
+                            BloodId = list.BloodId,
+                            ResultAntigenDate = DateOnly.Parse(list.ResultAntigenDate),
+                            ResultAntigenTestSysId = list.TestSysId(_context),
+                            ResultAntigenCutOff = list.ResultAntigenCutOff,
+                            ResultAntigenOp = list.ResultAntigenOp,
+                            ResultAntigenConfirmOp = list.ResultAntigenConfirmOp,
+                            ResultAntigenPercentGash = percentGash,
+                            ResultAntigenKp = kp,
+                            ResultAntigenTypeId = list.TypeAntigen(_context),
+                            ResultAntigenResultId = res // положительный для обычного антигена если оп >= ОП крит.
+                                                        // положительный для подтв антигена если оп >= оп крит И percentGash >= 50%
+                                                        // ОП крит.(CutOff) находится в formulas: calculated : result    
+                        };
 
                 _context.TblResultAntigens.Add(tblResultAntigen);
                 await _context.SaveChangesAsync();

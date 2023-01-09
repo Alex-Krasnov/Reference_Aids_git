@@ -8,6 +8,7 @@ namespace Reference_Aids.ViewModels
         public int IfaEnd { get; set; }
         public string TestSystemName { get; set; }
         public string Date { get; set; }
+        public string DateId { get; set; }
         public IEnumerable<ListTestSystem>? ListTestSystems { get; set; }
         public IEnumerable<ListResult>? ListResults { get; set; }
 

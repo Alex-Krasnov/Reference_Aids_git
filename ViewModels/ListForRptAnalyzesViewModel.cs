@@ -9,6 +9,7 @@ namespace Reference_Aids.ViewModels
         public int IfaStart { get; set; }
         public int IfaEnd { get; set; }
         public string Doctor { get; set; }
+        public string DateId { get; set; }
 
     }
 
@@ -23,6 +24,5 @@ namespace Reference_Aids.ViewModels
         public int? CategoryPatientId { get; set; }
         public string AddrFull { get; set; }
         public string? ResFull { get; set; }
-
     }
 }

@@ -14,7 +14,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(int numIfaStart, int  numIfaEnd, string testSystem, string date)
+        public async Task<IActionResult> Index(int numIfaStart, int  numIfaEnd, string testSystem, string date, string dateId)
         {
             var Viewdata = new ListForImportPcr
             {
@@ -23,7 +23,8 @@ namespace Reference_Aids.Controllers
                 IfaStart = numIfaStart,
                 IfaEnd = numIfaEnd,
                 TestSystemName = testSystem,
-                Date = date
+                Date = date,
+                DateId = dateId
             };
 
             ViewBag.Title = "ImportPcr";
@@ -42,7 +43,7 @@ namespace Reference_Aids.Controllers
                 {
                     TblResultPcr tblResultPcr = new()
                     {
-                        BloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == dateNow.Year).BloodId,
+                        BloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).BloodId,
                         ResultPcrDate = DateOnly.Parse(item.ResultPcrDate),
                         ResultPcrTestSysId = _context.ListTestSystems.First(e => e.TestSystemName == item.ResultPcrTestSysName).TestSystemId,
                         ResultPcrResultId = _context.ListResults.Where(e => e.ResultName == item.ResultPcrResultName).First().ResultId

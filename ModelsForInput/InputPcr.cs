@@ -9,6 +9,7 @@ namespace Reference_Aids.ModelsForInput
         public string ResultPcrDate { get; set; } = null!;
         public string? ResultPcrTestSysName { get; set; }
         public string? ResultPcrResultName { get; set; }
+        public string DateId { get; set; }
 
         public int TestSysId(Reference_AIDSContext _context)
         {

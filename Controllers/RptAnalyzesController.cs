@@ -18,7 +18,7 @@ namespace Reference_Aids.Controllers
             _appEnvironment = appEnvironment;
         }
 
-        public IActionResult Index(int ifaStart, int ifaEnd, string doctor)
+        public IActionResult Index(int ifaStart, int ifaEnd, string doctor, string dateId)
         {
             List<ListPatientForRpt> listPatient = new();
             var lisForInput = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
@@ -42,7 +42,7 @@ namespace Reference_Aids.Controllers
                                                                i.SendLabId
                                                            })
                                                      .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
-                                                              && e.DateBloodImport.Year == DateTime.Now.Year).OrderBy(e => e.NumIfa).ToList();
+                                                              && e.DateBloodImport.Year == Int32.Parse(dateId)).OrderBy(e => e.NumIfa).ToList();
             foreach (var item in lisForInput)
             {
                 string adddrFull = "", resFull = "";
@@ -82,7 +82,7 @@ namespace Reference_Aids.Controllers
                     BirthDate = item.BirthDate.ToString("dd-MM-yyyy"),
                     CategoryPatientId = item.CategoryPatientId,
                     AddrFull = adddrFull,
-                    ResFull = resFull,
+                    ResFull = resFull
                 };
 
                 listPatient.Add(patient);
@@ -94,14 +94,15 @@ namespace Reference_Aids.Controllers
                 TblPatientCards = listPatient,
                 IfaEnd = ifaEnd,
                 IfaStart = ifaStart,
-                Doctor = doctor
+                Doctor = doctor,
+                DateId = dateId
             };
 
             ViewBag.Title = "RptAnalyzes";
             return View("Index", Viewdata);
         }
         [HttpPost]
-        public IActionResult Create(int ifaStart, int ifaEnd, string doctor, List<ForCreateRptAnalazys> list)
+        public IActionResult Create(int ifaStart, int ifaEnd, string doctor, string dateId, List<ForCreateRptAnalazys> list)
         {
             string rec = "";
             string path_from = _appEnvironment.WebRootPath + @$"\Files\Output\ReportAnalyzes_{DateTime.Now:dd_MM_yyyy}.docx",
@@ -128,13 +129,13 @@ namespace Reference_Aids.Controllers
                                                                             i.DateBloodSampling, i.DateBloodImport, 
                                                                             i.NumIfa,  i.BloodId, p.PatientId, p.PatientCom })
                                                       .Where(e => e.NumIfa >= ifaStart && e.NumIfa <= ifaEnd
-                                                               && e.DateBloodImport.Year == DateTime.Now.Year).ToList();
+                                                               && e.DateBloodImport.Year == Int32.Parse(dateId)).ToList();
             int i = 1;
             foreach (var item in lisForInput)
             {
                 string Addrstr;
 
-                try { Addrstr = $"Регион: {_context.ListRegions.Where(e => e.RegionId == item.RegionId).First().RegionName} ГО: {item.AreaName} г.{item.CityName} ул.{item.AddrStreat} к.{item.AddrCorps} д.{item.AddrHome} кв.{item.AddrFlat}"; }
+                try { Addrstr = $"Регион: {_context.ListRegions.Where(e => e.RegionId == item.RegionId).First().RegionName} ГО: {item.AreaName} г.{item.CityName} ул.{item.AddrStreat} д.{item.AddrHome} к.{item.AddrCorps} кв.{item.AddrFlat}"; }
                 catch { Addrstr = "null"; }
 
                 rec = list.First(e => e.PatientId == item.PatientId).Rec;
@@ -239,21 +240,21 @@ namespace Reference_Aids.Controllers
                 Paragraph para5 = body.AppendChild(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" })));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("22") },
+                                              new FontSize { Val = new StringValue("28") },
                                               new Bold()),
                                           new Text("Рег.№ СПИД: ") { Space = SpaceProcessingModeValues.Preserve }));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("22") },
+                                              new FontSize { Val = new StringValue("28") },
                                           new Text(NumIfa+" ") { Space = SpaceProcessingModeValues.Preserve })));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("20") },
+                                              new FontSize { Val = new StringValue("28") },
                                               new Bold()),
                                           new Text("ФИО: ") { Space = SpaceProcessingModeValues.Preserve }));
                 para5.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
-                                              new FontSize { Val = new StringValue("20") },
+                                              new FontSize { Val = new StringValue("28") },
                                           new Text(FamilyName+" "+FirstName+" "+ThirdName) { Space = SpaceProcessingModeValues.Preserve })));
 
                 //Пол Дата рождения Код контингента

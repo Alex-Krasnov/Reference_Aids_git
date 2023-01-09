@@ -24,6 +24,7 @@ namespace Reference_Aids.ModelsForInput
         public string? ResultBlotResult { get; set; }
         public int NumProtocol { get; set; }
         public int NumStrip { get; set; }
+        public string DateId { get; set; }
 
         public int TestSysId(Reference_AIDSContext _context)
         {

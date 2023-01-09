@@ -7,6 +7,7 @@ namespace Reference_Aids.ViewModels
         public int CountRow { get; set; }
         public string TestSystem { get; set; }
         public string Date { get; set; }
+        public string DateId { get; set; }
         public IEnumerable<ListTestSystem>? ListTestSystems { get; set; }
     }
 }

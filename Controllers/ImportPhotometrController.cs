@@ -15,7 +15,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
-        public async Task<IActionResult> Index(string reportId, string testSystem, string typeAnalyzes)
+        public async Task<IActionResult> Index(string reportId, string testSystem, string typeAnalyzes, string dateId)
         {
             int testSystemId = _context.ListTestSystems.Where(e => e.TestSystemName == testSystem).First().TestSystemId;
             HttpClient client = new();
@@ -48,7 +48,8 @@ namespace Reference_Aids.Controllers
                         {
                             PatientId = item.id,
                             PatientResult = item.res,
-                            Result = resultStr
+                            Result = resultStr,
+                            DateId = dateId 
                         };
                         result.Add(photometrResult);
                     }
@@ -70,7 +71,8 @@ namespace Reference_Aids.Controllers
                         {
                             PatientId = item.id,
                             PatientResult = item.res,
-                            Result = resultStr
+                            Result = resultStr,
+                            DateId = dateId
                         };
                         result.Add(photometrResult);
                     }
@@ -93,7 +95,8 @@ namespace Reference_Aids.Controllers
                         {
                             PatientId = item.id,
                             PatientResult = item.res,
-                            Result = resultStr
+                            Result = resultStr,
+                            DateId = dateId
                         };
                         result.Add(photometrResult);
                     }
@@ -131,7 +134,7 @@ namespace Reference_Aids.Controllers
 
                             try 
                             { 
-                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId; 
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).BloodId; 
                             } 
                             catch 
                             {
@@ -176,7 +179,7 @@ namespace Reference_Aids.Controllers
 
                             try
                             {
-                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId;
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).BloodId;
                             }catch
                             {
                                 ErrList.Add($"Не найден Рег. ном.:{item.PatientId}");
@@ -219,7 +222,7 @@ namespace Reference_Aids.Controllers
 
                             try
                             {
-                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == dateNow.Year).BloodId;
+                                bloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.PatientId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).BloodId;
                             }catch
                             {
                                 ErrList.Add($"Не найден Рег. ном.:{item.PatientId}");
