@@ -147,6 +147,8 @@ namespace Reference_Aids.Data
 
                 entity.Property(e => e.AnonymousPatient).HasColumnName("anonymous_patient");
 
+                entity.Property(e => e.Repeat).HasColumnName("repeat");
+
                 entity.Property(e => e.DateBloodSampling)
                     .HasColumnType("date")
                     .HasColumnName("d_blood_sampling");

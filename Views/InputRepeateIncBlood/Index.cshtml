@@ -1,0 +1,13 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = "_Layout";
+}
+<div class= "container">
+    <div class="row-0">
+        <form asp-controller="InputRepeateIncBlood" asp-action="AddFile" method="post" enctype="multipart/form-data">
+            <div class="col"><input type="file" name="uploadedFile" /></div>
+            <div class="col"><input type="submit" value="Загрузить" /></div>
+        </form>
+    </div>
+</div>

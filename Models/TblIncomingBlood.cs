@@ -18,6 +18,7 @@
         public DateOnly DateBloodImport { get; set; }
         public int NumIfa { get; set; }
         public int NumInList { get; set; }
+        public bool? Repeat { get; set; }
 
         public virtual ListCategory? CategoryPatientNavigation { get; set; }
         public virtual TblPatientCard Patient { get; set; } = null!;
