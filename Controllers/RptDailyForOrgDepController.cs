@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml.Office2016.Excel;
 using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Reference_Aids.Models;
+using System.Globalization;
 
 namespace Reference_Aids.Controllers
 {
@@ -32,9 +33,6 @@ namespace Reference_Aids.Controllers
             if (fileInf1.Exists)
                 fileInf1.Delete();
 
-            //FileInfo fileInf = new(path_from);
-            //fileInf.CopyTo(path_to);
-
             DateOnly date_now = DateOnly.Parse(dat);
             CreateFile(path_to);
 
@@ -46,7 +44,7 @@ namespace Reference_Aids.Controllers
                                    patient.FirstName,                                   // +
                                    patient.ThirdName,                                   // +
                                    patient.BirthDate,                                   // +
-                                   //patient.SexId, //+1 к sex_id  для конечного файла    // +
+                                   //patient.SexId, //+1 к sex_id  для конечного файла    // 
                                    incBlood.DateBloodImport,                            // -
                                    incBlood.NumIfa,                                     // +
                                    incBlood.BloodId                                     // +
@@ -91,9 +89,10 @@ namespace Reference_Aids.Controllers
 
                 Cell cell_4 = new Cell() { CellReference = 4 + ":" + row.RowIndex.ToString() };
                 row.InsertBefore(cell_4, refCell);
-                cell_4.DataType = CellValues.Date;
+                cell_4.DataType = CellValues.Date; // Date
                 cell_4.CellValue = new CellValue(DateTime.Parse(birthDate.ToString()));
                 
+
 
                 Cell cell_5 = new Cell() { CellReference = 5 + ":" + row.RowIndex.ToString() };
                 row.InsertBefore(cell_5, refCell);
