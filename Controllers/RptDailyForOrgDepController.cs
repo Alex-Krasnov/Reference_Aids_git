@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Vml;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Reference_Aids.Models;
 using System.Globalization;
+using DocumentFormat.OpenXml.Drawing;
 
 namespace Reference_Aids.Controllers
 {
@@ -22,7 +23,7 @@ namespace Reference_Aids.Controllers
             _appEnvironment = appEnvironment;
         }
         [HttpPost]
-        public IActionResult Index(string dat)
+        public IActionResult Index(string dat1, string dat2)
         {
             string path_to = _appEnvironment.WebRootPath + @$"\Files\Output\rptForOrgDep_{DateTime.Now:dd_MM_yyyy}.xlsx",
             path_from = _appEnvironment.WebRootPath + @"\Files\Sample\rptForOrgDep.xlsx",
@@ -33,7 +34,6 @@ namespace Reference_Aids.Controllers
             if (fileInf1.Exists)
                 fileInf1.Delete();
 
-            DateOnly date_now = DateOnly.Parse(dat);
             CreateFile(path_to);
 
             var lisForInput = (from patient in _context.TblPatientCards
@@ -48,12 +48,19 @@ namespace Reference_Aids.Controllers
                                    incBlood.DateBloodImport,                            // -
                                    incBlood.NumIfa,                                     // +
                                    incBlood.BloodId                                     // +
-                               }).Where(e => e.DateBloodImport == date_now).OrderBy(e => e.NumIfa).ToList();
-
+                               }).Where(e => e.DateBloodImport == DateOnly.Parse(dat1)
+                                          && e.DateBloodImport == DateOnly.Parse(dat2))
+                               .OrderBy(e => e.NumIfa).ToList();
+            _context.SaveChangesAsync();
             int i = 1;
             foreach (var item in lisForInput)
             {
                 EditFile(path_to, item.NumIfa, item.FamilyName, item.FirstName, item.ThirdName, item.BirthDate, item.BloodId, i);
+
+                TblIncomingBlood forUpd = _context.TblIncomingBloods.Where(e => e.BloodId == item.BloodId).First();
+                forUpd.Repeat = false;
+                _context.SaveChangesAsync();
+
                 i++;
             }
 
