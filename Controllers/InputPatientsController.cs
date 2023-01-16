@@ -157,7 +157,8 @@ namespace Reference_Aids.Controllers
                             DateBloodImport = DateOnly.FromDateTime(DateTime.Today),
                             NumIfa = (int)patient.NumIfa,
                             NumInList = Int32.Parse(patient.NumInList),
-                            QualitySerumId = 11
+                            QualitySerumId = 11,
+                            Repeat = null
                         };
                         _context.TblIncomingBloods.Add(tblIncomingBlood);
 
