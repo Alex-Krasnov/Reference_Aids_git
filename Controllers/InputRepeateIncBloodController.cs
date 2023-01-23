@@ -58,7 +58,6 @@ namespace Reference_Aids.Controllers
                 var rows = sheetData.Elements<Row>();
                 int i = 0;
 
-                //костыль переделать
                 WorkbookPart wbPart = spreadsheetDocument.WorkbookPart;
                 Sheet theSheet = wbPart.Workbook.Descendants<Sheet>().FirstOrDefault();
                 WorksheetPart wsPart = (WorksheetPart)(wbPart.GetPartById(theSheet.Id));
@@ -75,7 +74,7 @@ namespace Reference_Aids.Controllers
 
                     TblIncomingBlood forUpd = _context.TblIncomingBloods.Where(e => e.BloodId == bloodId).First();
                     forUpd.Repeat = rep;
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     i++;
                 }
             }

@@ -48,12 +48,14 @@ namespace Reference_Aids.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Input(List<InputPatients> listPatients)
+        public async Task<IActionResult> Input(List<InputPatients> Patients)
         {
             List<Success> successfulList = new();
             List<string> errList = new();
 
-            foreach (var patient in listPatients)
+            var a = Request.Form;
+
+            foreach (var patient in Patients)
             {
                 int labId, districtId, testSystemId, regionId;
                 //гарантирован ввод лаборатории, кем. напр., тест системы, региона

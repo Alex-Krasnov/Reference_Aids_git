@@ -51,15 +51,15 @@
                         <div class="row g-0 background-dark-row" style="width: 30%;">
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text" >Ид пациента</label>
-                                <input placeholder="Ид пациента" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].PatienId">
+                                <input placeholder="Ид пациента" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="Patients[@item.NumPatient].PatienId">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text" >Ном. в списке</label>
-                                <input placeholder="Ном. в списке" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].NumInList" value="@item.NumInList">
+                                <input placeholder="Ном. в списке" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="Patients[@item.NumPatient].NumInList" value="@item.NumInList">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px;">
                                 <label class="font-color-text">Ном. Ифа</label>
-                                <input placeholder="Ном. Ифа" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="[@item.NumPatient].NumIfa" >
+                                <input placeholder="Ном. Ифа" autocomplete="fals" type="text" class="form-control tbl-input" style="font-weight: bold; font-size: 1.2rem;" name="Patients[@item.NumPatient].NumIfa" >
                             </div>
                         </div>
                     </div>
@@ -67,23 +67,23 @@
                         <div class="row g-0 background-dark-row" style="width: 70%;">
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Фамилия</label>
-                                <input placeholder="Фамилия" autocomplete="fals" type="text" class="form-control" style="font-weight: bold; font-size: 1.2rem;" name='[@item.NumPatient].FamilyName' value="@item.FamilyName">
+                                <input placeholder="Фамилия" autocomplete="fals" type="text" class="form-control" style="font-weight: bold; font-size: 1.2rem;" name='Patients[@item.NumPatient].FamilyName' value="@item.FamilyName">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Имя</label>
-                                <input placeholder="Имя" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].FirstName' value="@item.FirstName">
+                                <input placeholder="Имя" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].FirstName' value="@item.FirstName">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Отчество</label>
-                                <input placeholder="Отчество" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].ThirdName' value="@item.ThirdName">
+                                <input placeholder="Отчество" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].ThirdName' value="@item.ThirdName">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Дата рождения</label>
-                                <input placeholder="Дата рождения" autocomplete="fals" type="date" class="form-control" id="date" name='[@item.NumPatient].BirthDate' value="@item.BirthDate">
+                                <input placeholder="Дата рождения" autocomplete="fals" type="date" class="form-control" id="date" name='Patients[@item.NumPatient].BirthDate' value="@item.BirthDate">
                             </div>
                             <div class="col-sm" style="margin-bottom: 7px;">
                                 <label class="font-color-text">Пол</label>
-                                <input placeholder="Пол" autocomplete="fals" type="text" list="sex_list" class="form-control" name='[@item.NumPatient].Sex' value="@item.Sex">
+                                <input placeholder="Пол" autocomplete="fals" type="text" list="sex_list" class="form-control" name='Patients[@item.NumPatient].Sex' value="@item.Sex">
                             </div>
                         </div>
                     </div>
@@ -91,39 +91,39 @@
                         <div class="row g-0 background-dark-row" style="width: 80%;">
                             @*<div class="col-sm-1" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Анонимный</label>
-                                <input autocomplete="fals" type="checkbox" class="form-check-input" name='[@item.NumPatient].Anon' value="@false">
+                                <input autocomplete="fals" type="checkbox" class="form-check-input" name='Patients[@item.NumPatient].Anon' value="@false">
                             </div>*@
                             <div class="col-sm" style="margin-bottom: 7px; margin-right: 12px">
                                 <label class="font-color-text">Телефон</label>
-                                <input placeholder="Телефон" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Phone' value="@item.Phone">
+                                <input placeholder="Телефон" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].Phone' value="@item.Phone">
                             </div>
                             <div class="col-sm" style="margin-right: 12px">
                                 <label class="font-color-text">Регион</label>
-                                <input placeholder="Регион" autocomplete="fals" type="text" list="region_list" class="form-control" name='[@item.NumPatient].RegionName' value="@item.RegionName">
+                                <input placeholder="Регион" autocomplete="fals" type="text" list="region_list" class="form-control" name='Patients[@item.NumPatient].RegionName' value="@item.RegionName">
                             </div>
                             <div class="col-sm" style="margin-right: 12px">
                                 <label class="font-color-text">Город</label>
-                                <input placeholder="Город" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].CityName' value="@item.CityName">
+                                <input placeholder="Город" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].CityName' value="@item.CityName">
                             </div>
                             <div class="col-sm" style="margin-right: 12px">
                                 <label class="font-color-text">Нас. пункт</label>
-                                <input placeholder="Нас. пункт" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].AreaName' value="@item.AreaName">
+                                <input placeholder="Нас. пункт" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].AreaName' value="@item.AreaName">
                             </div>
                             <div class="col-sm" style="margin-right: 12px">
                                 <label class="font-color-text">Улица</label>
-                                <input placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='[@item.NumPatient].AddrStreat' value="@item.AddrStreat">
+                                <input placeholder="Улица" type="text" autocomplete="fals" class="form-control" name='Patients[@item.NumPatient].AddrStreat' value="@item.AddrStreat">
                             </div>
                             <div class="col-sm-1" style="margin-right: 5px; width: 5%;">
                                 <label class="font-color-text">Дом</label>
-                                <input placeholder="Дом" type="text" class="form-control" name='[@item.NumPatient].AddrHome' value="@item.AddrHome">
+                                <input placeholder="Дом" type="text" class="form-control" name='Patients[@item.NumPatient].AddrHome' value="@item.AddrHome">
                             </div>
                             <div class="col-sm-1" style="margin-right: 5px; width: 5%;">
                                 <label class="font-color-text">Корп.</label>
-                                <input placeholder="Корп." type="text" class="form-control" name='[@item.NumPatient].AddrCorps' value="@item.AddrCorps">
+                                <input placeholder="Корп." type="text" class="form-control" name='Patients[@item.NumPatient].AddrCorps' value="@item.AddrCorps">
                             </div>
                             <div class="col-sm-1" style="margin-right: 5px; width: 5%;">
                                 <label class="font-color-text">Кв.</label>
-                                <input placeholder="Кв." type="text" class="form-control" name='[@item.NumPatient].AddrFlat' value="@item.AddrFlat">
+                                <input placeholder="Кв." type="text" class="form-control" name='Patients[@item.NumPatient].AddrFlat' value="@item.AddrFlat">
                             </div>
                         </div>
                     </div>
@@ -133,41 +133,41 @@
                         <div class="row g-0 background-dark-row" style="width: 90%;">
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;  display: none;">
                                 <label class="font-color-text">Дата ифа</label>
-                                <input placeholder="Дата ифа" autocomplete="fals" type="date" class="form-control" name='[@item.NumPatient].Blotdate' value="@item.DateBloodSampling">
+                                <input placeholder="Дата ифа" autocomplete="fals" type="date" class="form-control" name='Patients[@item.NumPatient].Blotdate' value="@item.DateBloodSampling">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Тест система</label>
-                                <input placeholder="Тест система" autocomplete="fals" type="text" list="test_system_list" class="form-control" name='[@item.NumPatient].TestSys' value="@item.TestSys">
+                                <input placeholder="Тест система" autocomplete="fals" type="text" list="test_system_list" class="form-control" name='Patients[@item.NumPatient].TestSys' value="@item.TestSys">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 12%;">
                                 <label class="font-color-text">Отпр. лаб.</label>
-                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" list="send_lab_list" class="form-control" name='[@item.NumPatient].SendLab' value="@item.SendLab">
+                                <input placeholder="Отпр. лаб." autocomplete="fals" type="text" list="send_lab_list" class="form-control" name='Patients[@item.NumPatient].SendLab' value="@item.SendLab">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11.5%;">
                                 <label class="font-color-text">Кем напрв.</label>
-                                <input placeholder="Кем напрв." autocomplete="fals" type="text" list="send_district_list" class="form-control" name='[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
+                                <input placeholder="Кем напрв." autocomplete="fals" type="text" list="send_district_list" class="form-control" name='Patients[@item.NumPatient].SendDistrict' value="@item.SendDistrict">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 8%;">
                                 <label class="font-color-text">Cut off</label>
-                                <input placeholder="Cut off" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].CutOff' value="@item.CutOff">
+                                <input placeholder="Cut off" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].CutOff' value="@item.CutOff">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 8%;">
                                 <label class="font-color-text">Результат</label>
-                                <input placeholder="Результат" autocomplete="fals" type="text" class="form-control" name='[@item.NumPatient].Result' value="@item.Result">
+                                <input placeholder="Результат" autocomplete="fals" type="text" class="form-control" name='Patients[@item.NumPatient].Result' value="@item.Result">
                             </div>
                             <div class="col-sm-1" style="margin-right: 12px; width: 11%;">
                                 <label class="font-color-text">Кат. пациента</label>
-                                <input placeholder="Кат. пациента" autocomplete="fals" type="text" list="category_list" class="form-control" name='[@item.NumPatient].Category' value="@item.Category">
+                                <input placeholder="Кат. пациента" autocomplete="fals" type="text" list="category_list" class="form-control" name='Patients[@item.NumPatient].Category' value="@item.Category">
                             </div>
                             <div class="col-sm-1" style="width: 20%;">
                                 <label class="font-color-text">Дата забора крови</label>
-                                <input placeholder="Дата забора крови" autocomplete="fals" type="date" class="form-control" name='[@item.NumPatient].DateBloodSampling' value="@item.DateBloodSampling">
+                                <input placeholder="Дата забора крови" autocomplete="fals" type="date" class="form-control" name='Patients[@item.NumPatient].DateBloodSampling' value="@item.DateBloodSampling">
                             </div>
                         </div>
                     </div>
                     <br>
                     <div class="row g-0" style="margin-top: 1rem">
-                        <textarea placeholder="Комментарий" name='[@item.NumPatient].PatientCom' autocomplete="fals" cols="100" rows="3"></textarea>
+                        <textarea placeholder="Комментарий" name='Patients[@item.NumPatient].PatientCom' autocomplete="fals" cols="100" rows="3"></textarea>
                     </div>
                     <br>
                     <div class="row g-0 background-dark-row" @*style="width: 90%;"*@>
