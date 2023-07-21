@@ -67,7 +67,8 @@ namespace Reference_Aids.Controllers
                 var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId && e.ResultIfaResultId != 1 && e.ResultIfaResultId != null).ToList();
                 var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId && e.ResultPcrResultId != 1 && e.ResultPcrResultId != null).ToList();
                 var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId && e.ResultAntigenResultId != 1 && e.ResultAntigenResultId != null).ToList();
-                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1 && e.ResultBlotResultId != null).ToList();
+                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != null && e.ResultBlotResultId != null).ToList();
+                //var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1 && e.ResultBlotResultId != null).ToList();
 
                 if (resIfa.Count() == 0 && resPcr.Count() == 0 && resAntigen.Count() == 0 && resBlot.Count() == 0)
                     continue;

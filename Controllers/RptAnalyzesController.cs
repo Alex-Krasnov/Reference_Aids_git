@@ -873,7 +873,7 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("Комментарии: ") { Space = SpaceProcessingModeValues.Preserve }));
+                                          new Text("Комментарии: * - сомнительный") { Space = SpaceProcessingModeValues.Preserve }));
                 para16.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
