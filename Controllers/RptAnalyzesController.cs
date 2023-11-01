@@ -191,8 +191,8 @@ namespace Reference_Aids.Controllers
                            .Where(e => e.PatientId == patientId && e.ResultBlotDate.Year < DateTime.Now.Year).ToList();
 
             //Шапка
-            string p1 = "ГКУЗ МО «Центр по профилактике и борьбе со СПИДом и инфекционными заболеваниями»",
-                   p2 = "Адрес: г.Москва, ул.Щепкина 61/2 корп.8, ст.11 тел.: 8(495) 681-38-10,  8(495) 681-37-17";
+            string p1 = "ГКУЗ Московской Области «ЦЕНТР ПРОФИЛАКТИКИ И БОРЬБЫ СО СПИД»",
+                   p2 = "Адрес: Московская область, г.о. Котельники, г. Котельники, мкр. Силикат, д. 41а";
 
             using (WordprocessingDocument wordDocument = WordprocessingDocument.Open(filepath, true))
             {
@@ -873,7 +873,7 @@ namespace Reference_Aids.Controllers
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
                                               new Bold()),
-                                          new Text("Комментарии: * - сомнительный") { Space = SpaceProcessingModeValues.Preserve }));
+                                          new Text("Комментарии: ") { Space = SpaceProcessingModeValues.Preserve }));
                 para16.AppendChild(new Run(new RunProperties(
                                               new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
                                               new FontSize { Val = new StringValue("20") },
