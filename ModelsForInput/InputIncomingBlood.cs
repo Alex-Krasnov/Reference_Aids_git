@@ -7,7 +7,7 @@ namespace Reference_Aids.ModelsForInput
         public string? SendDistrict { get; set; }
         public string? SendLab { get; set; }
         public int? CategoryPatient { get; set; }
-        public bool? AnonymousPatient { get; set; }
+        public string? Repeat { get; set; }
         public string DateBloodSampling { get; set; } = null!;
         public string? QualitySerum { get; set; }
         public string DateBloodImport { get; set; } = null!;

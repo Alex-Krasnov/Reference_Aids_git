@@ -93,7 +93,7 @@ namespace Reference_Aids.Controllers
                 foreach (var pcr in resPcr)
                 {
                     try { strAnalyzes += $"ПЦР {pcr.ResultPcrDate:dd-MM-yyyy}, "; } catch { }
-                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultNameForRpt}; "; } catch { }
+                    try { strAnalyzes += $"{_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultNameForRpt}, {pcr.IntResultPcr} коп/мл;"; } catch { }
                 }
 
                 EditFile(path_from, item.NumIfa, fio, dateSex, categery, lpuLab, strAnalyzes);

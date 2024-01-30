@@ -21,9 +21,10 @@
     </datalist>
     <div class="row g-0" style="margin-bottom: 2px">
         <div class="col-sm-2 border border-1"><label>Рег. Ном.</label></div>
-        <div class="col-sm-4 border border-1"><label>Дата</label></div>
+        <div class="col-sm-2 border border-1"><label>Дата</label></div>
         <div class="col-sm-4 border border-1"><label>Тест система</label></div>
         <div class="col-sm-2 border border-1"><label>Рез.</label></div>
+        <div class="col-sm-2 border border-1"><label>Рез. числовой</label></div>
     </div>
     <form class="needs-validation" novalidate asp-controller="ImportPcr" asp-action="Add" method="post">
         @{
@@ -32,9 +33,10 @@
                 <div class="row g-0">
                     <div class="row g-0">
                         <div class="col-sm-2"><input type="text" class="form-control tbl-input" name="[@num].BloodId" value="@i"></div>
-                        <div class="col-sm-4"><input type="date" class="form-control tbl-input" name="[@num].ResultPcrDate" value="@Model.Date"></div>
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" name="[@num].ResultPcrDate" value="@Model.Date"></div>
                         <div class="col-sm-4"><input type="text" class="form-control tbl-input" list="test_system_list" name="[@num].ResultPcrTestSysName" value="@Model.TestSystemName"></div>
                         <div class="col-sm-2"><input type="text" class="form-control tbl-input" list="result_list" name="[@num].ResultPcrResultName"></div>
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" name="[@num].IntResultPcr"></div>
                         <div style="display: none">
                             <label>Год рег. номера</label>
                             <input type="text" class="form-control" name='[@num].DateId' value="@Model.DateId">

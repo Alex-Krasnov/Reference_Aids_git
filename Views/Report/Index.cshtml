@@ -70,6 +70,20 @@
         </div>
     </form>
     <br>
+    <form class="needs-validation" novalidate asp-controller="RptnoticeEpid" asp-action="Create" method="post">
+        <div class="row g-0">
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата1" type="date" class="form-control" name='dat1'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input autocomplete="fals" placeholder="Дата2" type="date" class="form-control" name='dat2'>
+            </div>
+            <div class="col" style="margin: 7px">
+                <input class="btn btn-outline-success btn-sm" type="submit" value="Создать извещение для эпид. отдела">
+            </div>
+        </div>
+    </form>
+    <br>
     <form class="needs-validation" novalidate asp-controller="RptDaily" asp-action="Create" method="post">
         <div class="row g-0">
             <div class="col-sm-2" style="margin: 7px">

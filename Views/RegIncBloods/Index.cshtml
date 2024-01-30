@@ -154,15 +154,15 @@
                     @foreach (var item in Model.TblIncomingBloods)
                     {
                         <tr>
-                            <td><input type="text" class="form-control" name='' value="@item.NumIfa" disabled></td>
-                            <td><input type="text" class="form-control" name='' value="@item.NumInList" disabled></td>
-                            <td><input type="date" class="form-control" name='' value="@item.DateBloodImport.ToString("yyyy-MM-dd")" disabled></td>
-                            <td><input type="date" class="form-control" name='' value="@item.DateBloodSampling.ToString("yyyy-MM-dd")" disabled></td>
-                            <td><input type="text" class="form-control" name='' value="@item.SendLabName()" disabled></td>
-                            <td><input type="text" class="form-control" name='' value="@item.SendDistrictName()" disabled></td>
-                            <td><input type="text" class="form-control" name='' value="@item.CategoryPatientId" disabled></td>@*CategoryPatientName()*@
-                            <td><input type="text" class="form-control" name='' value="@item.QualitySerumName()" disabled></td>
-                            <td><input type="checkbox" class="form-check-input" name='' value="" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.NumIfa" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.NumInList" disabled></td>
+                            <td><input type="date" class="form-control" value="@item.DateBloodImport.ToString("yyyy-MM-dd")" disabled></td>
+                            <td><input type="date" class="form-control" value="@item.DateBloodSampling.ToString("yyyy-MM-dd")" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.SendLabName()" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.SendDistrictName()" disabled></td>
+                            <td><input type="text" class="form-control" value="@item.CategoryPatientId" disabled></td>@*CategoryPatientName()*@
+                            <td><input type="text" class="form-control" value="@item.QualitySerumName()" disabled></td>
+                            <td><input type="checkbox" class="form-check-input" @(@item.Repeat == true ? "checked='checked'" : "") disabled></td>
                             <td><a style="margin-top: 5px" class="btn btn-outline-info btn-sm" asp-controller="RegAnalyzes" asp-action="Index" asp-route-patient_id="@Model.TblPatientCards[0].PatientId" asp-route-blood_id="@item.BloodId">Открыть</a></td>
                         </tr>
                     }
@@ -175,7 +175,7 @@
                         <td><input type="text" class="form-control" name='SendDistrict' list="send_district_list"></td>
                         <td><input type="text" class="form-control" name='CategoryPatient' list="category_list"></td>
                         <td><input type="text" class="form-control" name='QualitySerum' list="quality_serum_list" value="прозрачная"></td>
-                        <td><input type="checkbox" class="form-check-input" name='AnonymousPatient'></td>
+                        <td><input type="checkbox" class="form-check-input" name='Repeat'></td>
                         <td hidden><input type="text" class="form-control inputtbl" name='PatientId' value="@Model.TblPatientCards[0].PatientId"></td>
                         <td><input type="submit" class="btn btn-outline-success btn-sm" style="margin-top: 5px" value="Добавить"></td>
                     </tr>

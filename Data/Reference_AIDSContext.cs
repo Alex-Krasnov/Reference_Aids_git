@@ -509,6 +509,8 @@ namespace Reference_Aids.Data
 
                 entity.Property(e => e.ResultPcrId).HasColumnName("result_pcr_id");
 
+                entity.Property(e => e.IntResultPcr).HasColumnName("int_result_pcr");
+
                 entity.Property(e => e.ResultPcrDate)
                     .HasColumnType("date")
                     .HasColumnName("d_result_pcr");

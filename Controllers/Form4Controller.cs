@@ -100,48 +100,54 @@ namespace Reference_Aids.Controllers
             foreach (int item in cat)
             {
                 int total_4 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                              && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                              && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                       .Count();
                 int man_5 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat })
                                                     .Where(e => e.SexId == 0
                                                             && e.CategoryPatientId == item
                                                             && e.BirthDate.CompareTo(old_18) <= 0
                                                             && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                            && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                            && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                     .Count();
                 int woman_6 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat })
                                                       .Where(e => e.SexId == 1
                                                               && e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_18) <= 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                              && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                              && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                       .Count();
                 int child_7 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat })
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_14) >= 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                              && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                              && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                       .Count();
                 int teenager_8 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat })
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_14) > 0
                                                               && e.BirthDate.CompareTo(old_18) < 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                              && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                              && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                       .Count();
                 int anon_9 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.AnonymousPatient })
+                                                            (p, i) => new { p.PatientId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.AnonymousPatient, i.Repeat })
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.AnonymousPatient == true
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                              && e.DateBloodImport.CompareTo(date_end) <= 0)
+                                                              && e.DateBloodImport.CompareTo(date_end) <= 0
+                                                              && e.Repeat != true)
                                                       .Count();
 
 

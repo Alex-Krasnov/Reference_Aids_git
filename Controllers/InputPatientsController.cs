@@ -40,7 +40,6 @@ namespace Reference_Aids.Controllers
                 {
                     await uploadedFile.CopyToAsync(fileStream);
                 }
-                //path = @"C:\Users\alexk\Source\Repos\Alex-Krasnov\Reference_Aids_git\wwwroot\Files\ForInput\ОтправкаВГЛ_экспорт.xls";
                 dataList = GetInputPatients(path, _context);
             }
             ViewBag.Title = "InputPatient";
@@ -307,29 +306,28 @@ namespace Reference_Aids.Controllers
 
 
                     InputPatients patients = new();
-                    patients.SendLab = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "A" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "A"+ row.RowIndex).InnerText,
-                    patients.SendDistrict = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "B" + row.RowIndex).InnerText,
-                    patients.DateBloodSampling = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd");//row.Elements<Cell>().First(c => c.CellReference == "C" + row.RowIndex).InnerText,//
-                    patients.Category = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "D" + row.RowIndex).InnerText,
-                                                                                                                                                                                                                                                           //Anon = row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
-                    patients.FamilyName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "E" + row.RowIndex).InnerText,
-                    patients.FirstName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "F" + row.RowIndex).InnerText,
-                    patients.ThirdName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "G" + row.RowIndex).InnerText,
-                    patients.BirthDate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd");//row.Elements<Cell>().First(c => c.CellReference == "H" + row.RowIndex).InnerText,//
-                    patients.Sex = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "I" + row.RowIndex).InnerText,
-                    patients.Phone = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "J" + row.RowIndex).InnerText,
-                    patients.RegionName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "K" + row.RowIndex).InnerText,
-                    patients.CityName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "L" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "L" + row.RowIndex).InnerText,
-                    patients.AreaName = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "M" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "M" + row.RowIndex).InnerText,
-                    patients.AddrStreat = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "N" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "N" + row.RowIndex).InnerText,
-                    patients.AddrHome = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "O" + row.RowIndex).InnerText,
-                    patients.AddrCorps = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "P" + row.RowIndex).InnerText,
-                    patients.AddrFlat = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "Q" + row.RowIndex).InnerText,
-                    patients.Blotdate = DateTime.FromOADate(int.Parse(row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText)).ToString("yyyy-MM-dd");//row.Elements<Cell>().First(c => c.CellReference == "R" + row.RowIndex).InnerText,//
-                    patients.TestSys = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "S" + row.RowIndex).InnerText,
-                    patients.CutOff = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "T" + row.RowIndex).InnerText,
-                    patients.Result = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText)).InnerText;//row.Elements<Cell>().First(c => c.CellReference == "U" + row.RowIndex).InnerText,
-                    patients.NumInList = row.Elements<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText;//wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault().SharedStringTable.ElementAt(int.Parse(wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == "V" + row.RowIndex).InnerText)).InnerText,
+                    patients.SendLab = GetCellValue(path, "A" + row.RowIndex);
+                    patients.SendDistrict = GetCellValue(path, "B" + row.RowIndex);
+                    patients.DateBloodSampling = DateTime.FromOADate(int.Parse(GetCellValue(path, "C" + row.RowIndex))).ToString("yyyy-MM-dd");
+                    patients.Category = GetCellValue(path, "D" + row.RowIndex);
+                    patients.FamilyName = GetCellValue(path, "E" + row.RowIndex);
+                    patients.FirstName = GetCellValue(path, "F" + row.RowIndex);
+                    patients.ThirdName = GetCellValue(path, "G" + row.RowIndex);
+                    patients.BirthDate = DateTime.FromOADate(int.Parse(GetCellValue(path, "H" + row.RowIndex))).ToString("yyyy-MM-dd");
+                    patients.Sex = GetCellValue(path, "I" + row.RowIndex);
+                    patients.Phone = GetCellValue(path, "J" + row.RowIndex);
+                    patients.RegionName = GetCellValue(path, "K" + row.RowIndex);
+                    patients.CityName = GetCellValue(path, "L" + row.RowIndex);
+                    patients.AreaName = GetCellValue(path, "M" + row.RowIndex);
+                    patients.AddrStreat = GetCellValue(path, "N" + row.RowIndex);
+                    patients.AddrHome = GetCellValue(path, "O" + row.RowIndex);
+                    patients.AddrCorps = GetCellValue(path, "P" + row.RowIndex);
+                    patients.AddrFlat = GetCellValue(path, "Q" + row.RowIndex);
+                    patients.Blotdate = DateTime.FromOADate(int.Parse(GetCellValue(path, "R" + row.RowIndex))).ToString("yyyy-MM-dd");
+                    patients.TestSys = GetCellValue(path, "S" + row.RowIndex);
+                    patients.CutOff = GetCellValue(path, "T" + row.RowIndex);
+                    patients.Result = GetCellValue(path, "U" + row.RowIndex);
+                    patients.NumInList = GetCellValue(path, "V" + row.RowIndex);
                     patients.PossiblePatients = posPatient;
                     patients.NumPatient = i;
 
@@ -345,6 +343,47 @@ namespace Reference_Aids.Controllers
             listForImportPatient.ListSendDistricts = _context.ListSendDistricts.ToList();
             listForImportPatient.ListCategories = _context.ListCategories.ToList();
             return listForImportPatient;
+        }
+
+        static string GetCellValue(string fileName, string addressName)
+        {
+            string? value = null;
+            using (SpreadsheetDocument document = SpreadsheetDocument.Open(fileName, false))
+            {
+                WorkbookPart wbPart = document.WorkbookPart;
+                Sheet theSheet = wbPart.Workbook.Descendants<Sheet>().First();
+                WorksheetPart wsPart = (WorksheetPart)wbPart.GetPartById(theSheet.Id!);
+
+                if (addressName.Substring(0, 1) == "C" || addressName.Substring(0, 1) == "H" || addressName.Substring(0, 1) == "R")
+                {
+                    Worksheet worksheet = wsPart.Worksheet;
+                    SheetData sheetData = worksheet.GetFirstChild<SheetData>();
+                    var rows = sheetData.Elements<Row>();
+                    var row = rows.ElementAt(int.Parse(addressName.Substring(1))-1);
+                    value = row.Elements<Cell>().First(c => c.CellReference == addressName).InnerText;
+                    var a = int.Parse(value);
+                    return value;
+                }
+
+
+                var sharedStringTable = wbPart.GetPartsOfType<SharedStringTablePart>().First().SharedStringTable;
+                if (sharedStringTable is null)
+                    return null;
+
+                int ind;
+                var b = wsPart.Worksheet.Descendants<Cell>().First(c => c.CellReference == addressName).InnerText;
+
+                if (!int.TryParse(b, out ind))
+                    return null;
+
+                if (addressName.Substring(0, 1) == "V")
+                    return ind.ToString();
+
+                value = sharedStringTable.ElementAt(ind).InnerText;
+
+
+                return value;
+            }
         }
     }
 }

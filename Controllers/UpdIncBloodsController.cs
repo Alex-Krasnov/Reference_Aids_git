@@ -73,14 +73,19 @@ namespace Reference_Aids.Controllers
             List<string> ErrList = new();
             int? qualitySerumId = null, sendDistrict = null, sendLab = null;
             DateOnly dateBloodSampling, dateBloodImport;
+            bool repeat = false;
 
-            try { qualitySerumId = _context.ListQualitySerums.First(e => e.QualitySerumName == list.QualitySerumId).QualitySerumId; } 
+            if(list.Repeat == "on")
+                repeat = true;
+
+
+            try { qualitySerumId = _context.ListQualitySerums.FirstOrDefault(e => e.QualitySerumName == list.QualitySerumId)?.QualitySerumId; } 
             catch { ErrList.Add($"Ошибка тест системы:{list.QualitySerumId}"); }
 
-            try { sendDistrict = _context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrictId).SendDistrictId; } 
+            try { sendDistrict = _context.ListSendDistricts.FirstOrDefault(e => e.SendDistrictName == list.SendDistrictId)?.SendDistrictId; } 
             catch { ErrList.Add($"Ошибка кем напр.:{list.SendDistrictId}"); }
 
-            try { sendLab = _context.ListSendLabs.First(e => e.SendLabName == list.SendLabId).SendLabId; } 
+            try { sendLab = _context.ListSendLabs.FirstOrDefault(e => e.SendLabName == list.SendLabId)?.SendLabId; } 
             catch { ErrList.Add($"Ошибка отпр. лаб.:{list.SendLabId}"); }
 
             try { dateBloodSampling = DateOnly.Parse(list.DateBloodSampling); }
@@ -100,14 +105,15 @@ namespace Reference_Aids.Controllers
                 QualitySerumId = qualitySerumId,
                 DateBloodImport = dateBloodImport,
                 NumIfa = list.NumIfa,
-                NumInList = list.NumInList
+                NumInList = list.NumInList,
+                Repeat = repeat
             };
 
             if (ErrList.Count != 0)
                 return RedirectToAction("Index", "Error", new { list = ErrList });
 
             _context.TblIncomingBloods.Update(tblIncomingBlood);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction("Index", new { id = list.PatientId });
         }
 

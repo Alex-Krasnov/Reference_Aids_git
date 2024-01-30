@@ -77,7 +77,7 @@ namespace Reference_Aids.Controllers
                     SendDistrictId =  _context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrict).SendDistrictId,
                     SendLabId = _context.ListSendLabs.First(e => e.SendLabName == list.SendLab).SendLabId,
                     CategoryPatientId = list.CategoryPatient,   //CategoryPatientId(_context),
-                    AnonymousPatient = list.AnonymousPatient,
+                    Repeat = list.Repeat == "on",
                     DateBloodSampling = DateOnly.Parse(list.DateBloodSampling),
                     QualitySerumId = _context.ListQualitySerums.First(e => e.QualitySerumName == list.QualitySerum).QualitySerumId,
                     DateBloodImport = DateOnly.Parse(list.DateBloodImport),

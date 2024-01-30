@@ -10,6 +10,7 @@ namespace Reference_Aids.Models
         public DateOnly ResultPcrDate { get; set; } = new DateOnly();
         public int? ResultPcrTestSysId { get; set; }
         public int? ResultPcrResultId { get; set; }
+        public int? IntResultPcr { get; set; }
 
         public virtual TblIncomingBlood Blood { get; set; } = null!;
         public virtual ListResult ResultPcrResult { get; set; } = null!;

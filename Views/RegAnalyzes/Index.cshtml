@@ -78,29 +78,32 @@
                 </form>
             </div>
         </div>
-        <div class="col">
+        <div class="col-6">
             <label>Pcr</label>
             <div class="row g-0" style="margin-bottom: 2px">
-                <div class="col-sm-4 border border-1"><label>Дата</label></div>
+                <div class="col-sm-2 border border-1"><label>Дата</label></div>
                 <div class="col-sm-4 border border-1"><label>Тест система</label></div>
                 <div class="col-sm-2 border border-1"><label>Рез.</label></div>
+                <div class="col-sm-2 border border-1"><label>Рез. числовой</label></div>
                 <div class="col" style="visibility: hidden;"><a class="btn btn-outline-danger btn-sm">Удалить</a></div>
             </div>
             <div @*style="overflow-x: auto; height: 75px;"*@>
                  @foreach (var item in Model.TblResultPcrs)
                 {
                     <div class="row g-0">
-                        <div class="col-sm-4"><input type="date" class="form-control tbl-input" value="@item.ResultPcrDate.ToString("yyyy-MM-dd")" disabled></div>
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" value="@item.ResultPcrDate.ToString("yyyy-MM-dd")" disabled></div>
                         <div class="col-sm-4"><input type="text" class="form-control tbl-input" value="@item.ResultPcrTestSysName()" disabled></div>
                         <div class="col-sm-2"><input type="text" class="form-control tbl-input" value="@item.ResultPcrResultName()" disabled></div>
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" value="@item.IntResultPcr" disabled></div>
                         <div class="col"><a class="btn btn-outline-danger btn-sm" asp-controller="RegAnalyzes" asp-action="DelAnalyzesPcr" asp-route-id="@item.ResultPcrId"  asp-route-bloodid="@item.BloodId">Удалить</a></div>
                     </div>
                 }
                 <form class="needs-validation" style="margin: 0px" novalidate asp-controller="RegAnalyzes" asp-action="CreateAnalyzesPcr" method="post">
                     <div class="row g-0">
-                        <div class="col-sm-4"><input type="date" class="form-control tbl-input" name="ResultPcrDate"></div>
+                        <div class="col-sm-2"><input type="date" class="form-control tbl-input" name="ResultPcrDate"></div>
                         <div class="col-sm-4"><input type="text" class="form-control tbl-input" list="test_system_list" name="ResultPcrTestSysName"></div>
                         <div class="col-sm-2"><input type="text" class="form-control tbl-input" list="result_list" name="ResultPcrResultName"></div>
+                        <div class="col-sm-2"><input type="text" class="form-control tbl-input" name="IntResultPcr"></div>
                         <div style="display: none;"><input type="text" class="form-control tbl-input" name="BloodId" value="@Model.TblIncomingBloods[0].BloodId"></div>
                         <div style="display: none;"><input class="btn btn-outline-success btn-sm" type="submit" value="Поиск"></div>
                         <div class="col" style="visibility: hidden;"><a class="btn btn-outline-danger btn-sm">Удалить</a></div>

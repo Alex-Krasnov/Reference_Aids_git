@@ -13,5 +13,6 @@ namespace Reference_Aids.ModelsForInput
         public string? DateBloodImport { get; set; }
         public int NumIfa { get; set; }
         public int NumInList { get; set; }
+        public string? Repeat {  get; set; }
     }
 }

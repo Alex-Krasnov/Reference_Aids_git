@@ -68,9 +68,9 @@ namespace Reference_Aids.Controllers
                 foreach (var antigen in antigenList)
                     try { resFull += $"Антиген {_context.ListResults.First(e => e.ResultId == antigen.ResultAntigenResultId).ResultName}";} catch { }
 
-                var pcrList = _context.TblResultPcrs.Select(e => new { e.BloodId, e.ResultPcrDate, e.ResultPcrResultId}).Where(e => e.BloodId == item.BloodId).ToList();
+                var pcrList = _context.TblResultPcrs.Select(e => new { e.BloodId, e.ResultPcrDate, e.ResultPcrResultId, e.IntResultPcr}).Where(e => e.BloodId == item.BloodId).ToList();
                 foreach (var pcr in pcrList)
-                    try { resFull += $"Пцр {_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultName}";} catch { }
+                    try { resFull += $"Пцр {_context.ListResults.First(e => e.ResultId == pcr.ResultPcrResultId).ResultName}, {pcr.IntResultPcr} коп/мл;"; } catch { }
 
                 ListPatientForRpt patient = new()
                 {
@@ -176,7 +176,7 @@ namespace Reference_Aids.Controllers
             var ifaList = _context.TblResultIfas.Select(e =>new { e.BloodId, e.ResultIfaDate, e.ResultIfaTestSysId, e.ResultIfaResultId} ).Where(e => e.BloodId == bloodId).ToList();
             var ibList = _context.TblResultBlots.Select(e => new {  e.ResultBlotResultId,e.ResultBlotEnv160,e.ResultBlotEnv120,e.ResultBlotEnv41,e.ResultBlotGag55,e.ResultBlotGag40,e.ResultBlotGag2425,e.ResultBlotGag18,e.ResultBlotPol6866,e.ResultBlotPol5251,e.ResultBlotPol3431,e.ResultBlotHiv2105,e.ResultBlotHiv236,e.ResultBlotHiv0,e.BloodId,e.ResultBlotTestSysId,e.ResultBlotDate}).Where(e => e.BloodId == bloodId).ToList();
             var antigenList = _context.TblResultAntigens.Select(e => new {e.BloodId, e.ResultAntigenDate, e.ResultAntigenTestSysId,e.ResultAntigenResultId }).Where(e => e.BloodId == bloodId).ToList();
-            var pcrList = _context.TblResultPcrs.Select(e => new {e.BloodId, e.ResultPcrDate, e.ResultPcrResultId , e.ResultPcrTestSysId}).Where(e => e.BloodId == bloodId).ToList();
+            var pcrList = _context.TblResultPcrs.Select(e => new {e.BloodId, e.ResultPcrDate, e.ResultPcrResultId , e.ResultPcrTestSysId, e.IntResultPcr}).Where(e => e.BloodId == bloodId).ToList();
             
             var oldIBList = (from patient in _context.TblPatientCards
                              join incBlood in _context.TblIncomingBloods on patient.PatientId equals incBlood.PatientId
@@ -507,7 +507,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp3);
 
                     string pcrRes = "";
-                    try { pcrRes =_context.ListResults.First(e => e.ResultId == item.ResultPcrResultId).ResultName; } catch { }
+                    try { pcrRes =_context.ListResults.First(e => e.ResultId == item.ResultPcrResultId).ResultName +", "+ item.IntResultPcr + " коп/мл"; } catch { }
                     TableCell tcOp4 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },

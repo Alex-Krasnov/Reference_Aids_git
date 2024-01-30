@@ -143,7 +143,7 @@
                     <th scope="col">Кем напр.</th>
                     <th scope="col">Категория</th>
                     <th scope="col">Качество сывороки</th>
-                    <th scope="col">Анон.</th>
+                    <th scope="col">Повт.</th>
                 </tr>
             </thead>
             <tbody>
@@ -159,9 +159,9 @@
                             <td><input type="text" class="form-control" name='SendDistrictId' list="send_district_list" value="@item.SendDistrictName()"></td>
                             <td><input type="text" class="form-control" name='CategoryPatientId' list="category_list" value="@item.CategoryPatientId"></td>
                             <td><input type="text" class="form-control" name='QualitySerumId' list="quality_serum_list" value="@item.QualitySerumName()"></td>
-                            <td><input type="checkbox" class="form-check-input" name='' value="" ></td>
+                            <td><input type="checkbox" class="form-check-input" name='Repeat' @(@item.Repeat == true ? "checked='checked'" : "")></td>
                             <td><input type="submit" class="btn btn-outline-success btn-sm" style="margin-top: 5px" value="ред."></td>
-                        <td width="70px"><a class="btn btn-outline-danger btn-sm" asp-controller="UpdIncBloods" asp-action="DelIncBlood" asp-route-id="@item.BloodId" asp-route-patientid="@item.PatientId">Удалить</a></td>
+                            <td width="70px"><a class="btn btn-outline-danger btn-sm" asp-controller="UpdIncBloods" asp-action="DelIncBlood" asp-route-id="@item.BloodId" asp-route-patientid="@item.PatientId">Удалить</a></td>
                             <td style="visibility: hidden"><input type="text" class="form-control tbl-input" name='PatientId' value="@item.PatientId"></td>
                             <td style="visibility: hidden"><input type="text" class="form-control tbl-input" name='BloodId' value="@item.BloodId"></td>
                         </tr>

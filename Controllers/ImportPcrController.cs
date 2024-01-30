@@ -14,6 +14,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
+
         public async Task<IActionResult> Index(int numIfaStart, int  numIfaEnd, string testSystem, string date, string dateId)
         {
             var Viewdata = new ListForImportPcr
@@ -46,6 +47,7 @@ namespace Reference_Aids.Controllers
                         BloodId = _context.TblIncomingBloods.First(e => e.NumIfa == item.BloodId && e.DateBloodImport.Year == Int32.Parse(item.DateId)).BloodId,
                         ResultPcrDate = DateOnly.Parse(item.ResultPcrDate),
                         ResultPcrTestSysId = _context.ListTestSystems.First(e => e.TestSystemName == item.ResultPcrTestSysName).TestSystemId,
+                        IntResultPcr = item.IntResultPcr,
                         ResultPcrResultId = _context.ListResults.Where(e => e.ResultName == item.ResultPcrResultName).First().ResultId
                     };
 

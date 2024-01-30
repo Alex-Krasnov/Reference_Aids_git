@@ -9,11 +9,11 @@ using Reference_Aids.Models;
 
 namespace Reference_Aids.Controllers
 {
-    public class RptNoticeController : Controller
+    public class RptNoticeEpidController : Controller
     {
         private readonly Reference_AIDSContext _context;
         private readonly IWebHostEnvironment _appEnvironment;
-        public RptNoticeController(Reference_AIDSContext context, IWebHostEnvironment appEnvironment)
+        public RptNoticeEpidController(Reference_AIDSContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
             _appEnvironment = appEnvironment;
@@ -21,7 +21,7 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public IActionResult Create(string dat1, string dat2)
         {
-            string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\ReportNotice_{DateTime.Now:dd_MM_yyyy}.docx",
+            string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\ReportNoticeEpid_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
             file_name = "ReportNotice.docx";
 
@@ -43,6 +43,7 @@ namespace Reference_Aids.Controllers
                                    patient.FirstName,
                                    patient.ThirdName,
                                    patient.BirthDate,
+                                   patient.PhoneNum,
                                    patient.Sex,
                                    patient.Region,
                                    patient.CityName,
@@ -56,7 +57,8 @@ namespace Reference_Aids.Controllers
                                    incBlood.SendDistrictNavigation,
                                    incBlood.NumIfa,
                                    incBlood.DateBloodImport,
-                                   incBlood.BloodId
+                                   incBlood.BloodId,
+                                   incBlood.Repeat
                                }).Where(e => (e.DateBloodImport.CompareTo(date_start) >= 0 && e.DateBloodImport.CompareTo(date_end) <= 0)).OrderBy(e => e.FamilyName).ThenBy(e => e.FirstName).ThenBy(e => e.ThirdName).ToList();
 
             int i = 0;
@@ -64,20 +66,25 @@ namespace Reference_Aids.Controllers
             {
                 string fio = "", dateSex = "", residence = "", categery = "", lpuLab = "", strAnalyzes = "";
 
-                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId && e.ResultIfaResultId != 1 && e.ResultIfaResultId != null).ToList();
-                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId && e.ResultPcrResultId != 1 && e.ResultPcrResultId != null).ToList();
-                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId && e.ResultAntigenResultId != 1 && e.ResultAntigenResultId != null).ToList();
-                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != null && e.ResultBlotResultId != null).ToList();
+                var resIfa = _context.TblResultIfas.Where(e => e.BloodId == item.BloodId).ToList(); //  && e.ResultIfaResultId != 1 && e.ResultIfaResultId != null
+                var resPcr = _context.TblResultPcrs.Where(e => e.BloodId == item.BloodId).ToList(); //  && e.ResultPcrResultId != 1 && e.ResultPcrResultId != null
+                var resAntigen = _context.TblResultAntigens.Where(e => e.BloodId == item.BloodId).ToList(); //  && e.ResultAntigenResultId != 1 && e.ResultAntigenResultId != null
+                var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId).ToList(); //  && e.ResultBlotResultId != null && e.ResultBlotResultId != null
                 //var resBlot = _context.TblResultBlots.Where(e => e.BloodId == item.BloodId && e.ResultBlotResultId != 1 && e.ResultBlotResultId != null).ToList();
 
                 if (resIfa.Count() == 0 && resPcr.Count() == 0 && resAntigen.Count() == 0 && resBlot.Count() == 0)
                     continue;
 
+                string strRepeat = "Первичный";
+
+                if(item.Repeat == true)
+                    strRepeat = "Повторный";
+
                 try { fio += item.FamilyName; } 
                 catch { }
                 try { fio += " " + item.FirstName; }
                 catch { }
-                try { fio += " " + item.ThirdName; }
+                try { fio += " " + item.ThirdName + $" {strRepeat}"; }
                 catch { }
 
                 try { dateSex += item.BirthDate.ToString("dd-MM-yyyy"); }
@@ -98,6 +105,8 @@ namespace Reference_Aids.Controllers
                 try { residence += "к. " + item.AddrCorps; }
                 catch { }
                 try { residence += "кв. " + item.AddrFlat; }
+                catch { }
+                try { residence += "тел. " + item.PhoneNum; }
                 catch { }
 
                 try { categery += item.CategoryPatientId.ToString(); }
@@ -138,6 +147,7 @@ namespace Reference_Aids.Controllers
             _context.ListNumForRptNotices.Add(num);
             return PhysicalFile(path_from, file_type, file_name);
         }
+
         public static void CreateFile(string filepath, Reference_AIDSContext _context)
         {
             int num = _context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1;

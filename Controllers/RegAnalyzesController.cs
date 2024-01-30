@@ -89,6 +89,7 @@ namespace Reference_Aids.Controllers
                     BloodId = list.BloodId,
                     ResultPcrDate = DateOnly.Parse(list.ResultPcrDate),
                     ResultPcrTestSysId = list.TestSysId(_context),
+                    IntResultPcr = list.IntResultPcr,
                     ResultPcrResultId = _context.ListResults.First(e => e.ResultName == list.ResultPcrResultName).ResultId
                 };
 
