@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Reference_Aids.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Reference_Aids.Controllers
 {
@@ -17,6 +18,14 @@ namespace Reference_Aids.Controllers
         [HttpPost]
         public IActionResult Create(string dat1, string dat2)
         {
+            var incBooldForUpd = _context.TblIncomingBloods.Where(e => e.SendLabId == 37 || e.SendLabId == 75).ToList();
+            foreach (var item in incBooldForUpd)
+            {
+                item.Repeat = true;
+
+            }
+
+            _context.SaveChanges();
             string path_to = _appEnvironment.WebRootPath + @$"\Files\Output\form4_{DateTime.Now:dd_MM_yyyy}.xlsx",
             path_from = _appEnvironment.WebRootPath + @"\Files\Sample\form4.xlsx",
             file_type = "text/plain";
@@ -100,66 +109,54 @@ namespace Reference_Aids.Controllers
             foreach (int item in cat)
             {
                 int total_4 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat, i.SendLabId})
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
                                                               && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                              && e.Repeat != true
-                                                              && e.SendLabId != 37 
-                                                              && e.SendLabId != 75)
+                                                              && e.Repeat != true)
                                                       .Count();
                 int man_5 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat, i.SendLabId })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                     .Where(e => e.SexId == 0
                                                             && e.CategoryPatientId == item
                                                             && e.BirthDate.CompareTo(old_18) <= 0
                                                             && e.DateBloodImport.CompareTo(date_start) >= 0
                                                             && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                            && e.Repeat != true
-                                                            && e.SendLabId != 37
-                                                            && e.SendLabId != 75)
+                                                            && e.Repeat != true)
                                                     .Count();
                 int woman_6 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat, i.SendLabId })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                       .Where(e => e.SexId == 1
                                                               && e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_18) <= 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
                                                               && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                              && e.Repeat != true
-                                                              && e.SendLabId != 37
-                                                              && e.SendLabId != 75)
+                                                              && e.Repeat != true)
                                                       .Count();
                 int child_7 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat, i.SendLabId })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_14) >= 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
                                                               && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                              && e.Repeat != true
-                                                              && e.SendLabId != 37
-                                                              && e.SendLabId != 75)
+                                                              && e.Repeat != true)
                                                       .Count();
                 int teenager_8 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat, i.SendLabId })
+                                                            (p, i) => new { p.PatientId, p.SexId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.Repeat})
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.BirthDate.CompareTo(old_14) > 0
                                                               && e.BirthDate.CompareTo(old_18) < 0
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
                                                               && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                              && e.Repeat != true
-                                                              && e.SendLabId != 37
-                                                              && e.SendLabId != 75)
+                                                              && e.Repeat != true)
                                                       .Count();
                 int anon_9 = _context.TblPatientCards.Join(_context.TblIncomingBloods, p => p.PatientId, i => i.PatientId,
-                                                            (p, i) => new { p.PatientId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.AnonymousPatient, i.Repeat, i.SendLabId })
+                                                            (p, i) => new { p.PatientId, p.BirthDate, i.CategoryPatientId, i.DateBloodImport, i.AnonymousPatient, i.Repeat})
                                                       .Where(e => e.CategoryPatientId == item
                                                               && e.AnonymousPatient == true
                                                               && e.DateBloodImport.CompareTo(date_start) >= 0
                                                               && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                              && e.Repeat != true
-                                                              && e.SendLabId != 37
-                                                              && e.SendLabId != 75)
+                                                              && e.Repeat != true)
                                                       .Count();
 
 
@@ -173,52 +170,41 @@ namespace Reference_Aids.Controllers
                                patient.BirthDate,
                                incBlood.DateBloodImport,
                                resIfa.ResultIfaResultId,
-                               patient.PatientId,
-                               incBlood.SendLabId
+                               patient.PatientId
                            })
                            .Where(e => e.CategoryPatientId == item
                                     && e.DateBloodImport.CompareTo(date_start) >= 0
                                     && e.DateBloodImport.CompareTo(date_end) <= 0
-                                    && e.ResultIfaResultId == 0
-                                    && e.SendLabId != 37
-                                    && e.SendLabId != 75)
+                                    && e.ResultIfaResultId == 0)
                            .Select(e => new { e.PatientId })
                            .GroupBy(e => new { e.PatientId })
                            .Count(); //distinct patient_id
 
                 int totalPcr = _context.TblIncomingBloods.Join(_context.TblResultPcrs, p => p.BloodId, i => i.BloodId,
-                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat, p.SendLabId })
+                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
                                                                 && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.Repeat != true
-                                                                && e.SendLabId != 37
-                                                                && e.SendLabId != 75)
+                                                                && e.Repeat != true)
                                                          .Count();
                 int totalIb = _context.TblIncomingBloods.Join(_context.TblResultBlots, p => p.BloodId, i => i.BloodId,
-                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat, p.SendLabId })
+                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
                                                                 && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.Repeat != true
-                                                                && e.SendLabId != 37
-                                                                && e.SendLabId != 75)
+                                                                && e.Repeat != true)
                                                          .Count();
                 int totalAntigen = _context.TblIncomingBloods.Join(_context.TblResultAntigens, p => p.BloodId, i => i.BloodId,
-                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.SendLabId })
+                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                                && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.SendLabId != 37
-                                                                && e.SendLabId != 75)
+                                                                && e.DateBloodImport.CompareTo(date_end) <= 0)
                                                          .Count();
                 int totalIfa = _context.TblIncomingBloods.Join(_context.TblResultIfas, p => p.BloodId, i => i.BloodId,
-                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.SendLabId })
+                                                                (p, i) => new { p.CategoryPatientId, p.DateBloodImport})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                                && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.SendLabId != 37
-                                                                && e.SendLabId != 75)
+                                                                && e.DateBloodImport.CompareTo(date_end) <= 0)
                                                          .Count();
 
 
@@ -232,8 +218,7 @@ namespace Reference_Aids.Controllers
                                       patient.BirthDate,
                                       incBlood.DateBloodImport,
                                       resPcr.ResultPcrResultId,
-                                      incBlood.Repeat,
-                                      incBlood.SendLabId
+                                      incBlood.Repeat
                                   })
                                   .Where(e => e.SexId == 0
                                          && e.CategoryPatientId == item
@@ -241,9 +226,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultPcrResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int man_13_ib = (from patient in _context.TblPatientCards
@@ -256,8 +239,7 @@ namespace Reference_Aids.Controllers
                                      patient.BirthDate,
                                      incBlood.DateBloodImport,
                                      resIb.ResultBlotResultId,
-                                     incBlood.Repeat,
-                                     incBlood.SendLabId
+                                     incBlood.Repeat
                                  })
                                   .Where(e => e.SexId == 0
                                          && e.CategoryPatientId == item
@@ -265,9 +247,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultBlotResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int woman_14_pcr = (from patient in _context.TblPatientCards
@@ -280,8 +260,7 @@ namespace Reference_Aids.Controllers
                                         patient.BirthDate,
                                         incBlood.DateBloodImport,
                                         resPcr.ResultPcrResultId,
-                                        incBlood.Repeat,
-                                        incBlood.SendLabId
+                                        incBlood.Repeat
                                     })
                                   .Where(e => e.SexId == 1
                                          && e.CategoryPatientId == item
@@ -289,9 +268,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultPcrResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int woman_14_ib = (from patient in _context.TblPatientCards
@@ -304,8 +281,7 @@ namespace Reference_Aids.Controllers
                                        patient.BirthDate,
                                        incBlood.DateBloodImport,
                                        resIb.ResultBlotResultId,
-                                       incBlood.Repeat,
-                                       incBlood.SendLabId
+                                       incBlood.Repeat
                                    })
                                   .Where(e => e.SexId == 1
                                          && e.CategoryPatientId == item
@@ -313,9 +289,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultBlotResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int child_15_pcr = (from patient in _context.TblPatientCards
@@ -327,17 +301,14 @@ namespace Reference_Aids.Controllers
                                         patient.BirthDate,
                                         incBlood.DateBloodImport,
                                         resPcr.ResultPcrResultId,
-                                        incBlood.Repeat,
-                                        incBlood.SendLabId
+                                        incBlood.Repeat
                                     })
                                   .Where(e => e.CategoryPatientId == item
                                          && e.BirthDate.CompareTo(old_14) >= 0
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultPcrResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int child_15_ib = (from patient in _context.TblPatientCards
@@ -349,17 +320,14 @@ namespace Reference_Aids.Controllers
                                        patient.BirthDate,
                                        incBlood.DateBloodImport,
                                        resIb.ResultBlotResultId,
-                                       incBlood.Repeat,
-                                       incBlood.SendLabId
+                                       incBlood.Repeat
                                    })
                                   .Where(e => e.CategoryPatientId == item
                                          && e.BirthDate.CompareTo(old_14) >= 0
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultBlotResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int teenager_16_pcr = (from patient in _context.TblPatientCards
@@ -371,8 +339,7 @@ namespace Reference_Aids.Controllers
                                            patient.BirthDate,
                                            incBlood.DateBloodImport,
                                            resPcr.ResultPcrResultId,
-                                           incBlood.Repeat,
-                                           incBlood.SendLabId
+                                           incBlood.Repeat
                                        })
                                   .Where(e => e.CategoryPatientId == item
                                          && e.BirthDate.CompareTo(old_14) > 0
@@ -380,9 +347,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultPcrResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
                 int teenager_16_ib = (from patient in _context.TblPatientCards
@@ -394,8 +359,7 @@ namespace Reference_Aids.Controllers
                                           patient.BirthDate,
                                           incBlood.DateBloodImport,
                                           resIb.ResultBlotResultId,
-                                          incBlood.Repeat,
-                                          incBlood.SendLabId
+                                          incBlood.Repeat
                                       })
                                   .Where(e => e.CategoryPatientId == item
                                          && e.BirthDate.CompareTo(old_14) > 0
@@ -403,9 +367,7 @@ namespace Reference_Aids.Controllers
                                          && e.DateBloodImport.CompareTo(date_start) >= 0
                                          && e.DateBloodImport.CompareTo(date_end) <= 0
                                          && e.ResultBlotResultId == 0
-                                         && e.Repeat != true
-                                         && e.SendLabId != 37
-                                         && e.SendLabId != 75)
+                                         && e.Repeat != true)
                                   .Count();
 
 
