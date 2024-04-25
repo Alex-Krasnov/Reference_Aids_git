@@ -151,8 +151,8 @@ namespace Reference_Aids.Controllers
         public static void CreateFile(string filepath, Reference_AIDSContext _context)
         {
             int num = _context.ListNumForRptNotices.OrderBy(e => e.Num).Last().Num + 1;
-            string h1_1 = "МОЦ СПИД, клинико-диагностическая лаборатория",
-                   h1_2 = "г.Москва, ул.Щепкина 61/2, к.8",
+            string h1_1 = "ГБУЗ МО ЦПБ СПИД, клинико-диагностическая лаборатория",
+                   h1_2 = "Московская область, г.о. Котельники, г. Котельники, мкр. Силикат, д. 41а",
                    h2_1 = "Форма № 266/У-88",
                    h2_2 = "Утверждена МЗ СССР 05.08.88 №690",
                    h3 = $"ОПЕРАТИВНОЕ ДОНЕСЕНИЕ № {num} " +

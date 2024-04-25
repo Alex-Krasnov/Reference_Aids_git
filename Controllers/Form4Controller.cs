@@ -184,15 +184,13 @@ namespace Reference_Aids.Controllers
                                                                 (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                                && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.Repeat != true)
+                                                                && e.DateBloodImport.CompareTo(date_end) <= 0)
                                                          .Count();
                 int totalIb = _context.TblIncomingBloods.Join(_context.TblResultBlots, p => p.BloodId, i => i.BloodId,
                                                                 (p, i) => new { p.CategoryPatientId, p.DateBloodImport, p.Repeat})
                                                          .Where(e => e.CategoryPatientId == item
                                                                 && e.DateBloodImport.CompareTo(date_start) >= 0
-                                                                && e.DateBloodImport.CompareTo(date_end) <= 0
-                                                                && e.Repeat != true)
+                                                                && e.DateBloodImport.CompareTo(date_end) <= 0)
                                                          .Count();
                 int totalAntigen = _context.TblIncomingBloods.Join(_context.TblResultAntigens, p => p.BloodId, i => i.BloodId,
                                                                 (p, i) => new { p.CategoryPatientId, p.DateBloodImport})
