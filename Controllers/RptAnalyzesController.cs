@@ -397,7 +397,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp2);
                     string ifaTs = null;
                     try { ifaTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultIfaTestSysId).TestSystemName + " " +
-                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultIfaTestSysId).DTestSystemShelfLife; } catch { }
+                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultIfaTestSysId).DTestSystemShelfLife.Date.ToString("MM/dd/yyyy"); } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -432,7 +432,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp2);
                     string ibTs = null;
                     try {ibTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).TestSystemName + " " +
-                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).DTestSystemShelfLife; } catch { }
+                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).DTestSystemShelfLife.Date.ToString("MM/dd/yyyy"); } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -467,7 +467,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp2);
                     string agTs = null;
                     try { agTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultAntigenTestSysId).TestSystemName + " " +
-                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultAntigenTestSysId).DTestSystemShelfLife; } catch { }
+                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultAntigenTestSysId).DTestSystemShelfLife.Date.ToString("MM/dd/yyyy"); } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -502,7 +502,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp2);
                     string pcrTs = null;
                     try {pcrTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultPcrTestSysId).TestSystemName
-                            + " " + _context.ListTestSystems.First(e => e.TestSystemId == item.ResultPcrTestSysId).DTestSystemShelfLife; } catch { }
+                            + " " + _context.ListTestSystems.First(e => e.TestSystemId == item.ResultPcrTestSysId).DTestSystemShelfLife.Date.ToString("MM/dd/yyyy"); } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
@@ -538,7 +538,7 @@ namespace Reference_Aids.Controllers
                     trOp.Append(tcOp2);
                     string oldIbTs = null;
                     try { oldIbTs = _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).TestSystemName + " " +
-                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).DTestSystemShelfLife; } catch { }
+                            _context.ListTestSystems.First(e => e.TestSystemId == item.ResultBlotTestSysId).DTestSystemShelfLife.Date.ToString("MM/dd/yyyy"); } catch { }
                     TableCell tcOp3 = new(new Paragraph(new ParagraphProperties(new SpacingBetweenLines() { After = "0" }),
                                                              new Run(new RunProperties(
                                                                          new RunFonts() { Ascii = "Calibri (Body)", HighAnsi = "Calibri (Body)" },
