@@ -75,6 +75,12 @@ namespace Reference_Aids.Controllers
                 if (resIfa.Count() == 0 && resPcr.Count() == 0 && resAntigen.Count() == 0 && resBlot.Count() == 0)
                     continue;
 
+                if (!resIfa.Any(e => e.ResultIfaResultId == 0 || e.ResultIfaResultId == 2)
+                    && !resPcr.Any(e => e.ResultPcrResultId == 0 || e.ResultPcrResultId == 2)
+                    && !resAntigen.Any(e => e.ResultAntigenResultId == 0 || e.ResultAntigenResultId == 2)
+                    && !resBlot.Any(e => e.ResultBlotResultId == 0 || e.ResultBlotResultId == 2))
+                    continue;
+
                 string strRepeat = "Первичный";
 
                 if(item.Repeat == true)

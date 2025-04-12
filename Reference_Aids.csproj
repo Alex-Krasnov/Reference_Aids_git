@@ -28,6 +28,7 @@
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="wwwroot\Files\Output\" />
+    <Folder Include="wwwroot\Files\Output\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
