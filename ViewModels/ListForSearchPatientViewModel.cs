@@ -16,5 +16,6 @@ namespace Reference_Aids.ViewModels
         public string? SexName { get; set; }
         public string? RegoinName { get; set; }
         public string? NumIfa { get; set; }
+        public string? Snils { get; set; }
     }
 }

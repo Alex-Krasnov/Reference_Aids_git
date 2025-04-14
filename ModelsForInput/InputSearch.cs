@@ -12,6 +12,7 @@ namespace Reference_Aids.ModelsForInput
         public string? RegionName { get; set; }
         public string? BirthDate { get; set; }
         public string? NumIfa { get; set; }
+        public string? Snils { get; set; }
 
         public int? SexId(Reference_AIDSContext _context)
         {

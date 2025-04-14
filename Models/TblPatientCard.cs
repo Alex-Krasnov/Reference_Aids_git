@@ -24,6 +24,7 @@
         public string? AddrCorps { get; set; }
         public string? AddrFlat { get; set; }
         public string? AddrStreat { get; set; }
+        public string? Snils { get; set; }
 
         public virtual ListSex? Sex { get; set; }
         public virtual ListRegion? Region { get; set; }
@@ -37,6 +38,7 @@
             }
             return null;
         }
+
         public string? RegionName()
         {
             if (RegionId != null)
@@ -45,6 +47,7 @@
             }
             return null;
         }
+
         public string? AddrFull()
         {
             if (RegionId != null)

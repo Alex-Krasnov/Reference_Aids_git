@@ -5,36 +5,6 @@
     Layout = "_Layout";
 }
 <div class="container">
-    <datalist id="send_lab_list">
-        @foreach (var item in Model.ListSendLabs)
-        {
-            <option>@item.SendLabName</option>
-        }
-    </datalist>
-    <datalist id="test_system_list">
-        @foreach (var item in Model.ListTestSystems)
-        {
-            <option>@item.TestSystemName</option>
-        }
-    </datalist>
-    <datalist id="send_district_list">
-        @foreach (var item in Model.ListSendDistricts)
-        {
-            <option>@item.SendDistrictName</option>
-        }
-    </datalist>
-    <datalist id="category_list">
-        @foreach (var item in Model.ListCategories)
-        {
-            <option>@item.CategoryId</option>
-        }
-    </datalist>
-    <datalist id="quality_serum_list">
-        @foreach (var item in Model.ListQualitySerums)
-        {
-            <option>@item.QualitySerumName</option>
-        }
-    </datalist>
     <br>
     <div class="row g-0" >
         <div class="col-sm-3">
@@ -58,6 +28,9 @@
             </div>
             <div class="col-sm-10" style="margin-bottom: 7px">
                 <input disabled placeholder="Телефон" type="text" class="form-control" name='PhoneNum' value="@Model.TblPatientCards[0].PhoneNum">
+            </div>
+            <div class="col-sm-10" style="margin-bottom: 7px">
+                <input disabled placeholder="Снилс" type="text" class="form-control" name='Snils' value="@Model.TblPatientCards[0].Snils">
             </div>
         </div>
         <div class="col-sm-9" > 
@@ -190,6 +163,45 @@
             <a class="btn btn-outline-danger btn-sm" asp-controller="UpdatePatientCard" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать данные пациента</a>
         </div>
     </div>
+    <datalist id="send_lab_list">
+        @foreach (var item in Model.ListSendLabs)
+        {
+            <option>@item.SendLabName</option>
+        }
+    </datalist>
+    <datalist id="test_system_list">
+        @foreach (var item in Model.ListTestSystems)
+        {
+            <option>@item.TestSystemName</option>
+        }
+    </datalist>
+    <datalist id="send_district_list">
+        @foreach (var item in Model.ListSendDistricts)
+        {
+            <option>@item.SendDistrictName</option>
+        }
+    </datalist>
+    <datalist id="category_list">
+        @foreach (var item in Model.ListCategories)
+        {
+            <option>@item.CategoryId</option>
+        }
+    </datalist>
+    <datalist id="quality_serum_list">
+        @foreach (var item in Model.ListQualitySerums)
+        {
+            <option>@item.QualitySerumName</option>
+        }
+    </datalist>
+    <script>
+        document.querySelector('input[name="Snils"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            if (value.length > 11) value = value.slice(0, 11) + ' ' + value.slice(11);
+            e.target.value = value.slice(0, 14);
+        });
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Получаем элементы полей ввода

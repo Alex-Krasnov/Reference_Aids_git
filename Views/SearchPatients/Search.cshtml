@@ -48,6 +48,9 @@
                 <div class="col-sm-2" style="margin: 7px">
                     <input placeholder="Рег. ном." type="text" class="form-control" name='NumIfa' value=@Model.NumIfa>
                 </div>
+                <div class="col-sm-2" style="margin: 7px">
+                    <input placeholder="Снилс" type="text" class="form-control" name='Snils' value=@Model.Snils>
+                </div>
             </div> 
             <div class="row g-0">
                 <div class="col-10"></div>
@@ -70,6 +73,7 @@
                     <th scope="col">Пол</th>
                     <th scope="col">Регион</th>
                     <th scope="col">Адрес</th>
+                    <th scope="col">Снилс</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,6 +97,7 @@
                             <td><input type="text" class="form-control" value="@item.SexName()" disabled></td>
                             <td><input type="text" class="form-control" value="@item.RegionName()" disabled></td>
                             <td><input type="text" class="form-control" value="@adddrFull" disabled></td>
+                            <td><input type="text" class="form-control" value=@item.Snils disabled></td>
                             <td><a class="btn btn-outline-info btn-sm" style="margin-top: 5px" asp-controller="RegIncBloods" asp-action="Index" asp-route-id="@item.PatientId">Открыть</a></td>
                         </tr>
                     }
@@ -103,4 +108,13 @@
     <div class="row g-0">
         <a class="btn btn-outline-primary btn-sm" style="margin-top: 5px" asp-controller="RegPatientCards" asp-action="Index">Новый пациент</a>
     </div>
+    <script>
+        document.querySelector('input[name="Snils"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            if (value.length > 11) value = value.slice(0, 11) + ' ' + value.slice(11);
+            e.target.value = value.slice(0, 14);
+        });
+    </script>
 </div>

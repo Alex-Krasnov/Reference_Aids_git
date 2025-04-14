@@ -72,6 +72,9 @@
                 <div class="col-sm-10" style="margin-bottom: 7px">
                     <input placeholder="Телефон" type="text" class="form-control" name='PhoneNum' value="@Model.TblPatientCards[0].PhoneNum">
                 </div>
+                <div class="col-sm-10" style="margin-bottom: 7px">
+                    <input placeholder="Снилс" type="text" class="form-control" name='Snils' value="@Model.TblPatientCards[0].Snils">
+                </div>
             </div>
             <div class="row g-0">
                 <div class="col-sm-2" style="margin-right: 12px">
@@ -107,4 +110,13 @@
             </div>
         </div>
     </form>
+    <script>
+        document.querySelector('input[name="Snils"]').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/[^\d]/g, '');
+            if (value.length > 3) value = value.slice(0, 3) + '-' + value.slice(3);
+            if (value.length > 7) value = value.slice(0, 7) + '-' + value.slice(7);
+            if (value.length > 11) value = value.slice(0, 11) + ' ' + value.slice(11);
+            e.target.value = value.slice(0, 14);
+        });
+    </script>
 </div>

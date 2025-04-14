@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
 using Reference_Aids.ModelsForInput;
@@ -16,18 +15,17 @@ namespace Reference_Aids.Controllers
             _context=context;
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var Viewdata = new ListForRegViewModel
             {
                 NextPatientID = _context.TblPatientCards.Max(b => b.PatientId) + 1,
-                ListSexes = await _context.ListSexes.ToListAsync(),
-                ListRegions = await _context.ListRegions.ToListAsync(),
-                ListSendLabs = await _context.ListSendLabs.ToListAsync(),
-                ListTestSystems = await _context.ListTestSystems.ToListAsync(),
-                ListSendDistricts = await _context.ListSendDistricts.ToListAsync()
+                ListSexes = _context.ListSexes.ToList(),
+                ListRegions = _context.ListRegions.ToList(),
+                ListSendLabs = _context.ListSendLabs.ToList(),
+                ListTestSystems = _context.ListTestSystems.ToList(),
+                ListSendDistricts = _context.ListSendDistricts.ToList()
             };
             ViewBag.Title = "RegPatient";
             return View("Index", Viewdata);
@@ -39,9 +37,9 @@ namespace Reference_Aids.Controllers
             if (ModelState.IsValid)
             {
                 TblPatientCard tblPatientCard = new()
-                { 
-                    PatientId = list.PatientId, 
-                    FamilyName = list.FamilyName, 
+                {
+                    PatientId = list.PatientId,
+                    FamilyName = list.FamilyName,
                     FirstName = list.FirstName,
                     ThirdName = list.ThirdName,
                     BirthDate = DateOnly.Parse(list.BirthDate),
@@ -54,8 +52,10 @@ namespace Reference_Aids.Controllers
                     AddrHome = list.AddrHome,
                     AddrCorps = list.AddrCorps,
                     AddrFlat = list.AddrFlat,
-                    AddrStreat = list.AddrStreat
+                    AddrStreat = list.AddrStreat,
+                    Snils = list.Snils
                 };
+
                 TblDistrictBlot tblDistrictBlot = new()
                 {
                     PatientId = list.PatientId,
@@ -70,7 +70,7 @@ namespace Reference_Aids.Controllers
 
                 _context.TblPatientCards.Add(tblPatientCard);
                 _context.TblDistrictBlots.Add(tblDistrictBlot);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return RedirectToAction("Index", "RegIncBloods", new { id = tblPatientCard.PatientId});
             }
             return RedirectToAction("Index");

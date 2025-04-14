@@ -14,6 +14,7 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {

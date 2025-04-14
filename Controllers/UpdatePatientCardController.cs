@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
 using Reference_Aids.ModelsForInput;
@@ -15,21 +14,22 @@ namespace Reference_Aids.Controllers
         {
             _context = context;
         }
+
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
             var Viewdata = new ListForPatientCardViewModel
             {
-                ListSexes = await _context.ListSexes.ToListAsync(),
-                ListRegions = await _context.ListRegions.ToListAsync(),
-                ListSendLabs = await _context.ListSendLabs.ToListAsync(),
-                ListTestSystems = await _context.ListTestSystems.ToListAsync(),
-                TblPatientCards = await _context.TblPatientCards.Where(e => e.PatientId == id).ToListAsync(),
-                TblDistrictBlots = await _context.TblDistrictBlots.Where(e => e.PatientId == id).ToListAsync(),
-                TblIncomingBloods = await _context.TblIncomingBloods.Where(e => e.PatientId == id).ToListAsync(),
-                ListSendDistricts = await _context.ListSendDistricts.ToListAsync(),
-                ListCategories = await _context.ListCategories.ToListAsync(),
-                ListQualitySerums = await _context.ListQualitySerums.ToListAsync()
+                ListSexes = _context.ListSexes.ToList(),
+                ListRegions = _context.ListRegions.ToList(),
+                ListSendLabs = _context.ListSendLabs.ToList(),
+                ListTestSystems = _context.ListTestSystems.ToList(),
+                TblPatientCards = _context.TblPatientCards.Where(e => e.PatientId == id).ToList(),
+                TblDistrictBlots = _context.TblDistrictBlots.Where(e => e.PatientId == id).ToList(),
+                TblIncomingBloods = _context.TblIncomingBloods.Where(e => e.PatientId == id).ToList(),
+                ListSendDistricts = _context.ListSendDistricts.ToList(),
+                ListCategories = _context.ListCategories.ToList(),
+                ListQualitySerums = _context.ListQualitySerums.ToList()
             };
             ViewBag.Title = "InputIncBlood";
             return View("Index", Viewdata);
@@ -63,16 +63,15 @@ namespace Reference_Aids.Controllers
                 AddrHome = list.AddrHome,
                 AddrCorps = list.AddrCorps,
                 AddrFlat = list.AddrFlat,
-                AddrStreat = list.AddrStreat
+                AddrStreat = list.AddrStreat,
+                Snils = list.Snils
             };
             if (ErrList.Count != 0)
                 return RedirectToAction("Index", "Error", new { list = ErrList });
 
             _context.TblPatientCards.Update(tblPatientCard);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             return RedirectToAction("Index", "RegIncBloods", new { id = tblPatientCard.PatientId });
-            
-           // return RedirectToAction("Index");
         }
     }
 }

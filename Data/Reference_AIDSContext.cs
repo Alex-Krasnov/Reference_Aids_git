@@ -238,6 +238,9 @@ namespace Reference_Aids.Data
                     .HasMaxLength(30)
                     .HasColumnName("third_name");
 
+                entity.Property(e => e.Snils)
+                    .HasColumnName("snils");
+
                 entity.Property(e => e.UserEdit).HasColumnName("user_edit");
 
                 entity.Property(e => e.AddrHome)

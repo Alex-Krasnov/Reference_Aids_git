@@ -25,6 +25,7 @@ namespace Reference_Aids.ModelsForInput
         public string? TestSystemName { get; set; }
         public string? SendDistrictName { get; set; }
         public string? SendLabName { get; set; }
+        public string? Snils { get; set; }
 
         public int? SexId(Reference_AIDSContext _context)
         {
