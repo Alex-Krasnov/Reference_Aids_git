@@ -10,6 +10,9 @@ namespace Reference_Aids.Controllers
     {
         private readonly Reference_AIDSContext _context;
 
+        private const string PATIENT_COM = " Повторное исследование методом иммунного блота не проводилось в соответствии с п.628. " +
+                                           "СанПиН 3,3686-21, пациента необходимо направить в центр СПИД по месту жительства";
+
         public RegIncBloodsController(Reference_AIDSContext context)
         {
             _context = context;
@@ -84,6 +87,17 @@ namespace Reference_Aids.Controllers
                     NumIfa = list.NumIfa,
                     NumInList = list.NumInList
                 };
+
+                if (list.Repeat == "on")
+                {
+                    var patient = _context.TblPatientCards.First(e => e.PatientId == list.PatientId);
+
+                    if ((patient.PatientCom == null || patient.PatientCom == string.Empty) && !patient.PatientCom.Contains(PATIENT_COM))
+                    {
+                        patient.PatientCom += PATIENT_COM;
+                    }
+                }
+
                 _context.TblIncomingBloods.Add(tblIncomingBlood);
                 _context.SaveChanges();
                 return RedirectToAction("Index", new { id = list.PatientId });
