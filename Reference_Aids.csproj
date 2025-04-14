@@ -27,6 +27,8 @@
     <Folder Include="Interfaces\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\Files\ForInput\" />
+    <Folder Include="wwwroot\Files\ForInput\" />
+    <Folder Include="wwwroot\Files\NewFolder\" />
     <Folder Include="wwwroot\Files\Output\" />
     <Folder Include="wwwroot\Files\Output\" />
     <Folder Include="wwwroot\js\" />

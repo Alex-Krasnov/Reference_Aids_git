@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Evaluation;
-using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 using Reference_Aids.Models;
 using Reference_Aids.ModelsForInput;
 using Reference_Aids.ViewModels;
-using System.Globalization;
 
 namespace Reference_Aids.Controllers
 {
@@ -22,16 +19,16 @@ namespace Reference_Aids.Controllers
         {
             var Viewdata = new ListForPatientCardViewModel
             {
-                ListSexes = await _context.ListSexes.ToListAsync(),
-                ListRegions = await _context.ListRegions.ToListAsync(),
-                ListSendLabs = await _context.ListSendLabs.ToListAsync(),
-                ListTestSystems = await _context.ListTestSystems.ToListAsync(),
-                TblPatientCards = await _context.TblPatientCards.Where(e => e.PatientId == id).ToListAsync(),
-                TblDistrictBlots = await _context.TblDistrictBlots.Where(e => e.PatientId == id).ToListAsync(),
-                TblIncomingBloods = await _context.TblIncomingBloods.Where(e => e.PatientId == id).ToListAsync(),
-                ListSendDistricts = await _context.ListSendDistricts.ToListAsync(),
-                ListCategories = await _context.ListCategories.OrderBy(e => e.CategoryId).ToListAsync(),
-                ListQualitySerums = await _context.ListQualitySerums.ToListAsync()
+                ListSexes =  _context.ListSexes.ToList(),
+                ListRegions =  _context.ListRegions.ToList(),
+                ListSendLabs =  _context.ListSendLabs.ToList(),
+                ListTestSystems =  _context.ListTestSystems.ToList(),
+                TblPatientCards =  _context.TblPatientCards.Where(e => e.PatientId == id).ToList(),
+                TblDistrictBlots =  _context.TblDistrictBlots.Where(e => e.PatientId == id).ToList(),
+                TblIncomingBloods =  _context.TblIncomingBloods.Where(e => e.PatientId == id).ToList(),
+                ListSendDistricts =  _context.ListSendDistricts.ToList(),
+                ListCategories =  _context.ListCategories.OrderBy(e => e.CategoryId).ToList(),
+                ListQualitySerums =  _context.ListQualitySerums.ToList()
             };
             ViewBag.Title = "InputIncBlood";
             return View("Index", Viewdata);
@@ -57,10 +54,12 @@ namespace Reference_Aids.Controllers
                 };
 
                 _context.TblDistrictBlots.Add(tblDistrictBlot);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 List<string> ErrList = new() { "Ошибка в блоте" };
+
                 if(!ModelState.IsValid)
                     return RedirectToAction("Index", "Error", new { list = ErrList });
+
                 return RedirectToAction("Index", new { id = list.PatientId });
             }
             return RedirectToAction("Index", new { id = list.PatientId });
@@ -76,7 +75,7 @@ namespace Reference_Aids.Controllers
                     PatientId = list.PatientId,
                     SendDistrictId =  _context.ListSendDistricts.First(e => e.SendDistrictName == list.SendDistrict).SendDistrictId,
                     SendLabId = _context.ListSendLabs.First(e => e.SendLabName == list.SendLab).SendLabId,
-                    CategoryPatientId = list.CategoryPatient,   //CategoryPatientId(_context),
+                    CategoryPatientId = list.CategoryPatient,
                     Repeat = list.Repeat == "on",
                     DateBloodSampling = DateOnly.Parse(list.DateBloodSampling),
                     QualitySerumId = _context.ListQualitySerums.First(e => e.QualitySerumName == list.QualitySerum).QualitySerumId,
@@ -85,7 +84,7 @@ namespace Reference_Aids.Controllers
                     NumInList = list.NumInList
                 };
                 _context.TblIncomingBloods.Add(tblIncomingBlood);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 return RedirectToAction("Index", new { id = list.PatientId });
             }
             List<string> ErrList = new() { "Ошибка в данных по пробирке" };

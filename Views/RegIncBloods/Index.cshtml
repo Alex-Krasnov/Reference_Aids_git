@@ -190,4 +190,35 @@
             <a class="btn btn-outline-danger btn-sm" asp-controller="UpdatePatientCard" asp-action="Index" asp-route-id="@Model.TblPatientCards[0].PatientId">Редактировать данные пациента</a>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Получаем элементы полей ввода
+            const sendLabInput1 = document.querySelector('input[name="SendLabId"]');
+            const sendLabInput2 = document.querySelector('input[name="SendLab"]');
+            const sendDistrictInput1 = document.querySelector('input[name="SendDistrictId"]');
+            const sendDistrictInput2 = document.querySelector('input[name="SendDistrict"]');
+
+            // Синхронизация для SendLab
+            if (sendLabInput1 && sendLabInput2) {
+                sendLabInput1.addEventListener('input', function() {
+                    sendLabInput2.value = this.value;
+                });
+
+                sendLabInput2.addEventListener('input', function() {
+                    sendLabInput1.value = this.value;
+                });
+            }
+
+            // Синхронизация для SendDistrict
+            if (sendDistrictInput1 && sendDistrictInput2) {
+                sendDistrictInput1.addEventListener('input', function() {
+                    sendDistrictInput2.value = this.value;
+                });
+
+                sendDistrictInput2.addEventListener('input', function() {
+                    sendDistrictInput1.value = this.value;
+                });
+            }
+        });
+    </script>
 </div>
