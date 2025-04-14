@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Reference_Aids.Data;
 
 namespace Reference_Aids.Controllers
@@ -17,7 +16,7 @@ namespace Reference_Aids.Controllers
         public async Task<IActionResult> Index()
         {
             ViewBag.Title = "Report";
-            return View("Index", await _context.ListRecForRpts.ToListAsync());
+            return View("Index", _context.ListRecForRpts.ToList());
         }
     }
 }

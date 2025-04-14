@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Reference_Aids.Data;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.AspNetCore.Mvc;
+using Reference_Aids.Data;
 
 namespace Reference_Aids.Controllers
 {
@@ -21,6 +20,7 @@ namespace Reference_Aids.Controllers
         {
             string path_from = _appEnvironment.WebRootPath +@$"\Files\Output\DailyReport_{DateTime.Now:dd_MM_yyyy}.docx",
             file_type = "text/plain",
+            file_name = "DailyReport.docx";
             file_name = "DailyReport.docx";
 
             DateOnly date_now = DateOnly.Parse(dat);

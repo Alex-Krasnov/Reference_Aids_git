@@ -1,15 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Reference_Aids.Data;
-using DocumentFormat.OpenXml;
+﻿using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml.Drawing.Charts;
-using DocumentFormat.OpenXml.Office2016.Excel;
-using DocumentFormat.OpenXml.Vml;
-using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Mvc;
+using Reference_Aids.Data;
 using Reference_Aids.Models;
-using System.Globalization;
-using DocumentFormat.OpenXml.Drawing;
 
 namespace Reference_Aids.Controllers
 {
