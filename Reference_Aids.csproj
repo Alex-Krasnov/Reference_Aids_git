@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\**" />
+    <Compile Remove="wwwroot\js\**" />
+    <Content Remove="Interfaces\**" />
+    <Content Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="Interfaces\**" />
+    <EmbeddedResource Remove="wwwroot\js\**" />
+    <None Remove="Interfaces\**" />
+    <None Remove="wwwroot\js\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.18.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
@@ -24,14 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="wwwroot\Files\NewFolder\" />
     <Folder Include="wwwroot\Files\Output\" />
     <Folder Include="wwwroot\Files\Output\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
   <ItemGroup>
