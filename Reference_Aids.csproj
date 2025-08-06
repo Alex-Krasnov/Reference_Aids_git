@@ -39,12 +39,19 @@
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="wwwroot\Files\ForInput\" />
     <Folder Include="wwwroot\Files\NewFolder\" />
-    <Folder Include="wwwroot\Files\Output\" />
-    <Folder Include="wwwroot\Files\Output\" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\Files\Sample\ReportAnalyzes.docx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Files\ForInput\1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\Files\Output\1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
